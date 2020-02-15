@@ -1033,6 +1033,14 @@
   resolved "https://registry.yarnpkg.com/@quasar/fastclick/-/fastclick-1.1.4.tgz#21ed3e9a4387dcb43022a08af4ef08a5f1abf159"
   integrity sha512-i9wbyV4iT+v4KhtHJynUFhH5LiEPvAEgSnwMqPN4hf/8uRe82nDl5qP5agrp2el1h0HzyBpbvHaW7NB0BPrtvA==
 
+"@quasar/quasar-app-extension-dotenv@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-app-extension-dotenv/-/quasar-app-extension-dotenv-1.0.0.tgz#7ec2290b7e3e82ef7f93a4c746c08252cadec80c"
+  integrity sha512-AN7VpItu0x7Lz5CzNhPx0TILSmEMRcKVD2DuYEScwGYAZVxgJb7qfNuaXJ18T87PHNSWbKbTJpCnyOOA8KvrOA==
+  dependencies:
+    dotenv "^8.2.0"
+    fs "^0.0.2"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -2805,7 +2813,14 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-spawn@7.0.1:
+cross-env@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.0.tgz#5a3b2ddce51ec713ea58f2fb79ce22e65b4f5479"
+  integrity sha512-rV6M9ldNgmwP7bx5u6rZsTbYidzwvrwIYZnT08hSGLcQCcggofgFW+sNe7IhA1SRauPS0QuLbbX+wdNtpqE5CQ==
+  dependencies:
+    cross-spawn "^7.0.1"
+
+cross-spawn@7.0.1, cross-spawn@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
   integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
@@ -3319,6 +3334,11 @@ dot-prop@^4.1.1:
   integrity sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==
   dependencies:
     is-obj "^1.0.0"
+
+dotenv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -4127,6 +4147,11 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
+
+fs@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.2.tgz#e1f244ef3933c1b2a64bd4799136060d0f5914f8"
+  integrity sha1-4fJE7zkzwbKmS9R5kTYGDQ9ZFPg=
 
 fsevents@^1.2.7:
   version "1.2.11"
@@ -5285,6 +5310,11 @@ json-buffer@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
   integrity sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=
+
+json-formatter-js@^2.2.0:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/json-formatter-js/-/json-formatter-js-2.3.3.tgz#2517e28b1b0ce07d318bb2e9fb66c53da0e90601"
+  integrity sha512-6JpHBCm6a+YB7cLye7b2Rxsim37pxpsP5674ASRZYaFiLK+397c7CLOENru2gtiBwMz6s2NCuHVENn4fC42oeQ==
 
 json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
@@ -6511,6 +6541,13 @@ p-try@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
+
+package-lock-only@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/package-lock-only/-/package-lock-only-0.0.4.tgz#5cf4f379d54d0f3d18d50c92e54d92e177f2f754"
+  integrity sha512-fV1YHeTMWH5LKmdVqfWskm2/SG0iF2IrxJn3ziaPVx9CnpecGJzt8xXtLV+CYINENZwPFMtbxO5qupz0asNz1A==
+  dependencies:
+    chalk "^2.4.1"
 
 pako@~1.0.5:
   version "1.0.11"
@@ -8996,6 +9033,14 @@ vue-eslint-parser@^5.0.0:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
+vue-global-var@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-global-var/-/vue-global-var-1.0.0.tgz#15be6faff6c68d81bc5f5e84ec80f443cdeae4ca"
+  integrity sha512-j0aRrtPAVJID2EOcpvlN4Vxbdfk4BXUPMknCo/SvFwtoYhp7w4qbqpX+65TrYNitQXHLGEn8s9Ha9SI1q0wLcg==
+  dependencies:
+    vue "^2.6.6"
+    vuex "^3.1.0"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
@@ -9005,6 +9050,13 @@ vue-i18n@^8.0.0:
   version "8.15.3"
   resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.15.3.tgz#9f947802d9b734fcb92e2ce724da654f2f9fc0f4"
   integrity sha512-PVNgo6yhOmacZVFjSapZ314oewwLyXHjJwAqjnaPN1GJAJd/dvsrShGzSiJuCX4Hc36G4epJvNXUwO8y7wEKew==
+
+vue-json-content@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vue-json-content/-/vue-json-content-1.0.5.tgz#c24e64b37b2ac5aaa7e1050c04cade89c23ed272"
+  integrity sha512-BMZj687jCiOZv5ZorkaxUxyGbebXik9R0JBh+f/LIk9R81P+sFXi2TBJ80xsyK+8S01STisgLqUsWQePs3vC/Q==
+  dependencies:
+    json-formatter-js "^2.2.0"
 
 vue-loader@15.9.0:
   version "15.9.0"
@@ -9036,6 +9088,13 @@ vue-server-renderer@2.6.11:
     serialize-javascript "^2.1.2"
     source-map "0.5.6"
 
+vue-stripe-checkout@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/vue-stripe-checkout/-/vue-stripe-checkout-3.1.6.tgz#214cf217daecaf84a2061cd9645b71d500f93bfe"
+  integrity sha512-2LKZ6EEcgSv2vA2q9eB5mKQlTO3GT7Yz1/SF1sUwJl1egHAcr+Zbqwif98gXDG+iZettEFjlXBqX62IXiPqlyA==
+  dependencies:
+    package-lock-only "0.0.4"
+
 vue-style-loader@4.1.2, vue-style-loader@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
@@ -9057,12 +9116,12 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@2.6.11:
+vue@2.6.11, vue@^2.6.6:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
 
-vuex@3.1.2:
+vuex@3.1.2, vuex@^3.1.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.2.tgz#a2863f4005aa73f2587e55c3fadf3f01f69c7d4d"
   integrity sha512-ha3jNLJqNhhrAemDXcmMJMKf1Zu4sybMPr9KxJIuOpVcsDQlTBYLLladav2U+g1AvdYDG5Gs0xBTb0M5pXXYFQ==

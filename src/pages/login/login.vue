@@ -101,15 +101,36 @@
 </template>
 
 <script>
+import { openURL } from "quasar";
 import starfield from "src/components/login/starfield";
 
 export default {
   components: { starfield },
+  created() {},
+  mounted() {
+    if (this.checkLogin()) {
+      this.afterLogin();
+    }
+    window.addEventListener("message", this.oauthCallback, false);
+  },
+  beforeDestroy() {
+    window.removeEventListener("message", this.oauthCallback, false);
+  },
   data() {
     return {
+      token: "",
+      body: [],
+      errors: [],
+      loading: false,
       slide: "one"
     };
-  }
+  },
+  methods: {
+    goTo(url) {
+      openURL(url);
+    }
+  },
+  computed: {}
 };
 </script>
 

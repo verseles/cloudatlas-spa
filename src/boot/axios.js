@@ -1,4 +1,54 @@
-import Vue from "vue";
 import axios from "axios";
+import { LocalStorage, Notify } from "quasar";
 
-Vue.prototype.$axios = axios;
+export default ({ app, router, Vue }) => {
+  axios.defaults.baseURL = process.env.API_BASE_URL + "/";
+
+  axios.defaults.headers.common["Authorization"] =
+    "Bearer " + LocalStorage.getItem("token");
+
+  axios.interceptors.response.use(
+    function(r) {
+      if (r.status === 201 || r.status === 202) {
+        Notify.create({
+          message: r.data.message.body ? r.data.message.body : "It worked!",
+          icon: r.data.message.icon
+            ? r.data.message.icon
+            : "mdi-alert-decagram",
+          type: r.data.message.type ? r.data.message.type : "info"
+        });
+      }
+
+      return r;
+    },
+    function(error) {
+      const er = error.response;
+
+      app.data.store.errors = er.data.errors;
+      app.data.store.body = er.data;
+
+      if (er.status === 401) {
+        Notify.create({
+          message: "Please, login again",
+          icon: "mdi-verified",
+          timeout: 2000,
+          type: "warning"
+        });
+
+        router.push("/logout");
+      } else if (er.status === 422) {
+        Notify.create({
+          message: er.data.message
+            ? er.data.message
+            : "Please, check your data",
+          icon: "mdi-alert-circle",
+          type: "warning"
+        });
+      }
+
+      return Promise.reject(error);
+    }
+  );
+
+  Vue.prototype.$axios = axios;
+};

@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title class="text-center">
-          cloudkit
+          {{ $store.title }}
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
