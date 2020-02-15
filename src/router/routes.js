@@ -2,7 +2,19 @@ const routes = [
   {
     path: "/login",
     component: () => import("layouts/login-layout.vue"),
-    children: [{ path: "", component: () => import("pages/login/login.vue") }]
+    children: [
+      {
+        path: "",
+        component: () => import("pages/login/login.vue"),
+        meta: {
+          unguarded: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/logout",
+    component: () => import("components/login/logout.vue")
   },
   {
     path: "/",

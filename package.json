@@ -1,7 +1,7 @@
 {
   "name": "ck",
   "version": "0.0.1",
-  "description": "Web Dev Tools",
+  "description": "CloudKit is a ultimate set of tools for web developers. It includes, cloud file manager, deploy with webhooks, backups,\n  database navigators, APIs and much more.",
   "productName": "CloudKit",
   "cordovaId": "app.cloudkit.app",
   "capacitorId": "",

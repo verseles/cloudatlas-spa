@@ -1,100 +1,103 @@
-import Vue from "vue";
 import VueGlobalVar from "vue-global-var";
 
-const $global = {
-  title: "aqui",
-  subtitle: "",
-  icon: "",
-  errors: { name: "", email: "", password: "", password_confirmation: "" },
-  body: {},
-  token: null,
-  tawk_hash: null,
-  afterLogin: "/fm",
-  user: {},
-  connection: {
-    connections: [],
-    deletingConn: []
-  },
-  fm: {
-    manager: {
-      storage: {},
-      table: [],
-      path: "",
-      loading: false,
-      clipboard: {}
+// "async" is optional
+export default ({ Vue, app }) => {
+  const $global = {
+    title: "aqui",
+    subtitle: "",
+    icon: "",
+    errors: { name: "", email: "", password: "", password_confirmation: "" },
+    body: {},
+    token: null,
+    tawk_hash: null,
+    afterLogin: "/fm",
+    user: {},
+    connection: {
+      connections: [],
+      deletingConn: []
     },
-    storages: [],
-    addStorageReset: {
-      name: "",
-      type: "ftp",
-      host: "",
-      username: "",
-      password: "",
-      pkey: "",
-      port: 21,
-      root: "/",
-      passive: true,
-      ssl: false
+    fm: {
+      manager: {
+        storage: {},
+        table: [],
+        path: "",
+        loading: false,
+        clipboard: {}
+      },
+      storages: [],
+      addStorageReset: {
+        name: "",
+        type: "ftp",
+        host: "",
+        username: "",
+        password: "",
+        pkey: "",
+        port: 21,
+        root: "/",
+        passive: true,
+        ssl: false
+      },
+      addStorage: {},
+      savingStorage: false,
+      editingStorage: "", // ID
+      deletingStorage: [],
+      uploads: {
+        lastUid: null,
+        groups: [],
+        files: [],
+        someSuccess: false,
+        someFail: false,
+        totalFiles: 0,
+        totalSuccess: 0,
+        totalFail: 0,
+        totalFinished: 0,
+        status: 0,
+        active: false,
+        progress: 0
+      }
     },
-    addStorage: {},
-    savingStorage: false,
-    editingStorage: "", // ID
-    deletingStorage: [],
-    uploads: {
-      lastUid: null,
-      groups: [],
-      files: [],
-      someSuccess: false,
-      someFail: false,
-      totalFiles: 0,
-      totalSuccess: 0,
-      totalFail: 0,
-      totalFinished: 0,
-      status: 0,
-      active: false,
-      progress: 0
+    globalRefs: {
+      modals: {
+        fmAddStorage: false,
+        fileUploadModal: false
+      },
+      tooltips: {
+        fmAddStorage: {}
+      },
+      steppers: {
+        editDeploy: {}
+      },
+      loaders: {
+        editDeploy: false
+      },
+      timers: {
+        tawk_chatting: 0
+      }
+    },
+    deploy: {
+      deploys: [],
+      actions: [],
+      notifications: [],
+      deletingTask: [],
+      togglingTask: [],
+      triggeringTask: [],
+      editingTaskReset: {
+        id: "",
+        secret: "",
+        title: "",
+        git_is_enabled: "",
+        repo: "",
+        branch: "master",
+        conn_id: ""
+      },
+      editingTask: {}
     }
-  },
-  globalRefs: {
-    modals: {
-      fmAddStorage: false,
-      fileUploadModal: false
-    },
-    tooltips: {
-      fmAddStorage: {}
-    },
-    steppers: {
-      editDeploy: {}
-    },
-    loaders: {
-      editDeploy: false
-    },
-    timers: {
-      tawk_chatting: 0
-    }
-  },
-  deploy: {
-    deploys: [],
-    actions: [],
-    notifications: [],
-    deletingTask: [],
-    togglingTask: [],
-    triggeringTask: [],
-    editingTaskReset: {
-      id: "",
-      secret: "",
-      title: "",
-      git_is_enabled: "",
-      repo: "",
-      branch: "master",
-      conn_id: ""
-    },
-    editingTask: {}
-  }
-};
+  };
+  app.$store = $global;
 
-Vue.use(VueGlobalVar, {
-  globals: {
-    $store: $global
-  }
-});
+  Vue.use(VueGlobalVar, {
+    globals: {
+      $store: $global
+    }
+  });
+};

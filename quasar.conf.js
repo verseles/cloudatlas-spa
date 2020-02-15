@@ -8,7 +8,8 @@ module.exports = function(ctx) {
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
       "store-state",
-      "global-window",
+      "default-storage",
+      "router-guard",
       "array-summer",
       // "json-view",
       // "stripe",
@@ -57,7 +58,7 @@ module.exports = function(ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ["LocalStorage", "SessionStorage"]
+      plugins: ["LocalStorage", "SessionStorage", "Notify"]
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

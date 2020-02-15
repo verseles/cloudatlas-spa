@@ -71,22 +71,30 @@
             <q-item-label caption>Change your settings</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
+        <q-item
+          clickable
+          v-ripple
+          @click="maximizeTawk"
+          :class="isChating ? 'bg-info text-white' : ''"
+        >
+          <q-item-section avatar :class="isChating ? 'text-white' : ''">
             <q-icon name="mdi-forum" />
           </q-item-section>
           <q-item-section>
             <q-item-label>24/7 Human Support</q-item-label>
-            <q-item-label caption>Houston is here</q-item-label>
+            <q-item-label
+              caption
+              v-text="isChating ? 'Ongoing chat' : 'Houston is here'"
+            ></q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple to="/logout">
           <q-item-section avatar>
             <q-icon name="mdi-logout" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Logout</q-item-label>
-            <q-item-label caption>insign@gmail.com</q-item-label>
+            <q-item-label caption>{{ $store.user.email }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -100,14 +108,30 @@
 
 <script>
 export default {
-  name: "MainLayout",
-
   components: {},
+  mounted() {
+    try {
+      this.tawk_auth();
+    } catch (e) {
+      setTimeout(() => this.tawk_auth(), 5000);
+    }
 
+    clearInterval(this.$store.globalRefs.timers.tawk_chatting);
+    this.$store.globalRefs.timers.tawk_chatting = setInterval(() => {
+      this.isChating = !!window.Tawk_API.isChatOngoing();
+    }, 1000);
+  },
   data() {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      isChating: false
     };
+  },
+  methods: {
+    maximizeTawk() {
+      window.Tawk_API.maximize();
+      this.tawk_auth();
+    }
   }
 };
 </script>
