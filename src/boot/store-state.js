@@ -1,16 +1,16 @@
-import VueGlobalVar from "vue-global-var";
+import VueGlobalVar from 'vue-global-var'
 
 // "async" is optional
 export default ({ Vue, app }) => {
   const $global = {
-    title: "aqui",
-    subtitle: "",
-    icon: "",
-    errors: { name: "", email: "", password: "", password_confirmation: "" },
+    title: '',
+    subtitle: '',
+    icon: '',
+    errors: { name: '', email: '', password: '', password_confirmation: '' },
     body: {},
     token: null,
     tawk_hash: null,
-    afterLogin: "/fm",
+    afterLogin: '/fm',
     user: {},
     connection: {
       connections: [],
@@ -20,26 +20,26 @@ export default ({ Vue, app }) => {
       manager: {
         storage: {},
         table: [],
-        path: "",
+        path: '',
         loading: false,
         clipboard: {}
       },
       storages: [],
       addStorageReset: {
-        name: "",
-        type: "ftp",
-        host: "",
-        username: "",
-        password: "",
-        pkey: "",
+        name: '',
+        type: 'ftp',
+        host: '',
+        username: '',
+        password: '',
+        pkey: '',
         port: 21,
-        root: "/",
+        root: '/',
         passive: true,
         ssl: false
       },
       addStorage: {},
       savingStorage: false,
-      editingStorage: "", // ID
+      editingStorage: '', // ID
       deletingStorage: [],
       uploads: {
         lastUid: null,
@@ -82,22 +82,22 @@ export default ({ Vue, app }) => {
       togglingTask: [],
       triggeringTask: [],
       editingTaskReset: {
-        id: "",
-        secret: "",
-        title: "",
-        git_is_enabled: "",
-        repo: "",
-        branch: "master",
-        conn_id: ""
+        id: '',
+        secret: '',
+        title: '',
+        git_is_enabled: '',
+        repo: '',
+        branch: 'master',
+        conn_id: ''
       },
       editingTask: {}
     }
-  };
-  app.$store = $global;
+  }
+  app.$store = $global
 
   Vue.use(VueGlobalVar, {
     globals: {
       $store: $global
     }
-  });
+  })
 };

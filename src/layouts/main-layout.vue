@@ -1,18 +1,17 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header>
       <q-toolbar>
         <q-btn
           flat
           dense
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
-          icon="mdi-menu"
+          :icon="$store.icon || $route.meta.icon || 'mdi-menu'"
           aria-label="Menu"
         />
-
         <q-toolbar-title class="text-center">
-          {{ $store.title }}
+          {{ $store.title || $route.meta.title || 'cloudkit'}}
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -24,7 +23,7 @@
       content-class="bg-grey-1"
     >
       <q-list>
-        <q-item clickable v-ripple>
+        <q-item clickable to="/dashboard">
           <q-item-section avatar>
             <q-icon name="mdi-view-dashboard" />
           </q-item-section>
@@ -32,7 +31,7 @@
             <q-item-label>Dashboard</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
+        <q-item clickable>
           <q-item-section avatar>
             <q-icon name="mdi-file-tree" />
           </q-item-section>
@@ -41,7 +40,7 @@
             <q-item-label caption>Your files between clouds</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
+        <q-item clickable>
           <q-item-section avatar>
             <q-icon name="mdi-webhook" />
           </q-item-section>
@@ -52,7 +51,7 @@
         </q-item>
       </q-list>
       <q-list class="absolute-bottom">
-        <q-item clickable v-ripple>
+        <q-item clickable>
           <q-item-section avatar>
             <q-icon name="mdi-cloud-upload" />
           </q-item-section>
@@ -62,7 +61,7 @@
           </q-item-section>
         </q-item>
         <q-separator />
-        <q-item clickable v-ripple>
+        <q-item clickable to="/prefs/profile">
           <q-item-section avatar>
             <q-icon name="mdi-tune" />
           </q-item-section>
@@ -73,7 +72,6 @@
         </q-item>
         <q-item
           clickable
-          v-ripple
           @click="maximizeTawk"
           :class="isChating ? 'bg-info text-white' : ''"
         >
@@ -88,7 +86,7 @@
             ></q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple to="/logout">
+        <q-item clickable to="/logout">
           <q-item-section avatar>
             <q-icon name="mdi-logout" />
           </q-item-section>
