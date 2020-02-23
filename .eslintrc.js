@@ -2,12 +2,12 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module'
+    parser:     'babel-eslint',
+    sourceType: 'module',
   },
 
   env: {
-    browser: true
+    browser: true,
   },
 
   extends: [
@@ -19,16 +19,16 @@ module.exports = {
 
   // required to lint *.vue files
   plugins: [
-    'vue'
+    'vue',
   ],
 
   globals: {
-    'ga': true, // Google Analytics
-    'cordova': true,
+    'ga':        true, // Google Analytics
+    'cordova':   true,
     '__statics': true,
-    'process': true,
+    'process':   true,
     'Capacitor': true,
-    'chrome': true
+    'chrome':    true,
   },
 
   // add your custom rules here
@@ -36,7 +36,9 @@ module.exports = {
     'prefer-promise-reject-errors': 'off',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-  }
+    // 'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    // 'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': 'off',
+    'no-console':  'off',
+  },
 }
