@@ -29,6 +29,57 @@ const routes = [
         }
       },
       {
+        path:      'fm',
+        component: () => import('pages/storage/list-storages'),
+        meta:      {
+          title: 'Storage accounts',
+          icon:  'mdi-server',
+        },
+      },
+      {
+        path:      'fm/:storage_id/:path(.*)',
+        name:      'fm-list-files',
+        component: () => import('pages/storage/file-manager'),
+        meta:      {
+          title: 'File Manager',
+          // subtitle: 'You can edit your code, delete, rename and move files between different clouds',
+          icon:  'mdi-server',
+        },
+      },
+      {
+        path:      'deploy',
+        component: () => import('pages/deploy/list-deploys'),
+        meta:      {
+          title: 'Deploys',
+          icon:  'mdi-webhook',
+        },
+      },
+      {
+        path:      'deploy/add',
+        component: () => import('pages/deploy/add-deploy'),
+        meta:      {
+          title: 'Add task',
+          icon:  'mdi-webhook',
+        },
+      },
+      {
+        path:      'deploy/edit/:id/:tab?',
+        name:      'edit-deploy',
+        component: () => import('pages/deploy/add-deploy'),
+        meta:      {
+          title: 'Edit task',
+          icon:  'mdi-webhook',
+        },
+      },
+      {
+        path:      'deploy/calls/:id',
+        component: () => import('pages/deploy/calls-deploy'),
+        meta:      {
+          title: 'Task calls history',
+          icon:  'mdi-timetable',
+        },
+      },
+      {
         path: 'prefs/:tab?',
         component: () => import('pages/prefs/prefs.vue'),
         meta: {

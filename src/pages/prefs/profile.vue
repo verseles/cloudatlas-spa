@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <div>
     <table class="q-table">
       <tr>
         <th>Name</th>
@@ -22,7 +22,7 @@
         >
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>

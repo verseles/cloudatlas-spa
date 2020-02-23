@@ -1,13 +1,16 @@
 import axios from "axios";
-import { LocalStorage, Notify } from "quasar";
+import { Notify } from "quasar";
 
 export default ({ app, router, Vue }) => {
-  axios.defaults.baseURL = process.env.API_BASE_URL + "/";
+  app.$axios = axios;
+  Vue.prototype.$axios = axios;
 
-  axios.defaults.headers.common["Authorization"] =
-    "Bearer " + LocalStorage.getItem("token");
+  app.$axios.defaults.baseURL = process.env.API_BASE_URL + "/";
 
-  axios.interceptors.response.use(
+  app.$axios.defaults.headers.common["Authorization"] =
+    "Bearer " + app.$storage.getItem("token");
+
+  app.$axios.interceptors.response.use(
     function(r) {
       if (r.status === 201 || r.status === 202) {
         Notify.create({
@@ -24,13 +27,13 @@ export default ({ app, router, Vue }) => {
     function(error) {
       const er = error.response;
 
-      app.data.store.errors = er.data.errors;
-      app.data.store.body = er.data;
+      app.$store.errors = er.data.errors;
+      app.$store.body = er.data;
 
       if (er.status === 401) {
         Notify.create({
           message: "Please, login again",
-          icon: "mdi-verified",
+          icon: "mdi-shield-check",
           timeout: 2000,
           type: "warning"
         });
@@ -50,5 +53,4 @@ export default ({ app, router, Vue }) => {
     }
   );
 
-  Vue.prototype.$axios = axios;
 };

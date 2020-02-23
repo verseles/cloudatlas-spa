@@ -1,11 +1,8 @@
-import Vue from "vue";
-import axios from "axios";
-
 const mixinDeploy = {
   methods: {
     listDeploys() {
       this.loading = true;
-      axios
+      this.$axios
         .get("deploy")
         .then(r => this.processResults(r))
         .catch(() => {
@@ -18,7 +15,7 @@ const mixinDeploy = {
     },
     deployCalls(id) {
       this.loading = true;
-      axios
+     this.$axios
         .get(`deploy/calls/${id}`)
         .then(response => this.processResults(response))
         .catch(() => (this.loading = false));
@@ -126,7 +123,7 @@ const mixinDeploy = {
     },
     deleteTask(id) {
       this.$store.deploy.deletingTask.push(id);
-      axios
+     this.$axios
         .delete("deploy/" + id)
         .then(response => {
           this.processResults(response);
@@ -171,7 +168,7 @@ const mixinDeploy = {
     },
     deployToggle({ id }) {
       this.$store.deploy.togglingTask.push(id);
-      axios
+     this.$axios
         .get("deploy/toggle/" + id)
         .then(response => {
           this.$store.deploy.togglingTask.pop();
@@ -190,7 +187,7 @@ const mixinDeploy = {
     },
     deployRestore({ id }) {
       this.loading = true;
-      axios
+     this.$axios
         .get("deploy/restore/" + id)
         .then(response => {
           this.processResults(response);
@@ -310,4 +307,6 @@ const mixinDeploy = {
   }
 };
 
-Vue.mixin(mixinDeploy);
+export default ({ Vue }) => {
+  Vue.mixin(mixinDeploy)
+}

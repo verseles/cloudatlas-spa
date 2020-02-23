@@ -1,10 +1,9 @@
-import Vue from "vue";
-
 const mixinMain = {
   methods: {
     resetData() {
       this.addStorageDataReset();
       this.addDeployDataReset();
+      this.$store.title = ''
     },
     processResults(response) {
       this.loading = false;
@@ -51,4 +50,6 @@ const mixinMain = {
   }
 };
 
-Vue.mixin(mixinMain);
+export default ({ Vue }) => {
+  Vue.mixin(mixinMain);
+}

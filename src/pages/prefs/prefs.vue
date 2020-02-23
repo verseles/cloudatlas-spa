@@ -45,16 +45,6 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-
-    <!--    <q-tabs-->
-    <!--      v-model="selectedTab"-->
-    <!--      two-lines-->
-    <!--      no-pane-border-->
-    <!--      swipeable-->
-    <!--      inverted-->
-    <!--      underline-color="red"-->
-    <!--    >-->
-    <!--    </q-tabs>-->
   </q-page>
 </template>
 

@@ -1,40 +1,38 @@
-import Vue from "vue";
-import axios from "axios";
-
 const mixinConnections = {
   methods: {
-    getConnections() {
-      this.loading = true;
-      axios
-        .get("connections")
+    getConnections () {
+      this.$store.globalRefs.loaders.prefs = true
+      this.$axios
+        .get('connections')
         .then(response => this.setConnections(response.data.connections))
-        .finally(() => (this.loading = false));
+        .finally(() => (this.$store.globalRefs.loaders.prefs = false))
     },
-    setConnections(connections) {
-      if (typeof connections === "object") {
-        this.$store.connection.connections = connections;
+    setConnections (connections) {
+      if (typeof connections === 'object') {
+        this.$store.connection.connections = connections
       }
     },
-    deleteConnection(id) {
-      this.$store.connection.deletingConn.push(id);
-      axios
-        .delete("connections/" + id)
+    deleteConnection (id) {
+      this.$store.connection.deletingConn.push(id)
+      this.$axios
+        .delete('connections/' + id)
         .then(response => {
-          this.processResults(response);
+          this.processResults(response)
         })
         .finally(() => {
-          this.$store.deploy.deletingTask.pop();
+          this.$store.deploy.deletingTask.pop()
         })
         .catch(error => {
           this.$q.notify({
             message:
-              error.response.data.message.body || "Could not delete connection",
-            type: error.response.data.message.type || "negative",
-            icon: error.response.data.message.icon || "mdi-alert"
-          });
-        });
+              error.response.data.message.body || 'Could not delete connection',
+            type: error.response.data.message.type || 'negative',
+            icon: error.response.data.message.icon || 'mdi-alert'
+          })
+        })
     }
   }
-};
-
-Vue.mixin(mixinConnections);
+}
+export default ({ Vue }) => {
+  Vue.mixin(mixinConnections)
+}
