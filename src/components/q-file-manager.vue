@@ -63,17 +63,17 @@
             :key="key"
             @click="itemClick(key)"
             @dblclick="itemDblClick(key)"
-            :class="itemsSelecteds.includes(key) ? selectedClass : ''"
+            :class="itemsSelecteds.includes(key) ? selectedClass : 'non-selectable'"
         >
-          <td class="text-center checkbox-select">
-            <div class="select">
-              <q-checkbox dense v-model="itemsSelecteds" :val="key" ref="items"/>
+          <td class="checkbox-select">
+            <div class="select vertical-middle">
+              <q-checkbox dense v-model="itemsSelecteds" size="3rem" :val="key" ref="items"/>
             </div>
-            <div class="icons">
-              <q-icon class="text-center" :name="item.icon" size="1.4rem"></q-icon>
+            <div class="icons vertical-middle">
+              <q-icon class="" :name="item.icon" size="1.7rem"></q-icon>
             </div>
           </td>
-          <td class="text-left" :title="item.basename">
+          <td class="text-left basename" :title="item.basename">
                       <span class="baseline">
                       <span v-show="item.filename" class="filename" v-text="item.filename"
                       ></span><span class="extension" v-show="item.extension">.{{ item.extension }}</span>
@@ -312,7 +312,7 @@
         fabulous:             false,
         internalItemsPerPage: this.itemsPerPage,
         itemsSelecteds:       [],
-        selectedClass:        "bg-grey text-white",
+        selectedClass:        "bg-grey text-white non-selectable",
         search:               "",
         results:              [],
         page:                 1,
@@ -689,11 +689,19 @@
       }
 
       .checkbox-select {
-        max-width: 2rem;
+        max-width: 45px;
+        min-width: 25px;
+        padding: 0;
+        text-align: center;
       }
 
       .select {
         display: none;
+      }
+
+      .basename {
+        padding-left: 0;
+        padding-right: 0
       }
 
       &:hover {

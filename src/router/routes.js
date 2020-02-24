@@ -37,7 +37,7 @@ const routes = [
         },
       },
       {
-        path:      'fm/:storage_id/:path(.*)',
+        path:      'fm/:storage_id/:path(.*)?',
         name:      'fm-list-files',
         component: () => import('pages/storage/file-manager'),
         meta:      {
