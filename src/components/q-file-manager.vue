@@ -154,7 +154,7 @@
         >
           <q-tooltip anchor="top left" self="bottom left" :offset="[20, 5]">Rename</q-tooltip>
         </q-fab-action>
-        <q-fab-action v-show="itemsSelecteds.length === 1 && ['mdi-file-document', 'mdi-file-xml', 'mdi-tune', 'mdi-file-hidden'].includes(selectedPaths[0].icon)"
+        <q-fab-action v-show="itemsSelecteds.length === 1 && ['mdi-file-document', 'mdi-file-xml', 'mdi-file-code', 'mdi-tune', 'mdi-file-hidden'].includes(selectedPaths[0].icon)"
                       color="accent"
                       text-color="white"
                       @click="editAsCode"
@@ -168,7 +168,7 @@
         <q-fab-action v-show="!itemsSelecteds.length"
                       color="accent"
                       text-color="white"
-                      @click="newFolder"
+                      @click="newFolder.dialog = true"
                       icon="mdi-folder-plus"
         >
           <q-tooltip anchor="top left" self="bottom left" :offset="[20, 5]">New Folder</q-tooltip>
@@ -176,7 +176,7 @@
         <q-fab-action v-show="!itemsSelecteds.length"
                       color="accent"
                       text-color="white"
-                      @click="newFile"
+                      @click="newFile.dialog = true"
                       icon="mdi-file-plus"
         >
           <q-tooltip anchor="top left" self="bottom left" :offset="[35, 5]">New empty file</q-tooltip>
@@ -191,16 +191,19 @@
         </q-fab-action>
       </q-fab>
     </q-page-sticky>
-    <q-dialog v-model="editor.open" maximized>
-      <q-modal-layout v-if="editor.open">
-        <q-toolbar slot="header">
-          <q-btn flat @click="editorClose">
-            <q-icon name="mdi-chevron-left"/>
-          </q-btn>
-          <q-toolbar-title>
-            /{{ editor.path }}
-          </q-toolbar-title>
-          <span>
+
+    <q-dialog v-model="editor.open" maximized persistent>
+        <q-layout v-if="editor.open">
+          <q-header class="bg-primary">
+
+          <q-toolbar>
+            <q-btn flat @click="editorClose">
+              <q-icon name="mdi-chevron-left"/>
+            </q-btn>
+            <q-toolbar-title>
+              /{{ editor.path }}
+            </q-toolbar-title>
+            <span>
                         <q-toggle v-model="editor.autosave"
                                   :color="editor.saving ? 'warning' : 'positive'"
                                   unchecked-icon="mdi-auto-upload"
@@ -209,36 +212,42 @@
                         />
                     <q-tooltip>Autosave</q-tooltip>
                     </span>
-          <q-btn flat
-                 :disabled="!editorFileModified || editor.saving"
-                 loader
-                 @click="(e, done) => { saveEdits(done) }"
-                 :color="editor.saving ? 'warning' : 'white'"
-                 v-show="!editor.autosave"
-          >
-            <q-icon v-if="editor.saving" title="Saving" name="mdi-cloud-upload"/>
-            <q-icon v-else-if="editorFileModified" title="Save" name="mdi-content-save"/>
-            <q-icon v-else title="Saved!" name="mdi-check-all"/>
-          </q-btn>
-        </q-toolbar>
+            <q-btn flat
+                   :disabled="!editorFileModified || editor.saving"
+                   loader
+                   @click="(e, done) => { saveEdits(done) }"
+                   :color="editor.saving ? 'warning' : 'white'"
+                   v-show="!editor.autosave"
+            >
+              <q-icon v-if="editor.saving" title="Saving" name="mdi-cloud-upload"/>
+              <q-icon v-else-if="editorFileModified" title="Save" name="mdi-content-save"/>
+              <q-icon v-else title="Saved!" name="mdi-check-all"/>
+            </q-btn>
+          </q-toolbar>
+          </q-header>
 
-        <q-toolbar slot="footer">
-          <q-select dark
-                    style="margin-top: 0; margin-bottom: 0;"
-                    :options="editor.themeOptions"
-                    v-model="editor.theme"
-                    emit-value
-                    map-options
-          />
-        </q-toolbar>
+          <q-footer>
+            <q-select dark
+                      style="margin-top: 0; margin-bottom: 0;"
+                      :options="editor.themeOptions"
+                      v-model="editor.theme"
+                      emit-value
+                      map-options
+            />
+          </q-footer>
 
-        <editor v-model="editor.code"
-                :file="selectedPaths[0]"
-                :mime="editor.mime"
-                :theme="editor.theme"
-                @blur="editorAutosave"
-        ></editor>
-      </q-modal-layout>
+          <q-page-container style="padding-bottom: 0">
+            <q-page>
+              <editor v-model="editor.code"
+                      :file="selectedPaths[0]"
+                      :mime="editor.mime"
+                      :theme="editor.theme"
+                      @blur="editorAutosave"
+              ></editor>
+            </q-page>
+          </q-page-container>
+
+        </q-layout>
     </q-dialog>
     <q-dialog v-model="rename.dialog"
               persistent
@@ -258,6 +267,42 @@
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="Cancel" @click="rename.dialog = false"/>
           <q-btn flat label="Rename" @click="renameItem"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="newFile.dialog" persistent @before-show="newFile.newName = ''"
+    >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">New file</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense placeholder="filename.ext" v-model="newFile.newName" autofocus @keyup.enter="newFileItem"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" @click="newFile.dialog = false"/>
+          <q-btn flat label="Create" @click="newFileItem"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="newFolder.dialog" persistent @before-show="newFolder.newName = ''"
+    >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">New folder</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense placeholder="directory name" v-model="newFolder.newName" autofocus @keyup.enter="newFolderItem"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" @click="newFolder.dialog = false"/>
+          <q-btn flat label="Create" @click="newFolderItem"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -308,6 +353,14 @@
           dialog:  false,
           newName: '',
           oldName: '',
+        },
+        newFile:              {
+          dialog:  false,
+          newName: '',
+        },
+        newFolder:            {
+          dialog:  false,
+          newName: '',
         },
         fabulous:             false,
         internalItemsPerPage: this.itemsPerPage,
@@ -529,35 +582,13 @@
                        })
         this.changeSelectAll()
       },
-      newFolder() {
-        this.$q
-            .dialog({
-                      title:   "New folder",
-                      message: "Folder name",
-                      prompt:  {
-                        model: "",
-                        type:  "text",
-                      },
-                      cancel:  true,
-                    })
-            .then(folder => {
-              this.createDir(this.baseId, this.currentPath, folder)
-            })
+      newFolderItem() {
+        this.newFolder.dialog = false
+        this.createDir(this.baseId, this.currentPath, this.newFolder.newName)
       },
-      newFile() {
-        this.$q
-            .dialog({
-                      title:   "New file",
-                      message: "File name",
-                      prompt:  {
-                        model: "",
-                        type:  "text",
-                      },
-                      cancel:  true,
-                    })
-            .then(file => {
-              this.createFile(this.baseId, this.currentPath, file)
-            })
+      newFileItem() {
+        this.newFile.dialog = false
+        this.createFile(this.baseId, this.currentPath, this.newFile.newName)
       },
       renameItem() {
         this.rename.dialog = false

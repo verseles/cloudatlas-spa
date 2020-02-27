@@ -58,7 +58,7 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ['LocalStorage', 'SessionStorage', 'Notify']
+      plugins: ['LocalStorage', 'SessionStorage', 'Notify', 'Loading']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
