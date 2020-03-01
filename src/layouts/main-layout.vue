@@ -36,7 +36,7 @@
             <q-item-label caption>Your files between clouds</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable to="/deploys">
+        <q-item clickable to="/deploy">
           <q-item-section avatar>
             <q-icon name="mdi-webhook"/>
           </q-item-section>

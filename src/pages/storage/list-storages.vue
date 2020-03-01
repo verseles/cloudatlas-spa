@@ -23,16 +23,14 @@
            @click="dialogAddStorageOpen"
       >
         <q-icon size="10em" color="grey-4" name="mdi-plus-network"></q-icon>
-        <div class="text-grey text-h6">add new one?</div>
+        <div class="text-grey-4 text-body1">add new one?</div>
       </div>
       <q-list v-else>
-        <q-item-label class="text-h6">Storage accounts</q-item-label>
-
-        <q-item v-for="(storage) in $store.fm.storages" :key="storage.id">
-          <q-item-section avatar @click.native="$router.push(`fm/${storage.id}`)">
+        <q-item clickable v-for="storage in $store.fm.storages" :key="storage.id">
+          <q-item-section avatar @click="$router.push(`fm/${storage.id}`)">
             <q-icon :name="typeStorage(storage.type).icon" :color="typeStorage(storage.type).color"/>
           </q-item-section>
-          <q-item-section @click.native="$router.push(`fm/${storage.id}`)">
+          <q-item-section @click="$router.push(`fm/${storage.id}`)">
             <q-item-label>{{ storage.name ? storage.name : storage.host }}</q-item-label>
             <q-item-label caption>
               {{ typeStorage(storage.type).desc }}

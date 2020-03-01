@@ -1,55 +1,78 @@
+import { copyToClipboard } from 'quasar'
+
 const mixinMain = {
   methods: {
     resetData() {
-      this.addStorageDataReset();
-      this.addDeployDataReset();
+      this.addStorageDataReset()
+      this.addDeployDataReset()
       this.$store.title = ''
     },
     processResults(response) {
-      this.loading = false;
-      const d = response.data || {};
+      this.loading = false
+      const d      = response.data || {}
       if (d.message) {
         this.$q.notify({
-          message: d.message.body,
-          icon: d.message.icon ? d.message.icon : "mdi-alert-octagon",
-          type: d.message.type || "info"
-        });
+                         message: d.message.body,
+                         icon:    d.message.icon ? d.message.icon : "mdi-alert-octagon",
+                         type:    d.message.type || "info",
+                       })
       }
 
       if (d.storages) {
-        this.updateStorages(d.storages);
+        this.updateStorages(d.storages)
         if (d.ok) {
-          this.dialogAddStorageClose();
+          this.dialogAddStorageClose()
         }
       }
       if (d.deploys) {
-        this.updateDeploys(d.deploys);
+        this.updateDeploys(d.deploys)
       }
       if (d.connections) {
-        this.setConnections(d.connections);
+        this.setConnections(d.connections)
       }
       if (d.deploy?.calls) {
-        this.deploy.calls = d.deploy.calls;
+        this.deploy.calls = d.deploy.calls
       }
     },
     toastEncData() {
       this.$q.notify({
-        message: "Sensitive data is always encrypted",
-        icon: "mdi-server-security",
-        timeout: 1000,
-        color: "dark"
-      });
-    }
+                       message: "Sensitive data is always encrypted",
+                       icon:    "mdi-server-security",
+                       timeout: 1000,
+                       color:   "dark",
+                     })
+    },
+    copyboard(text) {
+      copyToClipboard(text)
+        .then(() => {
+          this.$q.notify({
+                           message: "Copied",
+                           timeout: 1000,
+                           type:    "info",
+                           icon:    "mdi-clipboard-outline",
+                         })
+        })
+        .catch(() => {
+          this.$q.notify({
+                           message: "Oops!",
+                           timeout: 1000,
+                           type:    "error",
+                           icon:    "mdi-clipboard-outline",
+                         })
+        })
+
+
+    },
   },
   mounted() {
-    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_API         = window.Tawk_API || {}
     window.Tawk_API.visitor = {
-      name: "",
-      email: ""
-    };
-  }
-};
+      name:  "",
+      email: "",
+    }
+  },
+}
 
-export default ({ Vue }) => {
-  Vue.mixin(mixinMain);
+export default ({Vue}) => {
+  Vue.mixin(mixinMain)
 }
