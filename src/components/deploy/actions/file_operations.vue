@@ -1,74 +1,86 @@
 <template>
-  <q-item>
-    <q-item-main>
-      <q-item v-handle class="cursor-row-resize q-pa-none">
-        <q-item-side>
-          <q-item-tile>
-            <q-item-tile icon="mdi-file-replace-outline"/>
-          </q-item-tile>
-        </q-item-side>
-        <q-item-main class="cursor-row-resize text-bold">
-          File Operation
-        </q-item-main>
-        <q-item-side>
-          <q-item-tile>
-            <q-btn @click="goToAddStorage"
-                   title="Add storage account"
-                   icon="mdi-server-plus"
-                   color="secondary"
-                   class="q-mr-md"
-                   flat
+  <q-list>
+    <q-item class="non-selectable">
+      <q-item-section v-handle avatar class="cursor-row-resize">
+        <q-icon name="mdi-file-replace-outline"/>
+      </q-item-section>
+      <q-item-section v-handle class="cursor-row-resize text-bold">
+        File Operation
+      </q-item-section>
+      <q-item-section side>
+        <div>
+          <q-btn @click="goToAddStorage"
+                 title="Add storage account"
+                 icon="mdi-server-plus"
+                 color="secondary"
+                 class="q-mr-md"
+                 flat
+          />
+          <q-btn @click="deleteme" dense icon="mdi-delete" color="red-4" flat></q-btn>
+        </div>
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
+        <div class="row items-baseline">
+          <div class="col-7">
+            <q-select v-model="item.details.operation"
+                      :options="operationOptions"
+                      label="Operation"
+                      emit-value
+                      map-options
             />
-            <q-btn @click.native="deleteme" icon="mdi-delete" color="red-4" flat></q-btn>
-          </q-item-tile>
-        </q-item-side>
-      </q-item>
+          </div>
+          <div class="col-5" v-if="canBeOverwrited">
+            <q-checkbox class="q-mt-sm q-ml-sm "
+                        v-model="item.details.overwrite"
+                        :label="$q.platform.is.mobile ? 'Overwrite' : 'Overwrite if needed'"
+            />
+          </div>
+        </div>
 
-      <div class="row items-baseline">
-        <div class="col-7">
-          <q-select v-model="item.details.operation" :options="operationOptions" stack-label="Operation" filter
-          />
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-4 q-px-xs">
+            <q-select v-model="item.details.origin_server"
+                      :options="serversOptions"
+                      label="Origin storage"
+                      emit-value
+                      map-options
+            />
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-8 q-px-xs">
+            <q-input :label="'Full path' + (!needsOnlyOneServer ? ' to '+ aboutType() +' in origin':'')"
+                     v-model="item.details.origin_path"
+            />
+          </div>
+          <div v-if="!needsOnlyOneServer && item.details.operation != 'rename' "
+               class="col-md-12 col-sm-12 col-xs-12 col-lg-4 q-px-xs"
+          >
+            <q-select v-model="item.details.destiny_server"
+                      :options="serversOptions"
+                      label="Destiny storage"
+                      emit-value
+                      map-options
+            />
+          </div>
+          <div v-if="!needsOnlyOneServer || item.details.operation == 'rename'"
+               :class="item.details.operation == 'rename' ? 'offset-lg-4' : ''"
+               class="col-md-12 col-sm-12 col-xs-12 col-lg-8 q-px-xs"
+          >
+            <q-input :label="'Full path to ' + aboutType() + ' in destiny'" v-model="item.details.destiny_path"
+            />
+          </div>
         </div>
-        <div class="col-5" v-if="canBeOverwrited">
-          <q-checkbox class="q-mt-sm q-ml-sm "
-                      v-model="item.details.overwrite"
-                      :label="$q.platform.is.mobile ? 'Overwrite' : 'Overwrite if needed'"
-          />
-        </div>
-      </div>
+        <codemirror v-show="item.details.operation == 'writeFile'"
+                    class="q-mt-md"
+                    v-model="item.details.contents"
+                    ref="deployEditor"
+                    :options="cmOptions"
+        />
+      </q-item-section>
+    </q-item>
+  </q-list>
 
-      <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-4 q-px-xs">
-          <q-select v-model="item.details.origin_server" :options="serversOptions" stack-label="Origin storage" filter
-          />
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-8 q-px-xs">
-          <q-input :stack-label="'Full path' + (!needsOnlyOneServer ? ' to '+ aboutType() +' in origin':'')"
-                   v-model="item.details.origin_path"
-          />
-        </div>
-        <div v-if="!needsOnlyOneServer && item.details.operation != 'rename' "
-             class="col-md-12 col-sm-12 col-xs-12 col-lg-4 q-px-xs"
-        >
-          <q-select v-model="item.details.destiny_server" :options="serversOptions" stack-label="Destiny storage" filter
-          />
-        </div>
-        <div v-if="!needsOnlyOneServer || item.details.operation == 'rename'"
-             :class="item.details.operation == 'rename' ? 'offset-lg-4' : ''"
-             class="col-md-12 col-sm-12 col-xs-12 col-lg-8 q-px-xs"
-        >
-          <q-input :stack-label="'Full path to ' + aboutType() + ' in destiny'" v-model="item.details.destiny_path"
-          />
-        </div>
-      </div>
-      <codemirror v-show="item.details.operation == 'writeFile'"
-                  class="q-mt-md"
-                  v-model="item.details.contents"
-                  ref="deployEditor"
-                  :options="cmOptions"
-      />
-    </q-item-main>
-  </q-item>
 </template>
 
 <script>

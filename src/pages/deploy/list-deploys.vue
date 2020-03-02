@@ -24,7 +24,9 @@
         </q-item-section>
         <q-dbtn-holder :loading="$store.deploy.deletingTask.includes(task.id)
                                     || $store.deploy.triggeringTask.includes(task.id)
-                                    || $store.deploy.togglingTask.includes(task.id)" :alert="!task.active"
+                                    || $store.deploy.togglingTask.includes(task.id)" :alert="!task.active || $store.deploy.deletingTask.includes(task.id)
+                                    || $store.deploy.triggeringTask.includes(task.id)
+                                    || $store.deploy.togglingTask.includes(task.id)"
         >
           <q-dbtn label="Deploy now"
                   flat

@@ -2,7 +2,7 @@
   <div>
     <q-dialog @hide="dialogAddStorageClosed" v-model="$store.globalRefs.modals.fmAddStorage">
       <q-card>
-      <add-storage/>
+        <add-storage/>
       </q-card>
 
       <q-page-sticky v-show="$store.fm.addStorage.type" position="bottom-right" :offset="[18, 18]">
@@ -39,7 +39,13 @@
           <q-dbtn-holder :loading="$store.fm.deletingStorage.includes(storage.id)" color="primary">
             <q-dbtn :to="`fm/${storage.id}`" label="Browse" icon="mdi-file-tree" flat/>
             <q-dbtn @click="dialogEditStorage(storage.id)" label="Edit" icon="mdi-folder-edit" flat/>
-            <q-dbtn @click="deleteStorage(storage.id)" label="Delete" icon="mdi-delete" flat color="negative"/>
+            <q-dbtn @click="deleteStorage(storage.id)"
+                    label="Delete"
+                    icon="mdi-delete"
+                    flat
+                    color="negative"
+                    :loading="$store.fm.deletingStorage.includes(storage.id)"
+            />
           </q-dbtn-holder>
         </q-item>
       </q-list>
@@ -62,15 +68,15 @@
   import QDbtnHolder from 'components/q-dbtn-holder'
 
   export default {
-    components: { addStorage, QDbtnHolder, QDbtn },
-    mounted () {
+    components: {addStorage, QDbtnHolder, QDbtn},
+    mounted() {
       this.listStorages()
     },
-    methods: {},
-    data () {
+    methods:    {},
+    data() {
       return {
         loading: true,
-        alert: false,
+        alert:   false,
       }
     },
   }

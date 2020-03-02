@@ -5,7 +5,7 @@
                @input="$router.replace(`/deploy/edit/${$store.deploy.editingTask.id}/${step}`)"
                contractable
                alternative-labels
-               :header-nav="editing"
+               :header-nav="!!editing"
                flat
     >
       <!-- Step: -->
@@ -69,7 +69,7 @@
       </q-step>
 
       <!-- Step: -->
-      <q-step name="tasks" active-icon="mdi-hexagon-multiple" title="Actions">
+      <q-step name="actions" active-icon="mdi-hexagon-multiple" title="Actions">
         <div class="row q-pt-md">
           <div class="q-mb-lg col-md-8 offset-md-2 col-xs-12">
             <actions :task="$store.deploy.editingTask" :actions="$store.deploy.actions"/>

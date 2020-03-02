@@ -234,7 +234,7 @@ const mixinDeploy = {
                                             status:  "active",
                                             type:    "file_operations",
                                             details: {
-                                              operation:      "copy-file",
+                                              operation:      "copyFile",
                                               origin_server:  "",
                                               origin_path:    "",
                                               destiny_server: "",

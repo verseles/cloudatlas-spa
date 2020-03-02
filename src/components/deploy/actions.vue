@@ -6,7 +6,7 @@
                 v-model="items"
                 @input="newOrder"
   >
-    <div>
+    <q-list>
       <action v-for="(item, index) in items"
               v-if="item.status == 'active'"
               :is="item.type"
@@ -17,14 +17,14 @@
               class="an-action shadow-2 q-mb-md bg-white"
       />
       <q-item class="shadow-1 q-mb-md text-grey-5" v-else-if="item.status == 'deleted'">
-        <q-item-main>
+        <q-item-section class="text-body1">
           Action deleted
-        </q-item-main>
-        <q-item-side>
-          <q-btn flat @click="undel(index)" color="warning">undo</q-btn>
-        </q-item-side>
+        </q-item-section>
+        <q-item-section side>
+          <q-btn unelevated @click="undel(index)" color="warning">undo</q-btn>
+        </q-item-section>
       </q-item>
-    </div>
+    </q-list>
 
   </SortableList>
 </template>

@@ -1,61 +1,56 @@
 <template>
-  <q-item>
-    <q-item-main>
-      <q-item v-handle class="cursor-row-resize q-pa-none">
-        <q-item-side>
-          <q-item-tile>
-            <q-item-tile icon="mdi-access-point-network"/>
-          </q-item-tile>
-        </q-item-side>
-        <q-item-main class="cursor-row-resize text-bold">
-          HTTP Request
-        </q-item-main>
-        <q-item-side>
-          <q-item-tile>
-            <q-btn @click.native="deleteme" icon="mdi-delete" color="red-4" flat></q-btn>
-          </q-item-tile>
-        </q-item-side>
-      </q-item>
-
-      <div class="row">
-        <div class="col-md-2 col-xs-3">
-          <q-select v-model="item.details.method" :options="methodOptions" stack-label="Method" filter
-          />
+  <q-list>
+    <q-item class="non-selectable">
+      <q-item-section v-handle avatar class="cursor-row-resize">
+        <q-icon name="mdi-access-point-network"/>
+      </q-item-section>
+      <q-item-section v-handle class="cursor-row-resize text-weight-bold">
+        HTTP Request
+      </q-item-section>
+      <q-item-section side>
+        <q-btn @click="deleteme" dense icon="mdi-delete" color="red-4" flat></q-btn>
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
+        <div class="row">
+          <div class="col-md-2 col-xs-3">
+            <q-select v-model="item.details.method" :options="methodOptions" label="Method" map-options emit-value
+            />
+          </div>
+          <div class="col">
+            <q-input v-model="item.details.endpoint" stack-label="Endpoint URL" class="eurl"/>
+          </div>
         </div>
-        <div class="col">
-          <q-input v-model="item.details.endpoint" stack-label="Endpoint URL" class="eurl"/>
-        </div>
-      </div>
-      <br>
-      You can use:
-      <q-chip dense square class="cursor-pointer"><code>query</code>
-        <q-tooltip>for query string</q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>form_params</code>
-        <q-tooltip>For posting data <br>Used to send an <code>application/x-www-form-urlencoded</code> POST request.
-        </q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>headers</code>
-        <q-tooltip>Add/change headers. Associative array of headers to add to the request.
-          <br>Each key is the name of a header, and each value is a string or array of strings representing the header field values.
-        </q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>http_errors</code>
-        <q-tooltip>Set <code>false</code> to ignore http errors</q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>json</code>
-        <q-tooltip>Option is used to easily upload JSON encoded data as the body of a request.
-          <br>A Content-Type header of
-          <code>application/json</code> will be added if no Content-Type header is already present on the message.
-        </q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>multipart</code>
-        <q-tooltip>
+        <div class="row q-my-md">
+          <q-chip dense square><code>query</code>
+            <q-tooltip>for query string</q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>form_params</code>
+            <q-tooltip>For posting data <br>Used to send an <code>application/x-www-form-urlencoded</code> POST request.
+            </q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>headers</code>
+            <q-tooltip>Add/change headers. Associative array of headers to add to the request.
+              <br>Each key is the name of a header, and each value is a string or array of strings representing the header field values.
+            </q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>http_errors</code>
+            <q-tooltip>Set <code>false</code> to ignore http errors</q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>json</code>
+            <q-tooltip>Option is used to easily upload JSON encoded data as the body of a request.
+              <br>A Content-Type header of
+              <code>application/json</code> will be added if no Content-Type header is already present on the message.
+            </q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>multipart</code>
+            <q-tooltip>
           <pre>
           Is an array of associative arrays, each containing the following key value pairs:
 
@@ -63,27 +58,27 @@
           contents: (StreamInterface/resource/string, required) The data to use in the form element.
           headers: (array) Optional associative array of custom headers to use with the form element.
             </pre>
-        </q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>verify</code>
-        <q-tooltip>Set <code>false</code> to ignore SSL errors</q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>version</code>
-        <q-tooltip>Protocol version to use with the request. Default: <code>1.1</code></q-tooltip>
-      </q-chip>
-      ,
-      <q-chip dense square class="cursor-pointer"><code>body</code>
-        <q-tooltip>The
-          <code>body</code> option is used to control the body of an entity enclosing request (e.g., PUT, POST, PATCH).
-        </q-tooltip>
-      </q-chip>
-      <br>
-      <br>
-      <codemirror v-model="item.details.data" ref="deployEditor" :options="cmOptions"/>
-    </q-item-main>
-  </q-item>
+            </q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>verify</code>
+            <q-tooltip>Set <code>false</code> to ignore SSL errors</q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>version</code>
+            <q-tooltip>Protocol version to use with the request. Default: <code>1.1</code></q-tooltip>
+          </q-chip>
+          ,
+          <q-chip dense square><code>body</code>
+            <q-tooltip>The
+              <code>body</code> option is used to control the body of an entity enclosing request (e.g., PUT, POST, PATCH).
+            </q-tooltip>
+          </q-chip>
+        </div>
+        <codemirror v-model="item.details.data" ref="deployEditor" :options="cmOptions"/>
+      </q-item-section>
+    </q-item>
+  </q-list>
 </template>
 
 <script>

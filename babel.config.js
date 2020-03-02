@@ -1,5 +1,6 @@
 module.exports = {
-  presets: [
-    '@quasar/babel-preset-app'
-  ]
+  presets:   [
+    '@quasar/babel-preset-app',
+  ],
+  "plugins": [ "@babel/plugin-proposal-nullish-coalescing-operator" ],
 }

@@ -1,9 +1,11 @@
 <template>
-  <q-item-section top side>
+  <q-item-section side>
     <div v-if="!$q.platform.is.mobile">
       <slot></slot>
     </div>
-    <q-spinner-bars v-else-if="loading" :color="color"></q-spinner-bars>
+    <q-btn v-else-if="loading" flat readonly :ripple="false">
+      <q-spinner-ios :color="alert ? 'warning' : color"></q-spinner-ios>
+    </q-btn>
     <q-btn v-else flat :ripple="false" :icon="icon" :color="alert ? 'warning' : color">
       <q-menu auto-close>
         <q-list>

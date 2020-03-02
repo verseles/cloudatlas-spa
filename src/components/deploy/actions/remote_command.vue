@@ -1,35 +1,36 @@
 <template>
-   <q-item>
-      <q-item-main>
-         <q-item v-handle class="cursor-row-resize q-pa-none">
-            <q-item-side>
-               <q-item-tile>
-                  <q-item-tile icon="mdi-console"/>
-               </q-item-tile>
-            </q-item-side>
-            <q-item-main class="cursor-row-resize text-bold">
-               Remote command
-            </q-item-main>
-            <q-item-side>
-               <q-item-tile>
-                  <q-btn @click="goToAddSSH"
-                         title="New SSH Server"
-                         icon="mdi-server-plus"
-                         color="secondary"
-                         class="q-mr-md"
-                         flat
-                  />
-                  <q-btn @click.native="deleteme" icon="mdi-delete" color="red-4" flat></q-btn>
-               </q-item-tile>
-            </q-item-side>
-         </q-item>
-
-         <q-select v-model="item.details.servers" :options="serversOptions" float-label="Run at these SSH servers" multiple toggle filter
-         />
-         <br>
-         <codemirror v-model="item.details.code" ref="deployCommandEditor" :options="cmOptions"/>
-      </q-item-main>
-   </q-item>
+  <q-list>
+    <q-item class="non-selectable">
+      <q-item-section v-handle avatar class="cursor-row-resize">
+        <q-icon name="mdi-console"/>
+      </q-item-section>
+      <q-item-section v-handle class="cursor-row-resize text-bold">
+        Remote command
+      </q-item-section>
+      <q-item-section side>
+        <div>
+          <q-btn @click="goToAddSSH" dense title="New SSH Server" icon="mdi-server-plus" color="secondary" flat
+          />
+          <q-btn @click="deleteme" dense icon="mdi-delete" color="red-4" flat></q-btn>
+        </div>
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
+        <q-select v-model="item.details.servers"
+                  :options="serversOptions"
+                  label="Run at these SSH servers"
+                  multiple
+                  toggle
+                  filter
+                  map-options
+                  emit-value
+        />
+        <br>
+        <codemirror v-model="item.details.code" ref="deployCommandEditor" :options="cmOptions"/>
+      </q-item-section>
+    </q-item>
+  </q-list>
 </template>
 
 <script>
