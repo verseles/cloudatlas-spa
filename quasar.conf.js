@@ -11,7 +11,6 @@ module.exports = function (ctx) {
       'default-storage',
       'router-guard',
       'array-summer',
-      // "json-view",
       "stripe",
       'i18n',
       'axios',
