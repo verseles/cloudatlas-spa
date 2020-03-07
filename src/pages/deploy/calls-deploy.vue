@@ -39,41 +39,41 @@
         />
       </template>
       <template v-slot:body="props">
-        <q-td key="origin" :props="props" :title="props.value">
-          <q-icon :name="props.value | bestIcon" size="1.5rem"/>
+        <q-td key="origin" :props="props" :title="props.row.origin">
+          <q-icon :name="props.row.origin | bestIcon" size="1.5rem"/>
         </q-td>
-        <q-td key="agent" :props="props" :title="props.value">
-          <q-icon :name="props.value | bestIcon" size="1.5rem"/>
+        <q-td key="agent" :props="props" :title="props.row.agent">
+          <q-icon :name="props.row.agent | bestIcon" size="1.5rem"/>
         </q-td>
-        <q-td key="event" :props="props" :title="props.value">
-          <q-icon :name="props.value | bestIcon" size="1.5rem"/>
+        <q-td key="event" :props="props" :title="props.row.event">
+          <q-icon :name="props.row.event | bestIcon" size="1.5rem"/>
         </q-td>
 
         <q-td key="started" :props="props">
-          <span>{{ props.value | dateFormat }}</span>
+          <span>{{ props.row.started | dateFormat }}</span>
         </q-td>
         <q-td key="finished" :props="props">
-          <span>{{ props.value | dateFormat }}</span>
+          <span>{{ props.row.finished | dateFormat }}</span>
         </q-td>
 
         <q-td key="message" :props="props">
         <span class="ellipsis">
-          {{ props.value }}
+          {{ props.row.message }}
           <q-tooltip>
-            {{ props.value }}
+            {{ props.row.message }}
           </q-tooltip>
         </span>
         </q-td>
         <q-td key="log" :props="props">
-          <q-btn :color="props.row.success | betterColor " size="sm" @click="showLongModal(props.value, 'Results')"
+          <q-btn :color="props.row.success | betterColor " size="sm" @click="showLongModal(props.row.log, 'Results')"
           >LOG
           </q-btn>
         </q-td>
         <q-td key="request" :props="props">
-          <q-btn color="secondary" size="sm" @click="showLongModal(props.value, 'Request')">VIEW</q-btn>
+          <q-btn color="secondary" size="sm" @click="showLongModal(props.row.request, 'Request')">VIEW</q-btn>
         </q-td>
         <q-td key="response" :props="props">
-          <q-btn color="tertiary" size="sm" @click="showLongModal(props.value, 'Response')">VIEW</q-btn>
+          <q-btn color="tertiary" size="sm" @click="showLongModal(props.row.response, 'Response')">VIEW</q-btn>
         </q-td>
       </template>
     </q-table>
