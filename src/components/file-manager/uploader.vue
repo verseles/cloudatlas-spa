@@ -36,7 +36,7 @@
     },
     computed:   {
       api_prefix() {
-        return process.env.API_BASE_URL
+        return this.$envs.API_BASE_URL
       },
       uploader() {
         return this.isMounted ? this.$refs.uploader : {}

@@ -5,7 +5,7 @@ export default ({ app, router, Vue }) => {
   app.$axios = axios;
   Vue.prototype.$axios = axios;
 
-  app.$axios.defaults.baseURL = process.env.API_BASE_URL + "/";
+  app.$axios.defaults.baseURL = this.$envs.API_BASE_URL + "/";
 
   app.$axios.defaults.headers.common["Authorization"] =
     "Bearer " + app.$storage.getItem("token");
