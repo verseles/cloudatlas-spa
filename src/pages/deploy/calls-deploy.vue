@@ -41,9 +41,21 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="log" :props="props">
-            <q-btn :color="props.row.success | betterColor " size="sm" @click="showLongModal(props.row.log, 'Results')"
+            <q-btn :color="props.row.success | betterColor" size="sm" @click="showLongModal(props.row.log, 'Results')"
             >LOG
             </q-btn>
+          </q-td>
+          <q-td key="started" :props="props">
+            <span>{{ props.row.started | dateFormat }}</span>
+          </q-td>
+          <q-td key="finished" :props="props">
+            <span>{{ props.row.finished | dateFormat }}</span>
+          </q-td>
+          <q-td key="success" :props="props" :title="props.row.origin">
+            <q-icon :name="props.row.success | wasSuccess | bestIcon"
+                    :color="props.row.success | wasSuccess | betterColor "
+                    size="1.5rem"
+            />
           </q-td>
           <q-td key="origin" :props="props" :title="props.row.origin">
             <q-icon :name="props.row.origin | bestIcon" size="1.5rem"/>
@@ -54,24 +66,22 @@
           <q-td key="event" :props="props" :title="props.row.event">
             <q-icon :name="props.row.event | bestIcon" size="1.5rem"/>
           </q-td>
-
-          <q-td key="started" :props="props">
-            <span>{{ props.row.started | dateFormat }}</span>
+          <q-td key="branch" :props="props" :title="props.row.branch">
+            {{ props.row.branch }}
           </q-td>
-          <q-td key="finished" :props="props">
-            <span>{{ props.row.finished | dateFormat }}</span>
-          </q-td>
-
           <q-td key="message" :props="props">
-        <span class="ellipsis">
-          {{ props.row.message }}
-          <q-tooltip>
-            {{ props.row.message }}
-          </q-tooltip>
-        </span>
+            <span class="ellipsis">
+              {{ props.row.message }}
+              <q-tooltip>
+                {{ props.row.message }}
+              </q-tooltip>
+            </span>
           </q-td>
           <q-td key="request" :props="props">
             <q-btn color="secondary" size="sm" @click="showLongModal(props.row.request, 'Request')">VIEW</q-btn>
+          </q-td>
+          <q-td key="response_code" :props="props">
+            <q-chip square dense>{{ props.row.response_code }}</q-chip>
           </q-td>
           <q-td key="response" :props="props">
             <q-btn color="tertiary" size="sm" @click="showLongModal(props.row.response, 'Response')">VIEW</q-btn>
@@ -242,29 +252,29 @@
       betterColor: function (v) {
         return v === true ? 'positive' : v === false ? 'negative' : 'tertiary'
       },
+      wasSuccess:  function (v) {
+        return v === true ? 'successful' : 'unsuccessful'
+      },
       bestIcon(txt) {
         switch (txt) {
           case 'web':
             return 'mdi-web'
-            break
           case 'owner':
             return 'mdi-account-check'
-            break
           case 'git':
             return 'mdi-git'
-            break
           case 'github':
             return 'mdi-github-face'
-            break
           case 'push':
             return 'mdi-source-pull'
-            break
           case 'bitbucket':
             return 'mdi-bitbucket'
-            break
+          case 'successful':
+            return 'mdi-checkbox-marked-circle-outline'
+          case 'unsuccessful':
+            return 'mdi-emoticon-confused'
           default:
             return 'mdi-alert-circle-outline'
-            break
         }
       },
     },
