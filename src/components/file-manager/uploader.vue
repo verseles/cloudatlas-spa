@@ -36,7 +36,7 @@
     },
     computed:   {
       api_prefix() {
-        return process.env.API_BASE_URL ?? 'https://api.cloudkit.app'
+        return (process.env.API_BASE_URL ?? 'https://api.cloudkit.app')
       },
       uploader() {
         return this.isMounted ? this.$refs.uploader : {}

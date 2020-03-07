@@ -72,14 +72,14 @@ const mixinLogin = {
     },
     oaLogin (p = 'github') {
       window.open(
-        process.env.API_BASE_URL ?? 'https://api.cloudkit.app' + '/login/' + p,
+        (process.env.API_BASE_URL ?? 'https://api.cloudkit.app') + '/login/' + p,
         'oauth-login',
         'width=960,height=600'
       )
     },
     oauthCallback (event) {
       if (
-        event.origin === process.env.API_BASE_URL ?? 'https://api.cloudkit.app' &&
+        event.origin === (process.env.API_BASE_URL ?? 'https://api.cloudkit.app') &&
         typeof event.data.token === 'string'
       ) {
         console.info('oauth', event.data)
