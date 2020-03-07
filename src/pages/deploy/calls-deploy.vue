@@ -81,10 +81,12 @@
             <q-btn color="secondary" size="sm" @click="showLongModal(props.row.request, 'Request')">VIEW</q-btn>
           </q-td>
           <q-td key="response_code" :props="props">
-            <q-chip square dense>{{ props.row.response_code }}</q-chip>
+            <q-chip square dense :color="props.row.response_code | responseCodeColor">{{ props.row.response_code }}</q-chip>
           </q-td>
           <q-td key="response" :props="props">
-            <q-btn color="tertiary" size="sm" @click="showLongModal(props.row.response, 'Response')">VIEW</q-btn>
+            <q-btn :color="props.row.response_code | responseCodeColor" size="sm" @click="showLongModal(props.row.response, 'Response')"
+            >{{ props.row.response_code }}
+            </q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -246,14 +248,30 @@
       },
     },
     filters:    {
-      dateFormat:  function (v) {
+      dateFormat:        function (v) {
         return v ? date.formatDate(v * 1000, 'YYYY-MM-DD HH:mm:ss') : '-'
       },
-      betterColor: function (v) {
+      betterColor:       function (v) {
         return v === true ? 'positive' : v === false ? 'negative' : 'tertiary'
       },
-      wasSuccess:  function (v) {
+      wasSuccess:        function (v) {
         return v === true ? 'successful' : 'unsuccessful'
+      },
+      responseCodeColor: function (v) {
+        if (v >= 100 && v <= 199) {
+          return 'info'
+        }
+        else if (v >= 200 && v <= 299) {
+          return 'positive'
+        }
+        else if (v >= 300 && v <= 399) {
+          return 'purple'
+        }
+        else if (v >= 400 && v <= 599) {
+          return 'negative'
+        } else {
+          return 'blue-grey'
+        }
       },
       bestIcon(txt) {
         switch (txt) {
