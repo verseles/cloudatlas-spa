@@ -40,6 +40,11 @@
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
+          <q-td key="log" :props="props">
+            <q-btn :color="props.row.success | betterColor " size="sm" @click="showLongModal(props.row.log, 'Results')"
+            >LOG
+            </q-btn>
+          </q-td>
           <q-td key="origin" :props="props" :title="props.row.origin">
             <q-icon :name="props.row.origin | bestIcon" size="1.5rem"/>
           </q-td>
@@ -64,11 +69,6 @@
             {{ props.row.message }}
           </q-tooltip>
         </span>
-          </q-td>
-          <q-td key="log" :props="props">
-            <q-btn :color="props.row.success | betterColor " size="sm" @click="showLongModal(props.row.log, 'Results')"
-            >LOG
-            </q-btn>
           </q-td>
           <q-td key="request" :props="props">
             <q-btn color="secondary" size="sm" @click="showLongModal(props.row.request, 'Request')">VIEW</q-btn>
