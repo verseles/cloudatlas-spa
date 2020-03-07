@@ -30,11 +30,11 @@
 </template>
 
 <script>
-  import SortableList   from './SortableList'
-  import remote_command from './actions/remote_command'
-  import http_request   from './actions/http_request'
-  import file_operations   from './actions/file_operations'
-  import outro          from './actions/outro'
+  import SortableList    from './SortableList'
+  import remote_command  from './actions/remote_command'
+  import http_request    from './actions/http_request'
+  import file_operations from './actions/file_operations'
+  import outro           from './actions/outro'
 
 
   export default {

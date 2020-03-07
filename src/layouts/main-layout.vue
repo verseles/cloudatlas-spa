@@ -47,7 +47,9 @@
         </q-item>
       </q-list>
       <q-list class="absolute-bottom">
-        <q-item clickable>
+        <q-item clickable @click="$store.globalRefs.modals.fileUploadModal = true">
+          <uploader-group ref="uploaderGroup"/>
+
           <q-item-section avatar>
             <q-icon name="mdi-cloud-upload"/>
           </q-item-section>
@@ -96,10 +98,11 @@
 </template>
 
 <script>
-  import linkifyPath from "src/components/file-manager/linkify-path"
+  import linkifyPath   from "src/components/file-manager/linkify-path"
+  import uploaderGroup from "src/components/file-manager/uploader-group"
 
   export default {
-    components: {linkifyPath},
+    components: {linkifyPath, uploaderGroup},
     created() {
       this.resetData()
     },

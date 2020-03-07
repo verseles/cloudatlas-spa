@@ -41,18 +41,24 @@
                         label="A git receive a new push"
             />
           </div>
-          <div v-if="$store.deploy.editingTask.git_is_enabled" class="col-xs-2 col-sm-1 col-md-1 offset-md-3 text-center">
-            <q-icon class="vertical-middle" size="2.8rem" :color="ui[repoGroup.provider].color" :name="ui[repoGroup.provider].icon"/>
+          <div v-if="$store.deploy.editingTask.git_is_enabled"
+               class="col-xs-2 col-sm-1 col-md-1 offset-md-3 text-center"
+          >
+            <q-icon class="vertical-middle"
+                    size="2.8rem"
+                    :color="ui[repoGroup.provider].color"
+                    :name="ui[repoGroup.provider].icon"
+            />
           </div>
           <div v-if="$store.deploy.editingTask.git_is_enabled" class="q-mb-xs col-xs-10 col-sm-11 col-md-5">
             <q-select :error="!!$store.errors['task.repo']"
-                      autofocus-filter
-                      filter
                       float-label="Repository"
                       :options="repoOptions"
                       v-model="repoSelected"
                       emit-value
                       map-options
+                      dense
+                      options-dense
             />
             <q-inner-loading :showing="loadingRepos"></q-inner-loading>
           </div>
@@ -60,9 +66,10 @@
                class="q-mb-lg col-xs-12 col-sm-11 offset-sm-1 col-md-5 offset-md-4"
           >
             <q-input v-model="$store.deploy.editingTask.branch"
+                     dense
                      @focus="$event.target.select()"
                      :error="!!$store.errors['task.branch']"
-                     :float-label="$store.errors['task.branch'] ? $store.errors['task.branch'][0] : 'Branch'"
+                     :label="$store.errors['task.branch'] ? $store.errors['task.branch'][0] : 'Branch'"
             />
           </div>
         </div>
@@ -90,9 +97,7 @@
           <deploy-edit-nav-btn/>
         </q-stepper-navigation>
       </template>
-
-
-      <q-inner-loading :visible="$store.globalRefs.loaders.editDeploy"/>
+      <q-inner-loading :showing="$store.globalRefs.loaders.editDeploy"/>
     </q-stepper>
   </q-page>
 </template>
