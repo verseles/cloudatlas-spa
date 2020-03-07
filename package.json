@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development quasar dev",
-    "prod": "cross-env NODE_ENV=production quasar build && cp -v src/copy/* dist/spa",
+    "prod": "cross-env API_BASE_URL=\"https://api.cloudkit.app\" quasar build && cp -v src/copy/* dist/spa",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },
@@ -29,6 +29,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
     "@quasar/app": "^1.5.8",
+    "@quasar/quasar-app-extension-dotenv": "^1.0.0",
     "@vue/eslint-config-prettier": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "cross-env": "^7.0.0",
