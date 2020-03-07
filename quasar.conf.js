@@ -7,6 +7,7 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
+      'envs',
       'store-state',
       'default-storage',
       'router-guard',
@@ -19,11 +20,11 @@ module.exports = function (ctx) {
       'mixins/connections-mixin',
       'mixins/deploy-mixin',
       'mixins/fm-mixin',
-      'mixins/fm-storage-mixin'
+      'mixins/fm-storage-mixin',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: ['app.scss'],
+    css: [ 'app.scss' ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -35,14 +36,14 @@ module.exports = function (ctx) {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font' // optional, you are not bound to it
+      'roboto-font', // optional, you are not bound to it
       // 'material-icons' // optional, you are not bound to it
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
       iconSet: 'mdi-v4', // Quasar icon set
-      lang: 'en-us', // Quasar language pack
+      lang:    'en-us', // Quasar language pack
 
       // Possible values for "all":
       // * 'auto' - Auto-import needed Quasar components & directives
@@ -57,12 +58,12 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ['LocalStorage', 'SessionStorage', 'Notify', 'Loading'],
-      config: {
+      plugins: [ 'LocalStorage', 'SessionStorage', 'Notify', 'Loading' ],
+      config:  {
         loading: {
-          spinner: 'QSpinnerIos'
-        }
-      }
+          spinner: 'QSpinnerIos',
+        },
+      },
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -72,32 +73,32 @@ module.exports = function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      showProgress: true,
-      gzip: false,
-      analyze: false,
+      showProgress:  true,
+      gzip:          false,
+      analyze:       false,
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         cfg.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /node_modules/,
-          options: {
-            formatter: require('eslint').CLIEngine.getFormatter('stylish')
-          }
-        })
-      }
+                                enforce: 'pre',
+                                test:    /\.(js|vue)$/,
+                                loader:  'eslint-loader',
+                                exclude: /node_modules/,
+                                options: {
+                                  formatter: require('eslint').CLIEngine.getFormatter('stylish'),
+                                },
+                              })
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: true,
-      port: 8080,
-      open: true // opens browser window automatically
+      port:  8080,
+      open:  true, // opens browser window automatically
     },
 
     // animations: 'all', // --- includes all animations
@@ -106,60 +107,60 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
-      pwa: false
+      pwa: false,
     },
 
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
-      manifest: {
-        name: 'CloudKit',
-        short_name: 'CloudKit',
-        description: 'Web Dev Tools',
-        display: 'standalone',
-        orientation: 'portrait',
+      workboxOptions:    {}, // only for GenerateSW
+      manifest:          {
+        name:             'CloudKit',
+        short_name:       'CloudKit',
+        description:      'Web Dev Tools',
+        display:          'standalone',
+        orientation:      'portrait',
         background_color: '#0C507E',
-        theme_color: '#FFF',
-        icons: [
+        theme_color:      '#FFF',
+        icons:            [
           {
-            src: 'statics/icons/icon-128x128.png',
+            src:   'statics/icons/icon-128x128.png',
             sizes: '128x128',
-            type: 'image/png'
+            type:  'image/png',
           },
           {
-            src: 'statics/icons/icon-192x192.png',
+            src:   'statics/icons/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type:  'image/png',
           },
           {
-            src: 'statics/icons/icon-256x256.png',
+            src:   'statics/icons/icon-256x256.png',
             sizes: '256x256',
-            type: 'image/png'
+            type:  'image/png',
           },
           {
-            src: 'statics/icons/icon-384x384.png',
+            src:   'statics/icons/icon-384x384.png',
             sizes: '384x384',
-            type: 'image/png'
+            type:  'image/png',
           },
           {
-            src: 'statics/icons/icon-512x512.png',
+            src:   'statics/icons/icon-512x512.png',
             sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
+            type:  'image/png',
+          },
+        ],
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'app.cloudkit.app'
+      id: 'app.cloudkit.app',
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true
+      hideSplashscreen: true,
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
@@ -180,16 +181,16 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'ck'
+        appId: 'ck',
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
-      }
-    }
+      },
+    },
   }
 }
