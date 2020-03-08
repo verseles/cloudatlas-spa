@@ -55,48 +55,6 @@
         </q-list>
       </q-card>
     </q-dialog>
-    <q-modal v-if="0"
-             v-model="$store.globalRefs.modals.fileUploadModal"
-             @open="modalOpen"
-             @close="modalClose"
-             :content-css="{minWidth: '80vw', minHeight: '80vh'}"
-    >
-      <q-modal-layout>
-        <q-toolbar slot="header">
-          <q-btn class="no-padding" flat @click="$store.globalRefs.modals.fileUploadModal = false">
-            <q-icon name="mdi-chevron-left"/>
-          </q-btn>
-          <q-toolbar-title>
-            Uploads
-          </q-toolbar-title>
-          <q-btn dense flat :disabled="!totalFiles" title="Stop all uploads" @click="stopAll()">
-            <q-icon name="mdi-stop-circle"/>
-            <span class="desktop-only">&nbsp;Stop</span>
-          </q-btn>
-          <q-btn dense flat :disabled="!totalFiles" title="Clear upload list" @click="clearAll()">
-            <q-icon name="mdi-delete-forever"/>
-            <span class="desktop-only">&nbsp;Clear</span>
-          </q-btn>
-        </q-toolbar>
-        <div v-if="!groups.length" class="fixed-center text-grey-4 text-center">
-          <h1>
-            <q-icon name="mdi-upload"></q-icon>
-          </h1>
-          <h2>
-            no uploads </h2>
-        </div>
-        <q-list v-else>
-          <q-collapsible v-for="(item, key) in groups"
-                         :key="item.uid"
-                         :opened="item.uid == $store.fm.uploads.lastUid"
-                         group="uploads"
-          >
-            <uploader :ref="'up-' + item.uid" :group="key" :item="item" @input="addedFile"/>
-          </q-collapsible>
-        </q-list>
-
-      </q-modal-layout>
-    </q-modal>
   </div>
 </template>
 

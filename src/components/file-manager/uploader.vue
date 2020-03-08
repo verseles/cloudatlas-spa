@@ -5,7 +5,8 @@
                  :drop="true"
                  :thread="3"
                  :chunk-enabled="true"
-                 :post-action="`${api_prefix}/fm/upload/${item.baseId}`"
+                 :post-action="postAction"
+                 :put-action="postAction"
                  :headers="{Authorization: 'Bearer ' + getToken()}"
                  v-model="files"
                  :data="{path: item.path}"
@@ -31,7 +32,7 @@
           <q-item-section>
             <q-item-label>{{file.name}}</q-item-label>
             <q-item-label caption>
-              <q-progress :percentage="uploadStatus(file).progress" :color="uploadStatus(file).color" animate/>
+              <q-linear-progress :value="uploadStatus(file).progress" :color="uploadStatus(file).color"/>
               {{ uploadStatus(file).msg }}
             </q-item-label>
           </q-item-section>
@@ -74,6 +75,9 @@
       api_prefix() {
         return process.env.API_BASE_URL
       },
+      postAction() {
+        return `${ this.api_prefix }/fm/upload/${ this.item.baseId }`
+      },
       uploader() {
         return this.isMounted ? this.$refs.uploader : {}
       },
@@ -106,7 +110,11 @@
       inputed(files) {
         this.item[ 'key' ] = this.group
         this.$emit('input', this.item, files)
-        this.uploader.active = true
+        this.$nextTick(() => {
+          if (!this.uploader.active) {
+            this.uploader.active = true
+          }
+        })
       },
       icon(item) {
         const ext = item.name.split('.').pop()
