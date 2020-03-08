@@ -1,24 +1,59 @@
 <template>
 
   <div>
-    <q-dialog v-model="$store.globalRefs.modals.fileUploadModal"
-              @before-show="modalOpen"
-              @hide="modalClose"
-              :content-style="{minWidth: '50vw', minHeight: '50vh'}"
+    <q-dialog v-model="$store.globalRefs.modals.fileUploadModal" @before-show="modalOpen" @hide="modalClose"
     >
-      <q-layout container class="bg-white">
-        <q-header class="bg-primary">
-          <q-toolbar>
-            <q-toolbar-title class="text-center">Results </q-toolbar-title>
-            <q-btn flat v-close-popup round dense icon="mdi-close"/>
-          </q-toolbar>
-        </q-header>
-        <q-page-container>
-          <q-page padding>
-           sdfsdfsdfdfsdf
-          </q-page>
-        </q-page-container>
-      </q-layout>
+      <q-card :style="{
+        maxWidth: '700px', minWidth: '300px', width: '90vw',
+        height: '80vh',}"
+      >
+        <q-toolbar>
+          <q-icon name="mdi-cloud-upload" size="2rem" color="secondary"/>
+          <q-toolbar-title><span class="text-weight-bold">Uploads</span></q-toolbar-title>
+          <q-btn @click="stopAll()" dense flat color="negative" icon="mdi-stop-circle" :disabled="!totalFiles"
+          >
+            <q-tooltip>Stop all uploads</q-tooltip>
+          </q-btn>
+          <q-btn @click="clearAll()" flat dense :disabled="!totalFiles" icon="mdi-notification-clear-all">
+            <q-tooltip>Clear upload list</q-tooltip>
+          </q-btn>
+          <q-btn flat round dense icon="mdi-close" v-close-popup/>
+        </q-toolbar>
+        <div v-if="!groups.length"
+             @click="$router.push('/fm')"
+             v-close-popup
+             class="fixed-center text-grey-4 text-center cursor-pointer"
+        >
+          <h1>
+            <q-icon name="mdi-upload"></q-icon>
+          </h1>
+          <h3>no uploads</h3>
+        </div>
+        <q-list v-else>
+          <q-expansion-item v-for="(item, key) in groups"
+                            :key="item.uid"
+                            :default-opened="item.uid == $store.fm.uploads.lastUid"
+                            group="uploads"
+          >
+            <template v-slot:header>
+              <q-item-section avatar>
+                <q-icon :color="icon(item.baseId).color" :name="icon(item.baseId).icon"/>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label>{{ storage(item.baseId).name }}</q-item-label>
+                <q-item-label caption>{{ item.path }}</q-item-label>
+              </q-item-section>
+            </template>
+            <q-card>
+              <q-card-section>
+                <uploader :ref="'up-' + item.uid" :group="key" :item="item" @input="addedFile"/>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+
+        </q-list>
+      </q-card>
     </q-dialog>
     <q-modal v-if="0"
              v-model="$store.globalRefs.modals.fileUploadModal"
@@ -54,9 +89,6 @@
           <q-collapsible v-for="(item, key) in groups"
                          :key="item.uid"
                          :opened="item.uid == $store.fm.uploads.lastUid"
-                         :icon="icon(item.baseId).icon"
-                         :label="storage(item.baseId).name"
-                         :sublabel="item.path"
                          group="uploads"
           >
             <uploader :ref="'up-' + item.uid" :group="key" :item="item" @input="addedFile"/>
@@ -80,13 +112,6 @@
         groups: [],
         files:  {},
         ups:    [],
-        layout: false,
-
-        moreContent: true,
-        drawer: false,
-        drawerR: false,
-
-        lorem: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus, ratione eum minus fuga, quasi dicta facilis corporis magnam, suscipit at quo nostrum!'
       }
     },
     mounted() {
@@ -112,6 +137,7 @@
         return this.typeStorage(this.storage(id).type)
       },
       addedFile(item, files) {
+        console.info(item.uid, files.length)
         this.$set(this.files, item.uid, files)
       },
       startAll() {

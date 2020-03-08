@@ -1,20 +1,56 @@
 <template>
   <div>
-    <q-uploader ref="uploader"
-      url="`${api_prefix}/fm/upload/${item.baseId}`"
-      no-thumbnails
-      multiple
-      :max-file-size="50000000"
-      method="POST"
-      :headers="[{name: 'Authorization', value: 'Bearer ' + getToken()}]"
-      :form-fields="[{name: 'path', value: item.path}]"
-      @added="inputed"
-    />
+    <file-upload ref="uploader"
+                 multiple
+                 :drop="true"
+                 :thread="3"
+                 :chunk-enabled="true"
+                 :post-action="`${api_prefix}/fm/upload/${item.baseId}`"
+                 :headers="{Authorization: 'Bearer ' + getToken()}"
+                 v-model="files"
+                 :data="{path: item.path}"
+                 :size="50000000"
+                 @input="inputed"
+    >
+      <div class="dnd row justify-center items-center" :class="uploader.dropActive ? 'dragging' : ''">
+        <div class="col-12">&nbsp;</div>
+        <div class="col-12">
+          <big>Drop files here</big>
+        </div>
+        <div class="col-12">&nbsp;</div>
+        <div class="col-12">or click to select files</div>
+        <div class="col-12">&nbsp;</div>
+      </div>
+    </file-upload>
+    <div v-if="files.length">
+      <q-list>
+        <q-item v-for="file in files" :key="file.id">
+          <q-item-section avatar>
+            <q-icon :name="icon(file)"/>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{file.name}}</q-item-label>
+            <q-item-label caption>
+              <q-progress :percentage="uploadStatus(file).progress" :color="uploadStatus(file).color" animate/>
+              {{ uploadStatus(file).msg }}
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn flat @click="remove(file)" icon="mdi-minus-circle"></q-btn>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </div>
   </div>
 </template>
 
 <script>
+  import fileUpload from 'vue-upload-component'
+
   export default {
+    components: {
+      fileUpload,
+    },
     props:      {
       item:  {
         type:     Object,
@@ -36,7 +72,7 @@
     },
     computed:   {
       api_prefix() {
-        return (process.env.API_BASE_URL ?? 'https://api.cloudkit.app')
+        return process.env.API_BASE_URL
       },
       uploader() {
         return this.isMounted ? this.$refs.uploader : {}
@@ -151,21 +187,23 @@
   }
 </script>
 
-<style lang="stylus" scoped>
-  .file-uploads .dnd {
-    border-radius: 1rem;
-    background-color: $grey-3;
-    color: $grey-6;
-    border: 2px solid $grey-3;
-  }
+<style lang="scss" scoped>
+  .file-uploads {
+    .dnd {
+      border-radius: 1rem;
+      background-color: $grey-3;
+      color: $grey-6;
+      border: 2px solid $grey-3;
 
-  .file-uploads .dnd.dragging {
-    border: 2px dotted $primary;
-    color: $primary;
-  }
+      &.dragging {
+        border: 2px dotted $primary;
+        color: $primary;
+      }
+    }
 
-  .file-uploads big {
-    text-transform: uppercase;
+    big {
+      text-transform: uppercase;
+    }
   }
 
   table tbody {
@@ -178,6 +216,4 @@
       width: 100%;
     }
   }
-
-
 </style>
