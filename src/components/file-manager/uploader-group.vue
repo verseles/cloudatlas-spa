@@ -51,7 +51,6 @@
               </q-card-section>
             </q-card>
           </q-expansion-item>
-
         </q-list>
       </q-card>
     </q-dialog>
@@ -95,7 +94,6 @@
         return this.typeStorage(this.storage(id).type)
       },
       addedFile(item, files) {
-        console.info(item.uid, files.length)
         this.$set(this.files, item.uid, files)
       },
       startAll() {
@@ -151,7 +149,8 @@
   }
 </script>
 
-<style lang="stylus">
-  .file-uploads
-    width 100%
+<style lang="scss">
+  .file-uploads {
+    width: 100%
+  }
 </style>

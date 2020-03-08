@@ -4,12 +4,9 @@
                  multiple
                  :drop="true"
                  :thread="3"
-                 :chunk-enabled="true"
                  :post-action="postAction"
-                 :put-action="postAction"
                  :headers="{Authorization: 'Bearer ' + getToken()}"
                  v-model="files"
-                 :data="{path: item.path}"
                  :size="50000000"
                  @input="inputed"
     >
