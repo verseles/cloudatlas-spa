@@ -10,7 +10,7 @@
                aria-label="Menu"
         />
         <q-toolbar-title class="text-center">
-          {{ api_prefix || $store.title || $route.meta.title || 'cloudkit'}}
+          {{ $store.title || $route.meta.title || 'cloudkit'}}
           <linkify-path v-if="$route.name === 'fm-list-files'" :path="$store.fm.manager.path"/>
         </q-toolbar-title>
       </q-toolbar>
