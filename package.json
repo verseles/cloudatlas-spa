@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development quasar dev",
-    "prod": "cross-env NODE_ENV=production quasar build && cp -v src/copy/* dist/spa",
+    "prod": "cross-env API_BASE_URL='https://api.cloudkit.app' quasar build && cp -v src/copy/* dist/spa",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },
