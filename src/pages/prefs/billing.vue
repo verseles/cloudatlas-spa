@@ -2,7 +2,23 @@
   <div class="text-center">
     <div class="text-center">
       <div class="plan-title" style="text-transform:none;">Go PRO for $9/m</div>
-      <p></p>
+      <div class="row justify-center">
+        <div class="col-md-6 col-xs-12 col-sm-8">
+          <stripe-elements ref="elementsRef"
+                           :pk="publishableKey"
+                           @token="tokenCreated"
+                           @loading="loading = $event"
+                           :image="image"
+                           :name="name"
+                           :description="description"
+                           :currency="currency"
+                           :amount="amount"
+                           :allow-remember-me="false"
+                           :email="$store.user.email"
+                           panelLabel="Subscribe for"
+          ></stripe-elements>
+        </div>
+      </div>
       <q-btn outline color="positive" @click="setPlan('monthly')">monthly</q-btn>&nbsp;
       <q-btn outline color="positive" @click="setPlan('yearly')">yearly (-20%)</q-btn>
       <br><br>
@@ -68,20 +84,6 @@
 
 
       </table>
-
-      <stripe-elements ref="elementsRef"
-                       :pk="publishableKey"
-                       @token="tokenCreated"
-                       @loading="loading = $event"
-                       :image="image"
-                       :name="name"
-                       :description="description"
-                       :currency="currency"
-                       :amount="amount"
-                       :allow-remember-me="false"
-                       :email="$store.user.email"
-                       panelLabel="Subscribe for"
-      ></stripe-elements>
     </div>
   </div>
 </template>
@@ -95,12 +97,16 @@
     },
     data() {
       return {
-        image:       'statics/ck.svg',
-        name:        'CloudKit PRO',
-        description: 'Monthly subscription',
-        currency:    'usd',
-        amount:      900,
-        plan:        'monthly',
+        publishableKey: process.env.STRIPE_PUB_KEY,
+        loading:        false,
+        token:          null,
+        charge:         null,
+        image:          'statics/ck.svg',
+        name:           'CloudKit PRO',
+        description:    'Monthly subscription',
+        currency:       'usd',
+        amount:         900,
+        plan:           'monthly',
       }
     },
     methods:    {
@@ -109,13 +115,14 @@
           this.amount      = 8640
           this.plan        = 'yearly'
           this.description = 'Yearly subscription (-20%)'
+          this.submit()
         }
         else {
           this.amount      = 900
           this.plan        = 'monthly'
           this.name        = 'CloudKit PRO'
           this.description = 'Monthly subscription'
-
+          this.submit()
         }
         this.plan = plan
       },
