@@ -69,107 +69,109 @@
 
       </table>
 
-      <vue-stripe-checkout ref="checkoutRef"
-                           :image="image"
-                           :name="name"
-                           :description="description"
-                           :currency="currency"
-                           :amount="amount"
-                           :allow-remember-me="false"
-                           :email="$store.user.email"
-                           panelLabel="Subscribe for"
-                           @done="done"
-                           @opened="opened"
-                           @closed="closed"
-                           @canceled="canceled"
-      ></vue-stripe-checkout>
+      <stripe-elements ref="elementsRef"
+                       :pk="publishableKey"
+                       @token="tokenCreated"
+                       @loading="loading = $event"
+                       :image="image"
+                       :name="name"
+                       :description="description"
+                       :currency="currency"
+                       :amount="amount"
+                       :allow-remember-me="false"
+                       :email="$store.user.email"
+                       panelLabel="Subscribe for"
+      ></stripe-elements>
     </div>
   </div>
 </template>
 
 <script>
+  import { StripeElements } from 'vue-stripe-checkout'
+
   export default {
-    data () {
+    components: {
+      StripeElements,
+    },
+    data() {
       return {
-        image: 'statics/ck.svg',
-        name: 'CloudKit PRO',
+        image:       'statics/ck.svg',
+        name:        'CloudKit PRO',
         description: 'Monthly subscription',
-        currency: 'usd',
-        amount: 900,
-        plan: 'monthly',
+        currency:    'usd',
+        amount:      900,
+        plan:        'monthly',
       }
     },
-    methods: {
-      setPlan (plan = 'monthly') {
+    methods:    {
+      setPlan(plan = 'monthly') {
         if (plan === 'yearly') {
-          this.amount = 8640
-          this.plan = 'yearly'
+          this.amount      = 8640
+          this.plan        = 'yearly'
           this.description = 'Yearly subscription (-20%)'
-        } else {
-          this.amount = 900
-          this.plan = 'monthly'
-          this.name = 'CloudKit PRO'
+        }
+        else {
+          this.amount      = 900
+          this.plan        = 'monthly'
+          this.name        = 'CloudKit PRO'
           this.description = 'Monthly subscription'
 
         }
         this.plan = plan
-
-        this.$nextTick(() => { this.checkout() })
       },
-      async checkout () {
-        // token - is the token object
-        // args - is an object containing the billing and shipping address if enabled
-        const { token, args } = await this.$refs.checkoutRef.open()
-      },
-      done ({ token }) {
+      sendTokenToServer({token}) {
         this.$axios.post(`billing/subscribe`,
-          { ...{ plan: this.plan }, ...{ stripe: token } })
-          .then(r => console.info(r.data))
-          .catch(r => this.failListing)
+                         {...{plan: this.plan}, ...{stripe: token}})
+            .then(r => console.info(r.data))
+            .catch(r => this.failListing)
 
         // token - is the token object
         // args - is an object containing the billing and shipping address if enabled
         // do stuff...
       },
-      opened () {
-        // do stuff
+      submit() {
+        this.$refs.elementsRef.submit()
       },
-      closed () {
-        // do stuff
-      },
-      canceled () {
-        // do stuff
+      tokenCreated(token) {
+        this.token  = token
+        // for additional charge objects go to https://stripe.com/docs/api/charges/object
+        this.charge = {
+          source:      token.card,
+          amount:      this.amount,
+          description: this.description,
+        }
+        this.sendTokenToServer(this.charge)
       },
     },
   }
 </script>
 <style lang="scss">
   .plan-title {
-    font-family:    'Noto Serif', serif;
-    font-size:      2rem;
+    font-family: 'Noto Serif', serif;
+    font-size: 2rem;
     text-transform: uppercase;
-    font-weight:    normal;
+    font-weight: normal;
   }
 
   .plan-group {
-    font-weight:  bold;
-    font-size:    1.4rem;
-    margin-top:   25px;
-    text-align:   left;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin-top: 25px;
+    text-align: left;
     padding-left: 10px;
   }
 
   .pricing {
-    max-width:       800px;
-    margin:          1rem auto;
-    text-align:      center;
+    max-width: 800px;
+    margin: 1rem auto;
+    text-align: center;
     border-collapse: collapse;
-    width:           100%;
-    font-size:       1.3rem;
+    width: 100%;
+    font-size: 1.3rem;
 
     tr {
-      border:       1px dotted #808080;
-      border-left:  0;
+      border: 1px dotted #808080;
+      border-left: 0;
       border-right: 0;
 
       &:first-child {

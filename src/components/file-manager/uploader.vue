@@ -70,7 +70,7 @@
     },
     computed:   {
       api_prefix() {
-        return process.env.API_BASE_URL ?? 'https://api.cloudkit.app'
+        return process.env.API_BASE_URL
       },
       postAction() {
         return `${ this.api_prefix }/fm/upload/${ this.item.baseId }`

@@ -11,7 +11,6 @@ module.exports = function (ctx) {
       'default-storage',
       'router-guard',
       'array-summer',
-      "stripe",
       'i18n',
       'axios',
       'mixins/main-mixin',
@@ -75,6 +74,15 @@ module.exports = function (ctx) {
       showProgress:  true,
       gzip:          false,
       analyze:       false,
+      env:           ctx.dev
+                     ? { // so on dev we'll have
+          API_BASE_URL:   JSON.stringify('https://ckp.test'),
+          STRIPE_PUB_KEY: JSON.stringify('pk_test_BFuC02EqBXWuzcCgyL82vpkX'),
+        }
+                     : { // and on build (production):
+          API_BASE_URL:   JSON.stringify('https://api.cloudkit.app'),
+          STRIPE_PUB_KEY: JSON.stringify('pk_live_PDCX7Uliy3qwum9iQ23US0yD'),
+        },
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
       // extractCSS: false,
