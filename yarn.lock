@@ -9270,10 +9270,10 @@ vue-slicksort@^1.1.3:
   resolved "https://registry.yarnpkg.com/vue-slicksort/-/vue-slicksort-1.1.3.tgz#f8e0a1623bfb8aa39db683e28ac7bea5d9a2d9dc"
   integrity sha512-zGa0t2tyYOJpHsg2eqLZS095ZLHJsyPBoxlRZ/UUzE17VUM0skdz0MElp3/LHrUuK+MzD7wV2cAPZ+LNq6C/nw==
 
-vue-stripe-checkout@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/vue-stripe-checkout/-/vue-stripe-checkout-3.2.1.tgz#6645c2fb434fc9bb82b5b2dcd07233acee9eb145"
-  integrity sha512-axC5DXhXrzkmG1NRkhT1Wb2qk1QS7lLrfcL29Ou2FD9BbbFuXbwFIWnwPrvE04CG7q2rs5ouesXYSpcxmgytcQ==
+vue-stripe-checkout@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/vue-stripe-checkout/-/vue-stripe-checkout-3.2.2.tgz#341847b172f0c5743fd9ed041dd7db4e35387d3e"
+  integrity sha512-0dQuop4/jYQk0sdjMZ8Dztyc98GIxazdefKr19q2g8rmtxM86flIORezSqEstrH3+/lCNoFzwZg/+79Ms7TohA==
   dependencies:
     package-lock-only "0.0.4"
 
