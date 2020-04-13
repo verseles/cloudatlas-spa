@@ -33,7 +33,7 @@
                            :unelevated="method.default"
                            round
                            :title="method.default ? 'This is the default payment method' : 'Click to set this as default payment method'"
-                           :icon="method.default ? 'mdi-star' : 'mdi-credit-card-outline'"
+                           icon="mdi-star"
                     />
                     <q-btn size="12px" @click="removePaymentMethod( method.id )" flat round icon="mdi-delete"/>
                   </div>
@@ -268,7 +268,7 @@
           let newData
           this.$store.user.billing = data.billing
           newData                  = this.$storage.getItem('user')
-          newData.user.billing     = data.billing
+          newData.billing          = data.billing
           this.$storage.set('user', newData)
         }
       },
@@ -302,6 +302,7 @@
                   this.addPaymentStatus = 2
                   this.card.clear()
                   this.addPaymentStatusError = ''
+                  this.stripe_hidden         = true
                 }
               })
               .finally(() => this.checking = false)
