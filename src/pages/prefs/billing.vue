@@ -61,7 +61,7 @@
       </div>
       <div class="row justify-center q-mt-md">
         <div class="col" v-show="!isPRO">
-          <span class="pro-text">Subscribe for&nbsp;</span>
+          <div class="pro-text">Subscribe for <b>PRO</b></div>
           <q-btn outline class="q-mr-xs" color="positive" @click="setPlan('monthly')" title="Subscribe for $9/month">
             monthly $9
           </q-btn>
@@ -72,7 +72,6 @@
                  title="Subscribe for $86/year and save 20%"
           >yearly (-20%)
           </q-btn>
-          <span class="pro-text">&nbsp;on default payment method</span>
         </div>
         <div class="pro-user" v-show="isPRO">
           <div class="pro-text">You are a
@@ -143,13 +142,13 @@
         </tr>
         <tr>
           <td>Max Upload File Size</td>
+          <td>20 MB</td>
           <td>100 MB</td>
-          <td>1 GB</td>
         </tr>
         <tr>
           <td>Transfer Monthly</td>
-          <td>200 MB</td>
-          <td>200 GB</td>
+          <td>100 MB</td>
+          <td>50 GB</td>
         </tr>
         <tr>
           <th class="plan-group">Deploy</th>
@@ -180,8 +179,6 @@
           <td>2 days</td>
           <td>30 days</td>
         </tr>
-
-
       </table>
     </div>
   </div>
@@ -254,6 +251,9 @@
 
       },
       interpretData(data) {
+        if (data.new) {
+          this.loadPaymentMethods()
+        }
         if (data.intent) {
           this.intent = data.intent
         }
