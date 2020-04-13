@@ -301,6 +301,7 @@
                   this.savePaymentMethod(result.setupIntent.payment_method)
                   this.addPaymentStatus = 2
                   this.card.clear()
+                  this.addPaymentStatusError = ''
                 }
               })
               .finally(() => this.checking = false)
