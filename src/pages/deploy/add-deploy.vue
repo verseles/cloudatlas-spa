@@ -155,7 +155,7 @@
       getRepos() {
         this.loadingRepos = true
 
-        this.$axios.get('git/repos')
+        this.$http.get('git/repos')
             .then(r => {
               this.repoList     = r.data.repos
               this.loadingRepos = false

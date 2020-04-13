@@ -95,7 +95,7 @@ const mixinFM = {
     listFiles (id, path = '', done = {}) {
       this.$store.fm.manager.loading = true
 
-      this.$axios
+      this.$http
         .get(`fm/${id}?path=${path}`)
         .then(r => {
           this.successListing(r, path)
@@ -106,7 +106,7 @@ const mixinFM = {
     deleteFiles (id, current_path, paths = {}) {
       this.$store.fm.manager.loading = true
 
-      this.$axios
+      this.$http
         .post(`fm/delete/${id}`, { path: current_path, paths: paths })
         .then(r => this.successListing(r, current_path))
         .catch(() => this.failListing)
@@ -114,7 +114,7 @@ const mixinFM = {
     createDir (id, current_path, name) {
       this.$store.fm.manager.loading = true
 
-      this.$axios
+      this.$http
         .get('fm/create', {
           params: { id: id, path: current_path, name: name }
         })
@@ -124,7 +124,7 @@ const mixinFM = {
     createFile (id, current_path, name) {
       this.$store.fm.manager.loading = true
 
-      this.$axios
+      this.$http
         .get('fm/create_file/' + id, {
           params: { path: current_path, name: name }
         })
@@ -134,7 +134,7 @@ const mixinFM = {
     renameDoc (id, file_item, new_name) {
       this.$store.fm.manager.loading = true
 
-      this.$axios
+      this.$http
         .get(`fm/${id}/edit`, {
           params: { file_item: file_item, new_name: new_name }
         })
@@ -157,7 +157,7 @@ const mixinFM = {
           folder_path = this.$route.params.path
         }
         this.$store.fm.manager.loading = true
-        this.$axios
+        this.$http
           .post(`fm/${operation}`, {
             from: this.$q.sessionStorage.getItem('clipboard'),
             to: { id: baseId, folder: folder_path }
@@ -179,7 +179,7 @@ const mixinFM = {
     viewFile (id, file, done) {
       this.$q.loading.show()
 
-      this.$axios
+      this.$http
         .post(`fm/read/${id}`, { file: file })
         .then(r => {
           this.$q.loading.hide()
@@ -193,7 +193,7 @@ const mixinFM = {
     },
     saveFile (id, path, contents, done = {}) {
       this.editor.saving = true
-      this.$axios
+      this.$http
         .post(`fm/saveFileEdits/${id}`, { path, contents })
         .then(() => {
           this.editor.savedCode = this.editor.code

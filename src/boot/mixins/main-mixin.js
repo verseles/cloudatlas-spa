@@ -1,4 +1,4 @@
-import { copyToClipboard } from 'quasar'
+import { copyToClipboard, Notify } from 'quasar'
 
 const mixinMain = {
   methods: {
@@ -10,14 +10,6 @@ const mixinMain = {
     processResults(response) {
       this.loading = false
       const d      = response.data || {}
-      if (d.message) {
-        this.$q.notify({
-                         message: d.message.body,
-                         icon:    d.message.icon ? d.message.icon : "mdi-alert-octagon",
-                         type:    d.message.type || "info",
-                       })
-      }
-
       if (d.storages) {
         this.updateStorages(d.storages)
         if (d.ok) {
@@ -63,6 +55,21 @@ const mixinMain = {
 
 
     },
+    sendNotification(data) {
+      const message = data.message ?? null
+      if (message) {
+        let notification = {
+          message: message.body ?? "It worked!",
+          icon:    message.icon ?? "mdi-alert-decagram",
+          type:    message.type ?? "info",
+          html:    message.html ?? false,
+        }
+        if (message.caption) {
+          notification.caption = message.caption
+        }
+        Notify.create(notification)
+      }
+    },
   },
   mounted() {
     window.Tawk_API         = window.Tawk_API || {}
@@ -73,6 +80,7 @@ const mixinMain = {
   },
 }
 
-export default ({Vue}) => {
+export default ({Vue, app}) => {
+  app.mixinMain = mixinMain
   Vue.mixin(mixinMain)
 }

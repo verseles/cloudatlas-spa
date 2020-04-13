@@ -12,13 +12,14 @@ module.exports = function (ctx) {
       'router-guard',
       'array-summer',
       'i18n',
-      'axios',
       'mixins/main-mixin',
       'mixins/login-mixin',
+      'mixins/billing-mixin',
       'mixins/connections-mixin',
       'mixins/deploy-mixin',
       'mixins/fm-mixin',
       'mixins/fm-storage-mixin',
+      'axios',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -52,7 +53,7 @@ module.exports = function (ctx) {
       //            (not treeshaking Quasar; biggest bundle size; convenient)
       all: 'auto',
 
-      components: [],
+      components: [ 'QSpinnerIos' ],
       directives: [],
 
       // Quasar plugins
@@ -103,7 +104,7 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      https: false,
+      https: true,
       port:  8080,
       open:  true, // opens browser window automatically
     },

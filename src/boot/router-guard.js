@@ -1,6 +1,7 @@
+import axios      from 'axios'
 import { Notify } from 'quasar'
 
-export default ({ app, router }) => {
+export default ({app, router, Vue}) => {
   // Inform Google Analytics - injected only in netlify
   router.beforeEach((to, from, next) => {
     if (typeof ga !== 'undefined') {
@@ -11,27 +12,29 @@ export default ({ app, router }) => {
   })
 
   router.beforeEach((to, from, next) => {
-    app.$store.body = {}
+    app.$store.body   = {}
     app.$store.errors = {}
     if (to.meta.unguarded) {
       // Allowed without auth
       next()
-    } else {
-      let token = null,
-        tawk_hash = null,
-        user = {}
+    }
+    else {
+      let token     = null,
+          tawk_hash = null,
+          user      = {}
       if (typeof app.$store.token === 'string') {
         token = app.$store.token
-      } else if (app.$storage.has('token')) {
-        token = app.$storage.getItem('token')
-        user = app.$storage.getItem('user')
+      }
+      else if (app.$storage.has('token')) {
+        token     = app.$storage.getItem('token')
+        user      = app.$storage.getItem('user')
         tawk_hash = app.$storage.getItem('tawk_hash')
 
-        app.$store.token = token
-        app.$store.user = user
+        app.$store.token     = token
+        app.$store.user      = user
         app.$store.tawk_hash = tawk_hash
 
-        app.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        axios.defaults.headers.common[ 'Authorization' ] = 'Bearer ' + token
 
         // @TODO enable token refresh
       }
@@ -42,14 +45,15 @@ export default ({ app, router }) => {
         }
 
         Notify.create({
-          message: 'Please, login to start',
-          icon: 'mdi-security',
-          timeout: 2000,
-          type: 'info'
-        })
+                        message: 'Please, login to start',
+                        icon:    'mdi-security',
+                        timeout: 2000,
+                        type:    'info',
+                      })
 
-        next({ path: '/login' })
-      } else {
+        next({path: '/login'})
+      }
+      else {
         next()
       }
     }

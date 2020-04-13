@@ -2,7 +2,7 @@ const mixinDeploy = {
   methods: {
     listDeploys() {
       this.loading = true
-      this.$axios
+      this.$http
           .get("deploy")
           .then(r => this.processResults(r))
           .catch(() => {
@@ -15,7 +15,7 @@ const mixinDeploy = {
     },
     deployCalls(id) {
       this.loading = true
-      this.$axios
+      this.$http
           .get(`deploy/calls/${ id }`)
           .then(response => this.processResults(response))
           .catch(() => (this.loading = false))
@@ -53,7 +53,7 @@ const mixinDeploy = {
       this.$store.deploy.notifications = []
     },
     getTask(id) {
-      let action = this.$axios.get("deploy/" + id)
+      let action = this.$http.get("deploy/" + id)
 
       this.$store.globalRefs.loaders.editDeploy = true
       action
@@ -94,11 +94,11 @@ const mixinDeploy = {
       let action
       if (data.task.id) {
         // Updating
-        action = this.$axios.put(`deploy/${ data.task.id }`, data)
+        action = this.$http.put(`deploy/${ data.task.id }`, data)
       }
       else {
         // Creating
-        action = this.$axios.post("deploy", data)
+        action = this.$http.post("deploy", data)
       }
 
       action
@@ -126,7 +126,7 @@ const mixinDeploy = {
     },
     deleteTask(id) {
       this.$store.deploy.deletingTask.push(id)
-      this.$axios
+      this.$http
           .delete("deploy/" + id)
           .then(response => {
             this.processResults(response)
@@ -163,7 +163,7 @@ const mixinDeploy = {
     },
     deployToggle({id}) {
       this.$store.deploy.togglingTask.push(id)
-      this.$axios
+      this.$http
           .get("deploy/toggle/" + id)
           .then(response => {
             this.$store.deploy.togglingTask.pop()
@@ -182,7 +182,7 @@ const mixinDeploy = {
     },
     deployRestore({id}) {
       this.loading = true
-      this.$axios
+      this.$http
           .get("deploy/restore/" + id)
           .then(response => {
             this.processResults(response)
@@ -197,7 +197,7 @@ const mixinDeploy = {
           })
     },
     deployTrigger({id, secret}) {
-      let action = this.$axios.get(`/deploy/trigger/${ id }/${ secret }`)
+      let action = this.$http.get(`/deploy/trigger/${ id }/${ secret }`)
 
       this.$store.deploy.triggeringTask.push(id)
       action

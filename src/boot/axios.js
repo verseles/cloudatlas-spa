@@ -1,26 +1,17 @@
-import axios      from "axios"
+import axios      from 'axios'
 import { Notify } from "quasar"
 
 export default ({app, router, Vue}) => {
-  app.$axios           = axios
-  Vue.prototype.$axios = axios
+  Vue.prototype.$http    = axios
+  axios.defaults.baseURL = process.env.API_BASE_URL + "/"
 
-  app.$axios.defaults.baseURL = process.env.API_BASE_URL + "/"
-
-  app.$axios.defaults.headers.common[ "Authorization" ] =
+  axios.defaults.headers.common[ "Authorization" ] =
     "Bearer " + app.$storage.getItem("token")
 
-  app.$axios.interceptors.response.use(
-    function (r) {
-      if (r.status === 201 || r.status === 202) {
-        Notify.create({
-                        message: r.data.message.body ? r.data.message.body : "It worked!",
-                        icon:    r.data.message.icon
-                                 ? r.data.message.icon
-                                 : "mdi-alert-decagram",
-                        type:    r.data.message.type ? r.data.message.type : "info",
-                      })
-      }
+  axios.interceptors.response.use(
+    r => {
+      app.mixinLogin.methods.updateUser(r.data)
+      app.mixinMain.methods.sendNotification(r.data)
 
       return r
     },

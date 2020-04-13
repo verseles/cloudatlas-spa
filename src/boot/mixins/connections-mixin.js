@@ -2,7 +2,7 @@ const mixinConnections = {
   methods: {
     getConnections () {
       this.$store.globalRefs.loaders.prefs = true
-      this.$axios
+      this.$http
         .get('connections')
         .then(response => this.setConnections(response.data.connections))
         .finally(() => (this.$store.globalRefs.loaders.prefs = false))
@@ -14,7 +14,7 @@ const mixinConnections = {
     },
     deleteConnection (id) {
       this.$store.connection.deletingConn.push(id)
-      this.$axios
+      this.$http
         .delete('connections/' + id)
         .then(response => {
           this.processResults(response)

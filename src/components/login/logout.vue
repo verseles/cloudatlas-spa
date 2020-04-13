@@ -10,7 +10,7 @@ import { LocalStorage, SessionStorage } from "quasar";
 
 export default {
   mounted() {
-    this.$axios.get("user/logout");
+    this.$http.get("user/logout");
     this.$store.token = null;
     this.$store.user = {};
     LocalStorage.clear();

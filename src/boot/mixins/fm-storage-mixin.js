@@ -2,7 +2,7 @@ const mixinFMStorage = {
   methods: {
     listStorages() {
       this.loading = true
-      this.$axios
+      this.$http
           .get('fm/storages')
           .then(response => this.updateStorages(response.data.storages))
           .catch(() => (this.loading = false))
@@ -27,10 +27,10 @@ const mixinFMStorage = {
           editing                  = this.$store.fm.editingStorage
 
       if (editing) {
-        request = this.$axios.patch(`fm/storages/${ editing }`, data)
+        request = this.$http.patch(`fm/storages/${ editing }`, data)
       }
       else {
-        request = this.$axios.post('fm/storages', data)
+        request = this.$http.post('fm/storages', data)
       }
 
       request
@@ -66,7 +66,7 @@ const mixinFMStorage = {
     },
     deleteStorage(id, done = {}) {
       this.$store.fm.deletingStorage.push(id)
-      this.$axios
+      this.$http
           .delete('fm/storages/' + id)
           .then(response => {
             this.processResults(response)
