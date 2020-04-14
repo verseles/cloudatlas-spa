@@ -6,7 +6,7 @@
       "background_color": "#FFFFFF",
       "splashscreen_type": "overlay"
     },
-    "build_always": true,
+    "build_always": false,
     "__internal": {
       "dev": {
         "spa": {
