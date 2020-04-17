@@ -195,9 +195,7 @@
         return pad(value)
       },
       humanDate: v => {
-        // YYYY-MM-DDTHH:mm:ss.ZZ\Z
-        const extracted = date.extractDate(v, 'YYYY-MM-DD HH:mm:ss')
-        return date.formatDate(extracted, "YYYY-MM-DD")
+        return date.formatDate(v, "YYYY-MM-DD")
       },
     },
     mounted() {

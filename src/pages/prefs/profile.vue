@@ -18,27 +18,27 @@
     <div class="row text-center q-mt-md">
       <div class="col">
         <q-btn color="primary" outline no-caps @click="$q.notify('Soon')"
-          >Change Email</q-btn
-        >
+        >Change Email
+        </q-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { date } from "quasar";
+  import { date } from "quasar"
 
-export default {
-  filters: {
-    humanDate: v => {
-      return v ? date.formatDate(v * 1000, "DD MMM YYYY HH:mm") : "-";
-    }
+  export default {
+    filters: {
+      humanDate: v => {
+        return v ? date.formatDate(v, "DD MMMM YYYY") : "-"
+      },
+    },
   }
-};
 </script>
 
 <style lang="scss" scoped>
-td {
-  font-weight: bold;
-}
+  td {
+    font-weight: bold;
+  }
 </style>
