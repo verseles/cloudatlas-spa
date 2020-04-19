@@ -41,7 +41,6 @@ export default ({app, router, Vue}) => {
 
       if (!token) {
         if (!to.meta.unguarded && to.path != '/logout') {
-          alert(to.path)
           app.$storage.set('afterLogin', to.path) // Save to get back to the link tried
         }
 
