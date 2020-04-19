@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development quasar dev -m pwa",
-    "prod": "cross-env NODE_ENV=production quasar build -m pwa && cp -v src/copy/* dist/pwa",
+    "prod": "quasar build -m pwa && cp -v src/copy/* dist/pwa",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },
