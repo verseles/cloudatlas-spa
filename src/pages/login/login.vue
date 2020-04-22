@@ -60,7 +60,7 @@
       <div class="col"></div>
       <div class="col-12 text-center absolute-bottom">
         <q-btn
-          @click="alert('teste')"
+          to="/about"
           flat
           size="sm"
           :ripple="false"
@@ -69,7 +69,7 @@
           >about</q-btn
         >
         <q-btn
-          @click="alert('teste')"
+          to="/terms"
           flat
           size="sm"
           :ripple="false"
@@ -78,7 +78,7 @@
           >terms</q-btn
         >
         <q-btn
-          @click="alert('teste')"
+          to="/privacy"
           flat
           size="sm"
           :ripple="false"
@@ -87,7 +87,7 @@
           >privacy</q-btn
         >
         <q-btn
-          @click="alert('teste')"
+          @click="github"
           flat
           size="sm"
           :ripple="false"
@@ -128,6 +128,9 @@ export default {
   methods: {
     goTo(url) {
       openURL(url);
+    },
+    github() {
+      this.goTo('https://github.com/cloudatlasid/spa')
     }
   },
   computed: {}

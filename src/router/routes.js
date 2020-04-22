@@ -1,32 +1,60 @@
 const routes = [
   {
-    path: '/login',
+    path:      '/login',
     component: () => import('layouts/login-layout.vue'),
-    children: [
+    children:  [
       {
-        path: '',
+        path:      '',
         component: () => import('pages/login/login.vue'),
-        meta: {
-          unguarded: true
-        }
-      }
-    ]
+        meta:      {
+          unguarded: true,
+        },
+      },
+    ],
   },
   {
-    path: '/logout',
-    component: () => import('components/login/logout.vue')
+    path:      '/',
+    component: () => import('layouts/legal-layout.vue'),
+    children:  [
+      {
+        path:      'about',
+        component: () => import('pages/others/about.vue'),
+        meta:      {
+          unguarded: true,
+          title: 'About CloudAtlas',
+        },
+      },      {
+        path:      'privacy',
+        component: () => import('pages/others/privacy.vue'),
+        meta:      {
+          unguarded: true,
+          title: 'Privacy Policy',
+        },
+      },      {
+        path:      'terms',
+        component: () => import('pages/others/terms.vue'),
+        meta:      {
+          unguarded: true,
+          title: 'Terms and Conditions',
+        },
+      },
+    ],
   },
   {
-    path: '/',
+    path:      '/logout',
+    component: () => import('components/login/logout.vue'),
+  },
+  {
+    path:      '/',
     component: () => import('layouts/main-layout.vue'),
-    children: [
-      { path: '', redirect: '/dashboard' },
+    children:  [
+      {path: '', redirect: '/dashboard'},
       {
         path: 'dashboard', component: () => import('pages/index.vue'),
         meta: {
           title: 'Dashboard',
           // icon: "mdi-tune"
-        }
+        },
       },
       {
         path:      'fm',
@@ -80,23 +108,23 @@ const routes = [
         },
       },
       {
-        path: 'prefs/:tab?',
+        path:      'prefs/:tab?',
         component: () => import('pages/prefs/prefs.vue'),
-        meta: {
+        meta:      {
           title: 'Preferences',
-          icon: 'mdi-tune'
-        }
-      }
-    ]
-  }
+          icon:  'mdi-tune',
+        },
+      },
+    ],
+  },
 ]
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
   routes.push({
-    path: '*',
-    component: () => import('pages/error404.vue')
-  })
+                path:      '*',
+                component: () => import('pages/error404.vue'),
+              })
 }
 
 export default routes
