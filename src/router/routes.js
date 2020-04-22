@@ -13,29 +13,43 @@ const routes = [
     ],
   },
   {
-    path:      '/',
+    path:      '/about',
     component: () => import('layouts/legal-layout.vue'),
     children:  [
       {
-        path:      'about',
+        path:      '',
         component: () => import('pages/others/about.vue'),
         meta:      {
           unguarded: true,
-          title: 'About CloudAtlas',
+          title:     'About CloudAtlas',
         },
-      },      {
-        path:      'privacy',
+      },
+    ],
+  }, ,
+  {
+    path:      '/privacy',
+    component: () => import('layouts/legal-layout.vue'),
+    children:  [
+      {
+        path:      '',
         component: () => import('pages/others/privacy.vue'),
         meta:      {
           unguarded: true,
-          title: 'Privacy Policy',
+          title:     'Privacy Policy',
         },
-      },      {
-        path:      'terms',
+      },
+    ],
+  },
+  {
+    path:      '/terms',
+    component: () => import('layouts/legal-layout.vue'),
+    children:  [
+      {
+        path:      '',
         component: () => import('pages/others/terms.vue'),
         meta:      {
           unguarded: true,
-          title: 'Terms and Conditions',
+          title:     'Terms and Conditions',
         },
       },
     ],
