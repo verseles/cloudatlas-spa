@@ -7,9 +7,9 @@
         <q-card class="text-center" :flat="$q.platform.is.mobile">
           <q-card-section>
             <div class="ck logo">
-              <img alt="CloudKit logo" src="~assets/cloudkit.app.svg" />
+              <img alt="CloudAtlas logo" src="~assets/cloudatlas.id.svg" />
             </div>
-            <div class="text-h3 text-primary ck name">cloudkit</div>
+            <div class="text-h3 text-primary ck name">CloudAtlas</div>
             <q-carousel
               v-model="slide"
               swipeable

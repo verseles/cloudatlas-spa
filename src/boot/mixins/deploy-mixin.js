@@ -159,7 +159,7 @@ const mixinDeploy = {
           })
     },
     triggerLink({id, secret}) {
-      return id && secret ? `https://hooks.cloudkit.app/${ id }/${ secret }` : null
+      return id && secret ? `https://hooks.cloudatlas.id/${ id }/${ secret }` : null
     },
     deployToggle({id}) {
       this.$store.deploy.togglingTask.push(id)
@@ -256,7 +256,7 @@ const mixinDeploy = {
                                                 '    "id": 42\n' +
                                                 "  },\n" +
                                                 '  "form_params": {\n' +
-                                                '    "username": "ckp",\n' +
+                                                '    "username": "cloudatlas",\n' +
                                                 '    "password": "ShyInTheEyes",\n' +
                                                 '    "remember": 1\n' +
                                                 "  }\n" +

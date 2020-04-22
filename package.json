@@ -1,15 +1,15 @@
 {
   "name": "ck",
   "version": "0.0.1",
-  "description": "CloudKit is a ultimate set of tools for web developers. It includes, cloud file manager, deploy with webhooks, backups,\n  database navigators, APIs and much more.",
-  "productName": "CloudKit",
-  "cordovaId": "app.cloudkit.app",
+  "description": "CloudAtlas is a ultimate set of tools for web developers. It includes, cloud file manager, deploy with webhooks, backups,\n  database navigators, APIs and much more.",
+  "productName": "CloudAtlas",
+  "cordovaId": "app.cloudatlas.id",
   "capacitorId": "",
   "author": "Cloud Atlas Inc.",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development quasar dev -m pwa",
-    "prod": "cross-env NODE_ENV=production quasar build -m pwa && cp -v src/copy/* dist/pwa",
+    "dev": "cross-env NODE_ENV=development quasar dev",
+    "prod": "cross-env NODE_ENV=production quasar build && cp -v src/copy/* dist/spa",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },

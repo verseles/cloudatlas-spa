@@ -10,7 +10,7 @@
                aria-label="Menu"
         />
         <q-toolbar-title class="text-center">
-          {{ $store.title || $route.meta.title || 'cloudkit'}}
+          {{ $store.title || $route.meta.title || 'CloudAtlas'}}
           <linkify-path v-if="$route.name === 'fm-list-files'" :path="$store.fm.manager.path"/>
         </q-toolbar-title>
       </q-toolbar>
@@ -115,7 +115,7 @@
 
       clearInterval(this.$store.globalRefs.timers.tawk_chatting)
       this.$store.globalRefs.timers.tawk_chatting = setInterval(() => {
-        this.isChating = !!window.Tawk_API.isChatOngoing()
+        this.isChating = window.Tawk_API.isChatOngoing() || false
       }, 1000)
     },
     data() {

@@ -77,11 +77,11 @@ module.exports = function (ctx) {
       analyze:       false,
       env:           ctx.dev
                      ? { // so on dev we'll have
-          API_BASE_URL:   JSON.stringify('https://ckp.test'),
+          API_BASE_URL:   JSON.stringify('https://ca.test'),
           STRIPE_PUB_KEY: JSON.stringify('pk_test_BFuC02EqBXWuzcCgyL82vpkX'),
         }
                      : { // and on build (production):
-          API_BASE_URL:   JSON.stringify('https://api.cloudkit.app'),
+          API_BASE_URL:   JSON.stringify('https://api.cloudatlas.id'),
           STRIPE_PUB_KEY: JSON.stringify('pk_live_PDCX7Uliy3qwum9iQ23US0yD'),
         },
       // Options below are automatically set depending on the env, set them if you want to override
@@ -123,8 +123,8 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions:    {}, // only for GenerateSW
       manifest:          {
-        name:             'CloudKit',
-        short_name:       'CloudKit',
+        name:             'CloudAtlas',
+        short_name:       'CloudAtlas',
         description:      'Web Dev Tools',
         display:          'standalone',
         orientation:      'portrait',
@@ -163,7 +163,7 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'app.cloudkit.app',
+      id: 'app.cloudatlas.id',
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
