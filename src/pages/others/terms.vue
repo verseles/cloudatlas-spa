@@ -9,8 +9,6 @@
     <br>
     1.1 These Terms and Conditions constitute a legally binding agreement made between you, whether personally or on behalf of an entity (you), and Cloud Atlas, Inc., doing business as CloudAtlas, located at 2035 Sunset Lake Road, Suite B-2, Newark, DE 19702 United States (we, us), concerning your access to and use of the Cloud Atlas, Inc. (https://cloudatlas.id) website as well as any related applications (the Site).<br>
     <br>
-    The Site provides the following services: __________ (Services). You agree that by accessing the Site and/or Services, you have read, understood, and agree to be bound by all of these Terms and Conditions.<br>
-    <br>
     If you do not agree with all of these Terms and Conditions, then you are prohibited from using the Site and Services and you must discontinue use immediately. We recommend that you print a copy of these Terms and Conditions for future reference.<br>
     <br>
     1.2 The supplemental policies set out in Section 1.7 below, as well as any supplemental terms and condition or documents that may be posted on the Site from time to time, are expressly incorporated by reference.<br>
@@ -86,7 +84,8 @@
     <br>
     4.2 You further agree that we can use your User Content for any other purposes whatsoever in perpetuity without payment to you, and combine your User Content with other content for use within the Site and otherwise. We do not have to attribute your User Content to you. When you upload or post content to our site, you grant us the following rights to use that content:<br>
     <br>
-    4.3 In posting User Content, including reviews or making contact with other users of the Site you shall comply with our Acceptable Use Policy __________.<br>
+    4.3 In posting User Content, including reviews or making contact with other users of the Site you shall comply with our Acceptable Use Policy
+    <a href="/privacy"></a>.<br>
     <br>
     4.4 You warrant that any User Content does comply with our Acceptable Use Policy, and you will be liable to us and indemnify us for any breach of that warranty. This means you will be responsible for any loss or damage we suffer as a result of your breach of this warranty.<br>
     <br>
