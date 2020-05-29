@@ -112,13 +112,9 @@ const mixinLogin = {
       window.Tawk_API         = window.Tawk_API || {}
       window.Tawk_API.visitor = tawk_data
 
-      window.Tawk_API.setAttributes(tawk_data, function (error) {
-        // @TODO log this
-        // @FIXME log this
-        if (error != undefined) {
-          throw error
-        }
-      })
+      try {
+        window.Tawk_API.setAttributes(tawk_data)
+      } catch (e) { }
     },
   },
 }

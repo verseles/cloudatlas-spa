@@ -115,7 +115,11 @@
 
       clearInterval(this.$store.globalRefs.timers.tawk_chatting)
       this.$store.globalRefs.timers.tawk_chatting = setInterval(() => {
-        this.isChating = window.Tawk_API.isChatOngoing() || false
+        try {
+          this.isChating = window.Tawk_API.isChatOngoing()
+        } catch (e) {
+          this.isChating = false
+        }
       }, 1000)
     },
     data() {

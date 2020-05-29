@@ -22,7 +22,7 @@ const mixinMain = {
       if (d.connections) {
         this.setConnections(d.connections)
       }
-      if (d.deploy?.calls) {
+      if (get(d, 'deploy.calls')) {
         this.deploy.calls = d.deploy.calls
       }
     },
@@ -56,13 +56,13 @@ const mixinMain = {
 
     },
     sendNotification(data) {
-      const message = data.message ?? null
+      const message = get(data, 'message', null)
       if (message) {
         let notification = {
-          message: message.body ?? "It worked!",
-          icon:    message.icon ?? "mdi-alert-decagram",
-          type:    message.type ?? "info",
-          html:    message.html ?? false,
+          message: get(message, 'body', 'It worked!'),
+          icon:    get(message, 'icon', 'mdi-alert-decagram'),
+          type:    get(message, 'type', 'info'),
+          html:    get(message, 'html', false),
         }
         if (message.caption) {
           notification.caption = message.caption

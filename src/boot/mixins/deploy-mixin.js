@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 const mixinDeploy = {
   methods: {
     listDeploys() {
@@ -103,17 +105,17 @@ const mixinDeploy = {
 
       action
         .then(r => {
-          this.$store.deploy.editingTask.id     = r.data?.task?.id ?? null
-          this.$store.deploy.editingTask.secret = r.data?.task?.id ?? null
+          const taskId                          = get(r, 'data.task.id', null)
+          this.$store.deploy.editingTask.id     = taskId
+          this.$store.deploy.editingTask.secret = taskId
 
           this.processResults(r)
 
-          if (r.data?.ok) {
+          if (get(r, 'data.ok')) {
             next()
           }
         })
         .catch(e => {
-          console.info(e)
           console.error(e)
           if (e.response.status != 422) {
             this.$q.notify({
