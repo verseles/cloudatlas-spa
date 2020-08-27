@@ -19,5 +19,5 @@ yarn lint
 
 ### Build the app for production
 ```bash
-yarn build
+yarn prod
 ```
