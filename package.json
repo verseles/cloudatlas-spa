@@ -17,7 +17,7 @@
     "@quasar/extras": "^1.6.2",
     "axios": "^0.19.2",
     "blueimp-md5": "^2.13.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "quasar": "^1.9.10",
     "vue-axios": "^2.1.5",
     "vue-codemirror": "^4.0.6",
