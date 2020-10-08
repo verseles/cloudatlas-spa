@@ -6,12 +6,12 @@
                dense
                round
                @click="leftDrawerOpen = !leftDrawerOpen"
-               :icon="$store.icon || $route.meta.icon || 'mdi-menu'"
+               :icon="$global.icon || $route.meta.icon || 'mdi-menu'"
                aria-label="Menu"
         />
         <q-toolbar-title class="text-center">
-          {{ $store.title || $route.meta.title || 'CloudAtlas'}}
-          <linkify-path v-if="$route.name === 'fm-list-files'" :path="$store.fm.manager.path"/>
+          {{ $global.title || $route.meta.title || 'CloudAtlas'}}
+          <linkify-path v-if="$route.name === 'fm-list-files'" :path="$global.fm.manager.path"/>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -47,7 +47,7 @@
         </q-item>
       </q-list>
       <q-list class="absolute-bottom">
-        <q-item clickable @click="$store.globalRefs.modals.fileUploadModal = true">
+        <q-item clickable @click="$global.globalRefs.modals.fileUploadModal = true">
           <uploader-group ref="uploaderGroup"/>
 
           <q-item-section avatar>
@@ -85,7 +85,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>Logout</q-item-label>
-            <q-item-label caption>{{ $store.user.email }}</q-item-label>
+            <q-item-label caption>{{ $global.user.email }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -113,8 +113,8 @@
         setTimeout(() => this.tawk_auth(), 5000)
       }
 
-      clearInterval(this.$store.globalRefs.timers.tawk_chatting)
-      this.$store.globalRefs.timers.tawk_chatting = setInterval(() => {
+      clearInterval(this.$global.globalRefs.timers.tawk_chatting)
+      this.$global.globalRefs.timers.tawk_chatting = setInterval(() => {
         try {
           this.isChating = window.Tawk_API.isChatOngoing()
         } catch (e) {

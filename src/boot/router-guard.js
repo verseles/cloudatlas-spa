@@ -12,8 +12,8 @@ export default ({app, router, Vue}) => {
   })
 
   router.beforeEach((to, from, next) => {
-    app.$store.body   = {}
-    app.$store.errors = {}
+    app.$global.body   = {}
+    app.$global.errors = {}
     if (to.meta.unguarded) {
       // Allowed without auth
       next()
@@ -22,17 +22,17 @@ export default ({app, router, Vue}) => {
       let token     = null,
           tawk_hash = null,
           user      = {}
-      if (typeof app.$store.token === 'string') {
-        token = app.$store.token
+      if (typeof app.$global.token === 'string') {
+        token = app.$global.token
       }
       else if (app.$storage.has('token')) {
         token     = app.$storage.getItem('token')
         user      = app.$storage.getItem('user')
         tawk_hash = app.$storage.getItem('tawk_hash')
 
-        app.$store.token     = token
-        app.$store.user      = user
-        app.$store.tawk_hash = tawk_hash
+        app.$global.token     = token
+        app.$global.user      = user
+        app.$global.tawk_hash = tawk_hash
 
         axios.defaults.headers.common[ 'Authorization' ] = 'Bearer ' + token
 

@@ -15,7 +15,7 @@
           <q-icon name="mdi-folder-search-outline"/>
         </template>
       </q-input>
-      <table class="q-table full-width q-ma-sm" :class="{'highlight striped-odd' : !$store.fm.manager.loading}">
+      <table class="q-table full-width q-ma-sm" :class="{'highlight striped-odd' : !$global.fm.manager.loading}">
         <thead>
         <tr>
           <th class="text-center checkbox-select non-selectable">
@@ -53,7 +53,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-if="$store.fm.manager.loading">
+        <tr v-if="$global.fm.manager.loading">
           <td colspan="4" class="text-center">
             <q-spinner-dots size="50px"/>
           </td>
@@ -84,7 +84,7 @@
         </tr>
         </tbody>
       </table>
-      <div class="row justify-center items-center text-center q-ma-md" v-show="!$store.fm.manager.loading">
+      <div class="row justify-center items-center text-center q-ma-md" v-show="!$global.fm.manager.loading">
         <div class="col-3 text-center self-center">{{ currentList.length }} items</div>
         <div class="col-3 col-md-1 text-center">
           <q-select v-model="internalItemsPerPage"
@@ -108,13 +108,13 @@
     </q-pull-to-refresh>
     <q-page-sticky position="bottom-left"
                    :offset="[18, 18]"
-                   v-show="Object.keys($store.fm.manager.clipboard).length && !$store.fm.manager.loading && !fabulous"
+                   v-show="Object.keys($global.fm.manager.clipboard).length && !$global.fm.manager.loading && !fabulous"
     >
       <q-btn @click="fromClipboard('move')" color="dark" fab class="q-mr-sm">
         <q-icon name="mdi-content-cut"/>
         <q-tooltip anchor="top left" self="bottom left">Move to here</q-tooltip>
       </q-btn>
-      <q-btn @click="$store.fm.manager.clipboard = {}" color="white" text-color="dark" fab-mini class="q-mr-sm">
+      <q-btn @click="$global.fm.manager.clipboard = {}" color="white" text-color="dark" fab-mini class="q-mr-sm">
         <q-icon name="mdi-close"/>
         <q-tooltip anchor="top left" self="bottom left">Cancel</q-tooltip>
       </q-btn>
@@ -123,13 +123,13 @@
         <q-tooltip anchor="top left" self="bottom left">Copy to here</q-tooltip>
       </q-btn>
     </q-page-sticky>
-    <q-page-sticky v-show="!$store.fm.manager.loading && !fabulous" position="bottom-right" :offset="[55, 18]">
+    <q-page-sticky v-show="!$global.fm.manager.loading && !fabulous" position="bottom-right" :offset="[55, 18]">
       <q-btn fab color="secondary" @click="refresher()" icon="mdi-reload" class="q-mr-sm"
       >
         <q-tooltip anchor="top left" self="bottom left">Refresh list</q-tooltip>
       </q-btn>
     </q-page-sticky>
-    <q-page-sticky v-show="!$store.fm.manager.loading" position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky v-show="!$global.fm.manager.loading" position="bottom-right" :offset="[18, 18]">
       <q-fab v-model="fabulous"
              color="accent"
              text-color="white"
@@ -327,7 +327,7 @@
       table:             {
         type:     Array,
         required: true,
-        default:  () => this.$store.fm.manager.table,
+        default:  () => this.$global.fm.manager.table,
       },
       baseId:            {
         type:     String,
@@ -344,7 +344,7 @@
     },
     mounted() {
       window.onbeforeunload = () => this.windowClose()
-      this.listStorages() // Just to update $store.fm.storages
+      this.listStorages() // Just to update $global.fm.storages
       this.$q.notify('Click selects, Double opens')
     },
     data() {
@@ -498,16 +498,16 @@
         const baseId = this.baseId
         const uid    = md5(baseId + path)
 
-        this.$store.fm.uploads.lastUid = uid
-        const existsInUploads          = this.$store.fm.uploads.groups.find(
+        this.$global.fm.uploads.lastUid = uid
+        const existsInUploads          = this.$global.fm.uploads.groups.find(
           el => el.uid === uid,
         )
 
         if (!existsInUploads) {
-          this.$store.fm.uploads.groups.unshift({uid, baseId, path})
+          this.$global.fm.uploads.groups.unshift({uid, baseId, path})
         }
 
-        this.$store.globalRefs.modals.fileUploadModal = true
+        this.$global.globalRefs.modals.fileUploadModal = true
       },
       openCodeEditor(obj) {
         this.editor.path      = obj.path

@@ -25,18 +25,18 @@ const mixinLogin = {
         this.$storage.remove('afterLogin')
       }
       else {
-        this.$router.push(this.$store.afterLogin)
+        this.$router.push(this.$global.afterLogin)
       }
     },
     getToken() {
       if (
-        this.$store &&
-        typeof this.$store.token === 'string' &&
-        typeof this.$store.user === 'object' &&
-        typeof this.$store.tawk_hash === 'string'
+        this.$global &&
+        typeof this.$global.token === 'string' &&
+        typeof this.$global.user === 'object' &&
+        typeof this.$global.tawk_hash === 'string'
       ) {
         // console.info('aprovado rápido')
-        return this.$store.token
+        return this.$global.token
       }
       else if (this.$storage.has('token')) {
         // console.info('aprovado memória')
@@ -56,7 +56,7 @@ const mixinLogin = {
     setToken({body}) {
       if (typeof body.token === 'string') {
         this.$storage.set('token', body.token)
-        this.$store.token = body.token
+        this.$global.token = body.token
 
         this.$http.defaults.headers.common[ 'Authorization' ] = 'Bearer ' + body.token
 
@@ -69,13 +69,13 @@ const mixinLogin = {
     updateUser(data) {
       if (typeof data.user === 'object') {
         this.$storage.set('user', data.user)
-        this.$store.user = data.user
+        this.$global.user = data.user
       }
     },
     updateTawkAuth(data) {
       if (typeof data.tawk_hash === 'string') {
         this.$storage.set('tawk_hash', data.tawk_hash)
-        this.$store.tawk_hash = data.tawk_hash
+        this.$global.tawk_hash = data.tawk_hash
       }
     },
     oaLogin(p = 'github') {
@@ -104,9 +104,9 @@ const mixinLogin = {
     },
     tawk_auth() {
       const tawk_data = {
-        name:  this.$store.user.name,
-        email: this.$store.user.email,
-        hash:  this.$store.tawk_hash,
+        name:  this.$global.user.name,
+        email: this.$global.user.email,
+        hash:  this.$global.tawk_hash,
       }
 
       window.Tawk_API         = window.Tawk_API || {}

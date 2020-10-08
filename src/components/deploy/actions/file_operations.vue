@@ -129,7 +129,7 @@
     directives: {handle: HandleDirective},
     computed:   {
       serversAvailable() {
-        return this.$store.fm.storages
+        return this.$global.fm.storages
       },
       needsOnlyOneServer() {
         return [ 'deleteFolder', 'deleteFile', 'writeFile',

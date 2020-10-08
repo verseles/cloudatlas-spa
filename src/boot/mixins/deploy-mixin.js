@@ -23,7 +23,7 @@ const mixinDeploy = {
           .catch(() => (this.loading = false))
     },
     updateDeploys(up) {
-      this.$set(this.$store.deploy, "deploys", up)
+      this.$set(this.$global.deploy, "deploys", up)
     },
     typeDeploy(task) {
       if (task.conn) {
@@ -49,27 +49,27 @@ const mixinDeploy = {
       }
     },
     addDeployDataReset() {
-      const reset                      = JSON.stringify(this.$store.deploy.editingTaskReset)
-      this.$store.deploy.editingTask   = JSON.parse(reset)
-      this.$store.deploy.actions       = []
-      this.$store.deploy.notifications = []
+      const reset                      = JSON.stringify(this.$global.deploy.editingTaskReset)
+      this.$global.deploy.editingTask   = JSON.parse(reset)
+      this.$global.deploy.actions       = []
+      this.$global.deploy.notifications = []
     },
     getTask(id) {
       let action = this.$http.get("deploy/" + id)
 
-      this.$store.globalRefs.loaders.editDeploy = true
+      this.$global.globalRefs.loaders.editDeploy = true
       action
         .then(r => {
-          this.$store.deploy.editingTask                = r.data.task
-          this.$store.deploy.editingTask.git_is_enabled = this.$store.deploy
+          this.$global.deploy.editingTask                = r.data.task
+          this.$global.deploy.editingTask.git_is_enabled = this.$global.deploy
                                                             .editingTask.git_is_enabled
                                                           ? true
                                                           : ""
-          if (this.$store.deploy.editingTask.git_is_enabled) {
-            this.repoSelected = `${ r.data.git_conn.provider }/${ this.$store.deploy.editingTask.conn_id }/${ this.$store.deploy.editingTask.repo }`
+          if (this.$global.deploy.editingTask.git_is_enabled) {
+            this.repoSelected = `${ r.data.git_conn.provider }/${ this.$global.deploy.editingTask.conn_id }/${ this.$global.deploy.editingTask.repo }`
           }
-          this.$store.deploy.actions       = r.data.actions
-          this.$store.deploy.notifications = r.data.notifications
+          this.$global.deploy.actions       = r.data.actions
+          this.$global.deploy.notifications = r.data.notifications
 
           if (!this.$route.params.tab) {
             this.$router.replace(this.$route.path + "/source")
@@ -88,10 +88,10 @@ const mixinDeploy = {
                            type:    "negative",
                          })
         })
-        .finally(() => (this.$store.globalRefs.loaders.editDeploy = false))
+        .finally(() => (this.$global.globalRefs.loaders.editDeploy = false))
     },
     saveTask(data, next) {
-      this.$store.globalRefs.loaders.editDeploy = true
+      this.$global.globalRefs.loaders.editDeploy = true
 
       let action
       if (data.task.id) {
@@ -106,8 +106,8 @@ const mixinDeploy = {
       action
         .then(r => {
           const taskId                          = get(r, 'data.task.id', null)
-          this.$store.deploy.editingTask.id     = taskId
-          this.$store.deploy.editingTask.secret = taskId
+          this.$global.deploy.editingTask.id     = taskId
+          this.$global.deploy.editingTask.secret = taskId
 
           this.processResults(r)
 
@@ -124,10 +124,10 @@ const mixinDeploy = {
                            })
           }
         })
-        .finally(() => (this.$store.globalRefs.loaders.editDeploy = false))
+        .finally(() => (this.$global.globalRefs.loaders.editDeploy = false))
     },
     deleteTask(id) {
-      this.$store.deploy.deletingTask.push(id)
+      this.$global.deploy.deletingTask.push(id)
       this.$http
           .delete("deploy/" + id)
           .then(response => {
@@ -147,10 +147,10 @@ const mixinDeploy = {
                                                },
                                              ],
                                            })
-            this.$store.deploy.deletingTask.pop()
+            this.$global.deploy.deletingTask.pop()
           })
           .catch(error => {
-            this.$store.deploy.deletingTask.pop()
+            this.$global.deploy.deletingTask.pop()
 
             this.$q.notify({
                              message:
@@ -164,15 +164,15 @@ const mixinDeploy = {
       return id && secret ? `https://hooks.cloudatlas.id/${ id }/${ secret }` : null
     },
     deployToggle({id}) {
-      this.$store.deploy.togglingTask.push(id)
+      this.$global.deploy.togglingTask.push(id)
       this.$http
           .get("deploy/toggle/" + id)
           .then(response => {
-            this.$store.deploy.togglingTask.pop()
+            this.$global.deploy.togglingTask.pop()
             this.processResults(response)
           })
           .catch(error => {
-            this.$store.deploy.togglingTask.pop()
+            this.$global.deploy.togglingTask.pop()
 
             this.$q.notify({
                              message:
@@ -201,13 +201,13 @@ const mixinDeploy = {
     deployTrigger({id, secret}) {
       let action = this.$http.get(`/deploy/trigger/${ id }/${ secret }`)
 
-      this.$store.deploy.triggeringTask.push(id)
+      this.$global.deploy.triggeringTask.push(id)
       action
         .then(() => {
-          this.$store.deploy.triggeringTask.pop()
+          this.$global.deploy.triggeringTask.pop()
         })
         .catch(() => {
-          this.$store.deploy.triggeringTask.pop()
+          this.$global.deploy.triggeringTask.pop()
 
           this.$q.notify({
                            message: "Could not trigger this task",
@@ -218,7 +218,7 @@ const mixinDeploy = {
     addAction(type = "remote_command") {
       switch (type) {
         case "remote_command":
-          this.$store.deploy.actions.push({
+          this.$global.deploy.actions.push({
                                             status:  "active",
                                             type:    "remote_command",
                                             details: {
@@ -232,7 +232,7 @@ const mixinDeploy = {
                                           })
           break
         case "file_operations":
-          this.$store.deploy.actions.push({
+          this.$global.deploy.actions.push({
                                             status:  "active",
                                             type:    "file_operations",
                                             details: {
@@ -247,7 +247,7 @@ const mixinDeploy = {
                                           })
           break
         case "http_request":
-          this.$store.deploy.actions.push({
+          this.$global.deploy.actions.push({
                                             status:  "active",
                                             type:    "http_request",
                                             details: {
@@ -275,7 +275,7 @@ const mixinDeploy = {
     addNotification(type = "email") {
       switch (type) {
         case "email":
-          this.$store.deploy.notifications.push({
+          this.$global.deploy.notifications.push({
                                                   status:  "active",
                                                   type:    "email",
                                                   details: {
@@ -286,7 +286,7 @@ const mixinDeploy = {
                                                 })
           break
         case "pushbullet":
-          this.$store.deploy.notifications.push({
+          this.$global.deploy.notifications.push({
                                                   status:  "active",
                                                   type:    "pushbullet",
                                                   details: {

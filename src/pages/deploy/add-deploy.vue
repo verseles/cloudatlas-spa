@@ -2,7 +2,7 @@
   <q-page>
     <q-stepper v-model="step"
                ref="stepper"
-               @input="$router.replace(`/deploy/edit/${$store.deploy.editingTask.id}/${step}`)"
+               @input="$router.replace(`/deploy/edit/${$global.deploy.editingTask.id}/${step}`)"
                contractable
                alternative-labels
                :header-nav="!!editing"
@@ -12,10 +12,10 @@
       <q-step name="source" active-icon="mdi-git" title="Source">
         <div class="row q-pa-lg no-shadow">
           <div class="q-mb-lg col-md-6 offset-md-3 col-xs-12">
-            <q-input v-model="$store.deploy.editingTask.title"
-                     :error="!!$store.errors['task.title']"
+            <q-input v-model="$global.deploy.editingTask.title"
+                     :error="!!$global.errors['task.title']"
                      placeholder="whatever you want"
-                     :label="$store.errors['task.title'] ? $store.errors['task.title'][0] : 'Title'"
+                     :label="$global.errors['task.title'] ? $global.errors['task.title'][0] : 'Title'"
             />
           </div>
           <div class="q-mb-lg col-md-6 offset-md-3 col-xs-12 text-bold">
@@ -23,8 +23,8 @@
           </div>
           <div class="q-mb-lg col-md-6 offset-md-3 col-xs-12">
             <q-checkbox :value="true" label="The task link is called" disabled/>
-            <q-btn v-if="triggerLink($store.deploy.editingTask)"
-                   @click="copyboard(triggerLink($store.deploy.editingTask))"
+            <q-btn v-if="triggerLink($global.deploy.editingTask)"
+                   @click="copyboard(triggerLink($global.deploy.editingTask))"
                    size="sm"
                    round
                    flat
@@ -36,12 +36,12 @@
             <small v-else> (available after save)</small>
           </div>
           <div class="q-mb-lg col-md-6 offset-md-3 col-xs-12">
-            <q-checkbox v-model="$store.deploy.editingTask.git_is_enabled"
+            <q-checkbox v-model="$global.deploy.editingTask.git_is_enabled"
                         false-value=""
                         label="A git receive a new push"
             />
           </div>
-          <div v-if="$store.deploy.editingTask.git_is_enabled"
+          <div v-if="$global.deploy.editingTask.git_is_enabled"
                class="col-xs-2 col-sm-1 col-md-1 offset-md-3 text-center"
           >
             <q-icon class="vertical-middle"
@@ -50,8 +50,8 @@
                     :name="ui[repoGroup.provider].icon"
             />
           </div>
-          <div v-if="$store.deploy.editingTask.git_is_enabled" class="q-mb-xs col-xs-10 col-sm-11 col-md-5">
-            <q-select :error="!!$store.errors['task.repo']"
+          <div v-if="$global.deploy.editingTask.git_is_enabled" class="q-mb-xs col-xs-10 col-sm-11 col-md-5">
+            <q-select :error="!!$global.errors['task.repo']"
                       float-label="Repository"
                       :options="repoOptions"
                       v-model="repoSelected"
@@ -62,14 +62,14 @@
             />
             <q-inner-loading :showing="loadingRepos"></q-inner-loading>
           </div>
-          <div v-if="$store.deploy.editingTask.git_is_enabled"
+          <div v-if="$global.deploy.editingTask.git_is_enabled"
                class="q-mb-lg col-xs-12 col-sm-11 offset-sm-1 col-md-5 offset-md-4"
           >
-            <q-input v-model="$store.deploy.editingTask.branch"
+            <q-input v-model="$global.deploy.editingTask.branch"
                      dense
                      @focus="$event.target.select()"
-                     :error="!!$store.errors['task.branch']"
-                     :label="$store.errors['task.branch'] ? $store.errors['task.branch'][0] : 'Branch'"
+                     :error="!!$global.errors['task.branch']"
+                     :label="$global.errors['task.branch'] ? $global.errors['task.branch'][0] : 'Branch'"
             />
           </div>
         </div>
@@ -79,7 +79,7 @@
       <q-step name="actions" active-icon="mdi-hexagon-multiple" title="Actions">
         <div class="row q-pt-md">
           <div class="q-mb-lg col-md-8 offset-md-2 col-xs-12">
-            <actions :task="$store.deploy.editingTask" :actions="$store.deploy.actions"/>
+            <actions :task="$global.deploy.editingTask" :actions="$global.deploy.actions"/>
           </div>
         </div>
       </q-step>
@@ -88,7 +88,7 @@
       <q-step name="notifications" active-icon="mdi-bell" title="Notifications" subtitle="">
         <div class="row q-pt-md">
           <div class="q-mb-lg col-md-8 offset-md-2 col-xs-12">
-            <notifications :task="$store.deploy.editingTask" :notifications="$store.deploy.notifications"/>
+            <notifications :task="$global.deploy.editingTask" :notifications="$global.deploy.notifications"/>
           </div>
         </div>
       </q-step>
@@ -97,7 +97,7 @@
           <deploy-edit-nav-btn/>
         </q-stepper-navigation>
       </template>
-      <q-inner-loading :showing="$store.globalRefs.loaders.editDeploy"/>
+      <q-inner-loading :showing="$global.globalRefs.loaders.editDeploy"/>
     </q-stepper>
   </q-page>
 </template>
@@ -129,7 +129,7 @@
       }
     },
     mounted() {
-      this.$store.globalRefs.steppers.editDeploy = this.$refs.stepper
+      this.$global.globalRefs.steppers.editDeploy = this.$refs.stepper
       this.getRepos()
       this.listStorages()
 
@@ -138,17 +138,17 @@
       }
     },
     beforeDestroy() {
-      this.$store.subtitle = null
+      this.$global.subtitle = null
       this.addDeployDataReset()
     },
     watch:      {
       title(t) {
-        this.$store.subtitle = t
+        this.$global.subtitle = t
       },
       repoSelected(r) {
         // console.info(r)
-        this.$store.deploy.editingTask.repo    = this.repoGroup.repo
-        this.$store.deploy.editingTask.conn_id = this.repoGroup.conn_id
+        this.$global.deploy.editingTask.repo    = this.repoGroup.repo
+        this.$global.deploy.editingTask.conn_id = this.repoGroup.conn_id
       },
     },
     methods:    {

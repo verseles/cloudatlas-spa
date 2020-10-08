@@ -1,7 +1,7 @@
 const mixinBilling = {
   computed: {
     isPRO() {
-      return !!this.$store.user.billing.pro
+      return !!this.$global.user.billing.pro
     },
   },
 }

@@ -63,7 +63,7 @@ const mixinFM = {
   },
   methods: {
     successListing (r, path = null) {
-      this.$store.fm.manager.loading = false
+      this.$global.fm.manager.loading = false
 
       let d = r.data
       if (d.ok === false) {
@@ -74,17 +74,17 @@ const mixinFM = {
         })
       }
 
-      this.$store.fm.manager.path = path || this.$route.params.path || '/'
+      this.$global.fm.manager.path = path || this.$route.params.path || '/'
 
-      this.$store.fm.manager.storage = d.storage || {}
-      this.$store.icon = this.typeStorage(d.storage.type).icon
-      this.$store.title = d.storage.name
-      // this.$store.subtitle = 'File Manager - '
+      this.$global.fm.manager.storage = d.storage || {}
+      this.$global.icon = this.typeStorage(d.storage.type).icon
+      this.$global.title = d.storage.name
+      // this.$global.subtitle = 'File Manager - '
 
-      this.$store.fm.manager.table = d.list || {}
+      this.$global.fm.manager.table = d.list || {}
     },
     failListing () {
-      this.$store.fm.manager.loading = false
+      this.$global.fm.manager.loading = false
       this.$q.loading.hide()
 
       this.$q.notify({
@@ -93,7 +93,7 @@ const mixinFM = {
       })
     },
     listFiles (id, path = '', done = {}) {
-      this.$store.fm.manager.loading = true
+      this.$global.fm.manager.loading = true
 
       this.$http
         .get(`fm/${id}?path=${path}`)
@@ -104,7 +104,7 @@ const mixinFM = {
         .catch(() => this.failListing)
     },
     deleteFiles (id, current_path, paths = {}) {
-      this.$store.fm.manager.loading = true
+      this.$global.fm.manager.loading = true
 
       this.$http
         .post(`fm/delete/${id}`, { path: current_path, paths: paths })
@@ -112,7 +112,7 @@ const mixinFM = {
         .catch(() => this.failListing)
     },
     createDir (id, current_path, name) {
-      this.$store.fm.manager.loading = true
+      this.$global.fm.manager.loading = true
 
       this.$http
         .get('fm/create', {
@@ -122,7 +122,7 @@ const mixinFM = {
         .catch(() => this.failListing)
     },
     createFile (id, current_path, name) {
-      this.$store.fm.manager.loading = true
+      this.$global.fm.manager.loading = true
 
       this.$http
         .get('fm/create_file/' + id, {
@@ -132,7 +132,7 @@ const mixinFM = {
         .catch(() => this.failListing)
     },
     renameDoc (id, file_item, new_name) {
-      this.$store.fm.manager.loading = true
+      this.$global.fm.manager.loading = true
 
       this.$http
         .get(`fm/${id}/edit`, {
@@ -144,7 +144,7 @@ const mixinFM = {
     toClipboard (clipboard) {
       if (typeof clipboard == 'object') {
         this.$q.sessionStorage.set('clipboard', clipboard)
-        this.$store.fm.manager.clipboard = clipboard
+        this.$global.fm.manager.clipboard = clipboard
       }
     },
     fromClipboard (operation = 'copy', baseId, folder_path) {
@@ -156,7 +156,7 @@ const mixinFM = {
         if (!folder_path) {
           folder_path = this.$route.params.path
         }
-        this.$store.fm.manager.loading = true
+        this.$global.fm.manager.loading = true
         this.$http
           .post(`fm/${operation}`, {
             from: this.$q.sessionStorage.getItem('clipboard'),
@@ -167,7 +167,7 @@ const mixinFM = {
 
         // Clean clipboard regardless if was copied/moved
         this.$q.sessionStorage.remove('clipboard')
-        this.$store.fm.manager.clipboard = {}
+        this.$global.fm.manager.clipboard = {}
       } else {
         // No clipboard
         this.$q.notify({

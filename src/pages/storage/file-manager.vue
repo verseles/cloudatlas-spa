@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-file-manager @refresh="refresher" :table="$store.fm.manager.table" :base-id="$route.params.storage_id"></q-file-manager>
+    <q-file-manager @refresh="refresher" :table="$global.fm.manager.table" :base-id="$route.params.storage_id"></q-file-manager>
   </q-page>
 </template>
 
@@ -17,12 +17,12 @@
       if (this.$q.sessionStorage.has("clipboard")) {
         const clipboard = this.$q.sessionStorage.get.item("clipboard");
         if (typeof clipboard == "object" && Object.keys(clipboard).length) {
-          this.$store.fm.manager.clipboard = clipboard;
+          this.$global.fm.manager.clipboard = clipboard;
         } else {
-          this.$store.fm.manager.clipboard = {};
+          this.$global.fm.manager.clipboard = {};
         }
       } else {
-        this.$store.fm.manager.clipboard = {};
+        this.$global.fm.manager.clipboard = {};
       }
     },
     methods:    {
@@ -31,11 +31,11 @@
       }
     },
     beforeDestroy() {
-      this.$store.icon             = ''
-      this.$store.title            = ''
-      this.$store.subtitle         = ''
-      this.$store.fm.manager.path  = "";
-      this.$store.fm.manager.table = [];
+      this.$global.icon             = ''
+      this.$global.title            = ''
+      this.$global.subtitle         = ''
+      this.$global.fm.manager.path  = "";
+      this.$global.fm.manager.table = [];
     },
     data() {
       return {};

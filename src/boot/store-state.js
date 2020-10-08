@@ -1,6 +1,6 @@
 import VueGlobalVar from 'vue-global-var'
 
-const $store = {
+const $global = {
   title:      '',
   subtitle:   '',
   icon:       '',
@@ -94,11 +94,11 @@ const $store = {
 }
 
 export default ({Vue, app}) => {
-  app.$store = $store
+  app.$global = $global
 
   Vue.use(VueGlobalVar, {
     globals: {
-      $store,
+      $global,
     },
   })
 };

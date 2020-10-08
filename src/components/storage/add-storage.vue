@@ -2,17 +2,17 @@
   <div @keydown.enter="addStorage" class="q-pa-lg">
     <q-card-section>
       <div class="text-h6">
-        <span v-if="$store.fm.editingStorage">Edit cloud storage</span>
+        <span v-if="$global.fm.editingStorage">Edit cloud storage</span>
         <span v-else>Add cloud storage</span>
       </div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-      <q-select class="q-mb-sm" v-model="$store.fm.addStorage.type"
+      <q-select class="q-mb-sm" v-model="$global.fm.addStorage.type"
                 label="Select the cloud storage type"
                 :options="cloudOptions" emit-value map-options/>
       <div class="q-mb-sm">
-        <q-input v-model="$store.fm.addStorage.name" label="Name" placeholder="whatever you want" type="text"/>
+        <q-input v-model="$global.fm.addStorage.name" label="Name" placeholder="whatever you want" type="text"/>
       </div>
       <component :is="storage_component"></component>
     </q-card-section>
@@ -60,7 +60,7 @@
     },
     computed: {
       storage_component () {
-        return 'fm-add-storage-' + this.$store.fm.addStorage.type
+        return 'fm-add-storage-' + this.$global.fm.addStorage.type
       }
     },
     methods: {}

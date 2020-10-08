@@ -55,18 +55,18 @@
       actions: {
         type:     Array,
         required: false,
-        default:  () => this.$store.deploy.actions || [],
+        default:  () => this.$global.deploy.actions || [],
       },
     },
     methods:    {
       newOrder(actions) {
-        this.$store.deploy.actions = actions
+        this.$global.deploy.actions = actions
       },
       del(index) {
-        this.$store.deploy.actions[ index ].status = 'deleted'
+        this.$global.deploy.actions[ index ].status = 'deleted'
       },
       undel(index) {
-        this.$store.deploy.actions[ index ].status = 'active'
+        this.$global.deploy.actions[ index ].status = 'active'
       },
     },
     mounted() {

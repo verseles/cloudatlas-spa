@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <q-dialog v-model="$store.globalRefs.modals.fileUploadModal" @before-show="modalOpen" @hide="modalClose"
+    <q-dialog v-model="$global.globalRefs.modals.fileUploadModal" @before-show="modalOpen" @hide="modalClose"
     >
       <q-card :style="{
         maxWidth: '700px', minWidth: '300px', width: '90vw',
@@ -32,7 +32,7 @@
         <q-list v-else>
           <q-expansion-item v-for="(item, key) in groups"
                             :key="item.uid"
-                            :default-opened="item.uid == $store.fm.uploads.lastUid"
+                            :default-opened="item.uid == $global.fm.uploads.lastUid"
                             group="uploads"
           >
             <template v-slot:header>
@@ -72,15 +72,15 @@
       }
     },
     mounted() {
-      this.groups = this.$store.fm.uploads.groups
+      this.groups = this.$global.fm.uploads.groups
     },
     methods:    {
       modalOpen() {
-        this.$store.fm.uploads.someSuccess = false
-        this.$store.fm.uploads.someFail    = false
+        this.$global.fm.uploads.someSuccess = false
+        this.$global.fm.uploads.someFail    = false
       },
       modalClose() {
-        const someSuccess = this.$store.fm.uploads.someSuccess
+        const someSuccess = this.$global.fm.uploads.someSuccess
         const sid         = this.$route.params.storage_id
         const path        = this.$route.params.path
         if (someSuccess && sid && path) {
@@ -88,7 +88,7 @@
         }
       },
       storage(id) {
-        return this.$store.fm.storages.find(el => el.id == id) || {name: '404'}
+        return this.$global.fm.storages.find(el => el.id == id) || {name: '404'}
       },
       icon(id) {
         return this.typeStorage(this.storage(id).type)

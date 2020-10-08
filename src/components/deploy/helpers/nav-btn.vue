@@ -4,7 +4,7 @@
            color="inverted"
            size="small"
            flat
-           @click="$store.globalRefs.steppers.editDeploy.previous()"
+           @click="$global.globalRefs.steppers.editDeploy.previous()"
            icon="mdi-chevron-left"
            round
            title="Back"
@@ -31,7 +31,7 @@
         return this.$route.params.tab
       },
       stepper() {
-        return this.$store.globalRefs.steppers.editDeploy
+        return this.$global.globalRefs.steppers.editDeploy
       },
       btnSize() {
         return this.onTop ? 'sm' : 'md'
@@ -55,11 +55,11 @@
     methods:  {
       goToNext() {
         const data = {
-          task:          this.$store.deploy.editingTask,
-          actions:       this.$store.deploy.actions,
-          notifications: this.$store.deploy.notifications,
+          task:          this.$global.deploy.editingTask,
+          actions:       this.$global.deploy.actions,
+          notifications: this.$global.deploy.notifications,
         }
-        this.saveTask(data, () => this.step == 'notifications' ? this.$router.push('/deploy') : this.$store.globalRefs.steppers.editDeploy.next())
+        this.saveTask(data, () => this.step == 'notifications' ? this.$router.push('/deploy') : this.$global.globalRefs.steppers.editDeploy.next())
 
       },
     },

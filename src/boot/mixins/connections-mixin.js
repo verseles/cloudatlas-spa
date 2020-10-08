@@ -1,26 +1,26 @@
 const mixinConnections = {
   methods: {
     getConnections () {
-      this.$store.globalRefs.loaders.prefs = true
+      this.$global.globalRefs.loaders.prefs = true
       this.$http
         .get('connections')
         .then(response => this.setConnections(response.data.connections))
-        .finally(() => (this.$store.globalRefs.loaders.prefs = false))
+        .finally(() => (this.$global.globalRefs.loaders.prefs = false))
     },
     setConnections (connections) {
       if (typeof connections === 'object') {
-        this.$store.connection.connections = connections
+        this.$global.connection.connections = connections
       }
     },
     deleteConnection (id) {
-      this.$store.connection.deletingConn.push(id)
+      this.$global.connection.deletingConn.push(id)
       this.$http
         .delete('connections/' + id)
         .then(response => {
           this.processResults(response)
         })
         .finally(() => {
-          this.$store.deploy.deletingTask.pop()
+          this.$global.deploy.deletingTask.pop()
         })
         .catch(error => {
           this.$q.notify({

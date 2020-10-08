@@ -18,13 +18,13 @@
                @click="has(provider.name) ? deleteConnection(has(provider.name).id) : oaLogin(provider.name)"
                :icon="has(provider.name) ? 'mdi-link-variant-off' : 'mdi-link-variant'"
                :outline="!has(provider.name)"
-               :loading="has(provider.name) ? $store.connection.deletingConn.includes(has(provider.name).id) : false"
+               :loading="has(provider.name) ? $global.connection.deletingConn.includes(has(provider.name).id) : false"
 
         ></q-btn>
       </div>
     </div>
     <p>Please, note that the email should be the same, always.</p>
-    <q-inner-loading :showing="$store.globalRefs.loaders.prefs">
+    <q-inner-loading :showing="$global.globalRefs.loaders.prefs">
       <q-spinner-ios
         color="primary"
         size="2em"
@@ -53,7 +53,7 @@
     }),
     methods: {
       has (provider) {
-        return this.$store.connection.connections.find(c => c.provider == provider)
+        return this.$global.connection.connections.find(c => c.provider == provider)
       },
     },
   }

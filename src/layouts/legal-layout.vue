@@ -5,7 +5,7 @@
       <q-toolbar>
         <q-btn icon="mdi-chevron-left" unelevated @click="back">back</q-btn>
         <q-toolbar-title class="text-center">
-          {{ $store.title || $route.meta.title || 'CloudAtlas'}}
+          {{ $global.title || $route.meta.title || 'CloudAtlas'}}
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

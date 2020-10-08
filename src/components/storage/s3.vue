@@ -2,25 +2,25 @@
   <div>
     <div class="row gutter-xs">
       <div class="col q-mb-sm">
-        <q-input v-model="$store.fm.addStorage.username" :error="!!$store.errors.username"
-                 :label="$store.errors.username ? $store.errors.username[0] : 'Key / Username'"/>
+        <q-input v-model="$global.fm.addStorage.username" :error="!!$global.errors.username"
+                 :label="$global.errors.username ? $global.errors.username[0] : 'Key / Username'"/>
       </div>
       <div class="col q-mb-sm">
-        <q-input v-model="$store.fm.addStorage.password" label="Secret" type="password"/>
+        <q-input v-model="$global.fm.addStorage.password" label="Secret" type="password"/>
       </div>
     </div>
     <div class="row gutter-xs">
       <div class="col q-mb-sm">
-        <q-select filter v-model="$store.fm.addStorage.region"
-                  :label="$store.errors.region ? $store.errors.region[0] : 'Region'"
+        <q-select filter v-model="$global.fm.addStorage.region"
+                  :label="$global.errors.region ? $global.errors.region[0] : 'Region'"
                   :options="S3Regions"
                   />
       </div>
       <div class="col q-mb-sm">
-        <q-input v-model="$store.fm.addStorage.bucket" label="Bucket" type="text"/>
+        <q-input v-model="$global.fm.addStorage.bucket" label="Bucket" type="text"/>
       </div>
     </div>
-    <q-input v-model="$store.fm.addStorage.root" label="Root path (optional)"/>
+    <q-input v-model="$global.fm.addStorage.root" label="Root path (optional)"/>
 
   </div>
 </template>

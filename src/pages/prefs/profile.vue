@@ -3,15 +3,15 @@
     <table class="q-table">
       <tr>
         <th>Name</th>
-        <td>{{ $store.user.name }}</td>
+        <td>{{ $global.user.name }}</td>
       </tr>
       <tr>
         <th>Email</th>
-        <td>{{ $store.user.email }}</td>
+        <td>{{ $global.user.email }}</td>
       </tr>
       <tr>
         <th>Happy since</th>
-        <td>{{ $store.user.created_at | humanDate }}</td>
+        <td>{{ $global.user.created_at | humanDate }}</td>
       </tr>
     </table>
 

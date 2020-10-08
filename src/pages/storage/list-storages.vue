@@ -1,12 +1,12 @@
 <template>
   <div>
-    <q-dialog @hide="dialogAddStorageClosed" v-model="$store.globalRefs.modals.fmAddStorage">
+    <q-dialog @hide="dialogAddStorageClosed" v-model="$global.globalRefs.modals.fmAddStorage">
       <q-card>
         <add-storage/>
       </q-card>
 
-      <q-page-sticky v-show="$store.fm.addStorage.type" position="bottom-right" :offset="[18, 18]">
-        <q-btn v-if="$store.fm.savingStorage" round color="primary" disabled>
+      <q-page-sticky v-show="$global.fm.addStorage.type" position="bottom-right" :offset="[18, 18]">
+        <q-btn v-if="$global.fm.savingStorage" round color="primary" disabled>
           <q-spinner-bars></q-spinner-bars>
         </q-btn>
         <q-btn v-else round color="secondary" @click="addStorage" icon="mdi-content-save"/>
@@ -18,7 +18,7 @@
       <q-inner-loading v-if="loading" :showing="loading">
         <q-spinner-puff size="10rem" color="primary"></q-spinner-puff>
       </q-inner-loading>
-      <div v-else-if="!$store.fm.storages.length"
+      <div v-else-if="!$global.fm.storages.length"
            class="text-center absolute-center cursor-pointer"
            @click="dialogAddStorageOpen"
       >
@@ -26,7 +26,7 @@
         <div class="text-grey-4 text-body1">add new one?</div>
       </div>
       <q-list v-else>
-        <q-item clickable v-for="storage in $store.fm.storages" :key="storage.id">
+        <q-item clickable v-for="storage in $global.fm.storages" :key="storage.id">
           <q-item-section avatar @click="$router.push(`fm/${storage.id}`)">
             <q-icon :name="typeStorage(storage.type).icon" :color="typeStorage(storage.type).color"/>
           </q-item-section>
@@ -36,7 +36,7 @@
               {{ typeStorage(storage.type).desc }}
             </q-item-label>
           </q-item-section>
-          <q-dbtn-holder :loading="$store.fm.deletingStorage.includes(storage.id)" color="primary">
+          <q-dbtn-holder :loading="$global.fm.deletingStorage.includes(storage.id)" color="primary">
             <q-dbtn :to="`fm/${storage.id}`" label="Browse" icon="mdi-file-tree" flat/>
             <q-dbtn @click="dialogEditStorage(storage.id)" label="Edit" icon="mdi-folder-edit" flat/>
             <q-dbtn @click="deleteStorage(storage.id)"
@@ -44,12 +44,12 @@
                     icon="mdi-delete"
                     flat
                     color="negative"
-                    :loading="$store.fm.deletingStorage.includes(storage.id)"
+                    :loading="$global.fm.deletingStorage.includes(storage.id)"
             />
           </q-dbtn-holder>
         </q-item>
       </q-list>
-      <q-page-sticky v-show="!loading && !$store.globalRefs.modals.fmAddStorage"
+      <q-page-sticky v-show="!loading && !$global.globalRefs.modals.fmAddStorage"
                      position="bottom-right"
                      :offset="[18, 18]"
       >

@@ -1,11 +1,12 @@
 import { copyToClipboard, Notify } from 'quasar'
+import get from 'lodash/get'
 
 const mixinMain = {
   methods: {
     resetData() {
       this.addStorageDataReset()
       this.addDeployDataReset()
-      this.$store.title = ''
+      this.$global.title = ''
     },
     processResults(response) {
       this.loading = false

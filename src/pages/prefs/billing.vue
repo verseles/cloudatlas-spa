@@ -85,7 +85,7 @@
               You trial ends at {{ subscription.trial_ends_at }}.
             </div>
             <div v-show="isGracePeriod">
-              You can use this wonderful space until {{ $store.user.billing.ends_at | humanDate }}.
+              You can use this wonderful space until {{ $global.user.billing.ends_at | humanDate }}.
             </div>
             <div v-show="isCancelled">
               Please come back to our universe!
@@ -264,7 +264,7 @@
         }
         if (data.billing) {
           let newData
-          this.$store.user.billing = data.billing
+          this.$global.user.billing = data.billing
           newData                  = this.$storage.getItem('user')
           newData.billing          = data.billing
           this.$storage.set('user', newData)
@@ -376,22 +376,22 @@
         return this.isSolid ? 'Thank you' : 'For now'
       },
       pay_frequency() {
-        return this.$store.user.billing.yearly ? 'yearly' : 'monthly'
+        return this.$global.user.billing.yearly ? 'yearly' : 'monthly'
       },
       isCancelled() {
-        return this.$store.user.billing.cancelled
+        return this.$global.user.billing.cancelled
       },
       isGracePeriod() {
-        return this.$store.user.billing.grace
+        return this.$global.user.billing.grace
       },
       isSolid() {
-        return this.$store.user.billing.solid
+        return this.$global.user.billing.solid
       },
       isMonthly() {
-        return this.$store.user.billing.monthly
+        return this.$global.user.billing.monthly
       },
       isYearly() {
-        return this.$store.user.billing.yearly
+        return this.$global.user.billing.yearly
       },
     },
   }

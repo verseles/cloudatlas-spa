@@ -6,7 +6,7 @@
     <q-inner-loading v-if="loading" :showing="loading">
       <q-spinner-puff size="10rem" color="primary"></q-spinner-puff>
     </q-inner-loading>
-    <div v-else-if="!$store.deploy.deploys.length"
+    <div v-else-if="!$global.deploy.deploys.length"
          class="text-center absolute-center cursor-pointer"
          @click="$router.push('/deploy/add')"
     >
@@ -14,7 +14,7 @@
       <div class="text-body1 text-grey-4">add new one?</div>
     </div>
     <q-list v-else>
-      <q-item clickable v-for="task in $store.deploy.deploys" :key="task.id">
+      <q-item clickable v-for="task in $global.deploy.deploys" :key="task.id">
         <q-item-section avatar @click="$router.push(editLink(task.id))">
           <q-icon :name="typeDeploy(task).icon" :color="typeDeploy(task).color"/>
         </q-item-section>
@@ -22,18 +22,18 @@
           <q-item-label>{{ task.title }}</q-item-label>
           <q-item-label caption>{{ typeDeploy(task).desc }}</q-item-label>
         </q-item-section>
-        <q-dbtn-holder :loading="$store.deploy.deletingTask.includes(task.id)
-                                    || $store.deploy.triggeringTask.includes(task.id)
-                                    || $store.deploy.togglingTask.includes(task.id)" :alert="!task.active || $store.deploy.deletingTask.includes(task.id)
-                                    || $store.deploy.triggeringTask.includes(task.id)
-                                    || $store.deploy.togglingTask.includes(task.id)"
+        <q-dbtn-holder :loading="$global.deploy.deletingTask.includes(task.id)
+                                    || $global.deploy.triggeringTask.includes(task.id)
+                                    || $global.deploy.togglingTask.includes(task.id)" :alert="!task.active || $global.deploy.deletingTask.includes(task.id)
+                                    || $global.deploy.triggeringTask.includes(task.id)
+                                    || $global.deploy.togglingTask.includes(task.id)"
         >
           <q-dbtn label="Deploy now"
                   flat
                   color="primary"
                   icon="mdi-chemical-weapon"
                   @click="deployTrigger(task)"
-                  :loading="$store.deploy.triggeringTask.includes(task.id)"
+                  :loading="$global.deploy.triggeringTask.includes(task.id)"
           />
           <q-dbtn label="Calls history" icon="mdi-timetable" flat color="primary" :to="`deploy/calls/${task.id}`"
           ></q-dbtn>
@@ -45,7 +45,7 @@
           ></q-dbtn>
 
           <q-dbtn :label="task.active ? 'Pause link' : 'Reactive link'"
-                  :loading="$store.deploy.togglingTask.includes(task.id)"
+                  :loading="$global.deploy.togglingTask.includes(task.id)"
                   :icon="task.active ? 'mdi-pause' : 'mdi-play'"
                   :color="task.active ? 'primary' : 'warning'"
                   :flat="task.active"
@@ -60,7 +60,7 @@
                   flat
                   color="primary"
                   @click="deleteTask(task.id)"
-                  :loading="$store.deploy.deletingTask.includes(task.id)"
+                  :loading="$global.deploy.deletingTask.includes(task.id)"
           ></q-dbtn>
         </q-dbtn-holder>
       </q-item>

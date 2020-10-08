@@ -10,8 +10,8 @@
   export default {
     mounted() {
       this.$http.get("user/logout")
-      this.$store.token = null
-      this.$store.user  = {}
+      this.$global.token = null
+      this.$global.user  = {}
       LocalStorage.clear()
       SessionStorage.clear()
 

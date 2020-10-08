@@ -19,7 +19,7 @@
         </q-item-section>
 
       </q-item>
-  
+
       <notification v-for="(item, index) in items"
               v-if="item.status == 'active'"
               :is="item.type"
@@ -67,15 +67,15 @@
       notifications: {
         type:     Array,
         required: false,
-        default:  () => this.$store.deploy.notifications || [],
+        default:  () => this.$global.deploy.notifications || [],
       },
     },
     methods:    {
       del(index) {
-        this.$store.deploy.notifications[ index ].status = 'deleted'
+        this.$global.deploy.notifications[ index ].status = 'deleted'
       },
       undel(index) {
-        this.$store.deploy.notifications[ index ].status = 'active'
+        this.$global.deploy.notifications[ index ].status = 'active'
       },
     },
     mounted() {

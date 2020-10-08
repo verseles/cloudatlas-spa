@@ -18,8 +18,8 @@ export default ({app, router, Vue}) => {
     function (error) {
       const er = error.response
 
-      app.$store.errors = er.data.errors
-      app.$store.body   = er.data
+      app.$global.errors = er.data.errors
+      app.$global.body   = er.data
 
       if (er.status === 401) {
         Notify.create({

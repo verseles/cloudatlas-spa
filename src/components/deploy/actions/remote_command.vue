@@ -84,7 +84,7 @@
         return this.$refs.deployCommandEditor.codemirror
       },
       serversAvailable() {
-        return this.$store.fm.storages.filter(s => s.type == 'sftp')
+        return this.$global.fm.storages.filter(s => s.type == 'sftp')
       },
     },
     mounted() {
@@ -118,7 +118,7 @@
         this.$emit('del')
       },
       goToAddSSH() {
-        this.$store.fm.addStorage.type = 'sftp'
+        this.$global.fm.addStorage.type = 'sftp'
         this.dialogAddStorageOpen()
         this.$router.push({path: '/fm/'})
       },
