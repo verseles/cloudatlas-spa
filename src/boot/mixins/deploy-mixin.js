@@ -7,7 +7,8 @@ const mixinDeploy = {
       this.$http
           .get("deploy")
           .then(r => this.processResults(r))
-          .catch(() => {
+          .catch((e) => {
+            console.error(e)
             this.loading = false
             this.$q.notify({
                              message: "Fail to load deploys",
