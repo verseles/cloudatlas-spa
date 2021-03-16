@@ -9,6 +9,7 @@ const mixinMain = {
       this.$global.title = ''
     },
     processResults(response) {
+      console.dir(response)
       this.loading = false
       const d      = response.data || {}
       if (d.storages) {

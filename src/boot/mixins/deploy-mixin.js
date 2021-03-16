@@ -24,6 +24,7 @@ const mixinDeploy = {
           .catch(() => (this.loading = false))
     },
     updateDeploys(up) {
+      console.dir(up)
       this.$set(this.$global.deploy, "deploys", up)
     },
     typeDeploy(task) {
