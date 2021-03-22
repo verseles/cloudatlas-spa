@@ -43,7 +43,7 @@
               title="Use github as login"
               class="q-mr-sm btn-login github"
             >
-              <q-icon name="mdi-github-circle" />
+              <q-icon name="mdi-github" />
             </q-btn>
             <q-btn
               unelevated

@@ -14,6 +14,8 @@
         <q-select filter v-model="$global.fm.addStorage.region"
                   :label="$global.errors.region ? $global.errors.region[0] : 'Region'"
                   :options="S3Regions"
+                  map-options
+                  emit-value
                   />
       </div>
       <div class="col q-mb-sm">

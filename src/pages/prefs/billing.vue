@@ -17,7 +17,7 @@
               >
                 <q-item-section avatar>
                   <q-avatar rounded>
-                    <img :src="`statics/cc/${method.brand.toLowerCase()}.svg`">
+                    <img :src="`cc/${method.brand.toLowerCase()}.svg`">
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>

@@ -1,11 +1,22 @@
+/*
+ * This file runs in a Node context (it's NOT transpiled by Babel), so use only
+ * the ES6 features that are supported by your Node version. https://node.green/
+ */
+
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+/* eslint-env node */
 module.exports = function (ctx) {
   return {
+    // https://quasar.dev/quasar-cli/supporting-ts
+    supportTS: false,
+
+    // https://quasar.dev/quasar-cli/prefetch-feature
+    // preFetch: true,
+
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    // https://quasar.dev/quasar-cli/cli-documentation/boot-files
+    // https://quasar.dev/quasar-cli/boot-files
     boot: [
       'store-state',
       'default-storage',
@@ -28,7 +39,7 @@ module.exports = function (ctx) {
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
-      'mdi-v4',
+       'mdi-v5',
       // 'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
@@ -41,17 +52,13 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      iconSet: 'mdi-v4', // Quasar icon set
+      iconSet: 'mdi-v5', // Quasar icon set
       lang:    'en-us', // Quasar language pack
 
-      // Possible values for "all":
-      // * 'auto' - Auto-import needed Quasar components & directives
-      //            (slightly higher compile time; next to minimum bundle size; most convenient)
-      // * false  - Manually specify what to import
-      //            (fastest compile time; minimum bundle size; most tedious)
-      // * true   - Import everything from Quasar
-      //            (not treeshaking Quasar; biggest bundle size; convenient)
-      all: 'auto',
+      // Possible values for "importStrategy":
+      // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
+      // * 'all'  - Manually specify what to import
+      importStrategy: 'auto',
 
       components: [ 'QSpinnerIos' ],
       directives: [],
@@ -65,47 +72,43 @@ module.exports = function (ctx) {
       },
     },
 
-    // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
-    supportIE: false,
-
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      modern:        true, // no transpile
-      scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      showProgress:  true,
-      gzip:          false,
-      analyze:       false,
+
+      transpile: false,
+
+      // rtl: false, // https://quasar.dev/options/rtl-support
+      // preloadChunks: true,
+      // showProgress: false,
+      // gzip: true,
+      // analyze: true,
+      // Options below are automatically set depending on the env, set them if you want to override
+      // extractCSS: false,
       env:           ctx.dev
                      ? { // so on dev we'll have
-          API_BASE_URL:   JSON.stringify('https://ca.test'),
-          STRIPE_PUB_KEY: JSON.stringify('pk_test_BFuC02EqBXWuzcCgyL82vpkX'),
+          API_BASE_URL:   'https://ca.test',
+          STRIPE_PUB_KEY: 'pk_test_BFuC02EqBXWuzcCgyL82vpkX',
         }
                      : { // and on build (production):
-          API_BASE_URL:   JSON.stringify('https://api.cloudatlas.id'),
-          STRIPE_PUB_KEY: JSON.stringify('pk_live_PDCX7Uliy3qwum9iQ23US0yD'),
+          API_BASE_URL:   'https://api.cloudatlas.id',
+          STRIPE_PUB_KEY: 'pk_live_PDCX7Uliy3qwum9iQ23US0yD',
         },
-      // Options below are automatically set depending on the env, set them if you want to override
-      // preloadChunks: false,
-      // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack(cfg) {
+      extendWebpack (cfg) {
         cfg.module.rules.push({
                                 enforce: 'pre',
-                                test:    /\.(js|vue)$/,
-                                loader:  'eslint-loader',
-                                exclude: /node_modules/,
-                                options: {
-                                  formatter: require('eslint').CLIEngine.getFormatter('stylish'),
-                                },
+                                test: /\.(js|vue)$/,
+                                loader: 'eslint-loader',
+                                exclude: /node_modules/
                               })
       },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      https: true,
+      https: false,
       port:  8080,
       open:  true, // opens browser window automatically
     },
@@ -133,27 +136,27 @@ module.exports = function (ctx) {
         theme_color:      '#FFF',
         icons:            [
           {
-            src:   'statics/icons/icon-128x128.png',
+            src:   'icons/icon-128x128.png',
             sizes: '128x128',
             type:  'image/png',
           },
           {
-            src:   'statics/icons/icon-192x192.png',
+            src:   'icons/icon-192x192.png',
             sizes: '192x192',
             type:  'image/png',
           },
           {
-            src:   'statics/icons/icon-256x256.png',
+            src:   'icons/icon-256x256.png',
             sizes: '256x256',
             type:  'image/png',
           },
           {
-            src:   'statics/icons/icon-384x384.png',
+            src:   'icons/icon-384x384.png',
             sizes: '384x384',
             type:  'image/png',
           },
           {
-            src:   'statics/icons/icon-512x512.png',
+            src:   'icons/icon-512x512.png',
             sizes: '512x512',
             type:  'image/png',
           },
@@ -190,16 +193,16 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'ck',
+        appId: 'ca',
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack(cfg) {
+      extendWebpack (/* cfg */) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
-      },
+      }
     },
   }
 }
