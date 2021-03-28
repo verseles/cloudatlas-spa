@@ -72,7 +72,7 @@
       },
       file:  {
         type:    Object,
-        default: () => ({basename: ''}),
+        default: () => ({Name: ''}),
       },
       mime:  {
         type:    String,

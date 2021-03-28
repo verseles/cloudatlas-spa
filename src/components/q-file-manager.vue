@@ -23,9 +23,9 @@
           </th>
           <th class="text-left non-selectable"
               :class="{ 'no-pointer-events' : this.search }"
-              @click="changeOrder('basename', String)"
+              @click="changeOrder('Name', String)"
           >&nbsp;Name
-            <q-icon v-show="!this.search && sorting.field == 'basename'"
+            <q-icon v-show="!this.search && sorting.field == 'Name'"
                     :class="{'flip-vertical' : sorting.asc}"
                     name="mdi-filter-variant"
             />
@@ -42,13 +42,13 @@
           </th>
           <th class="cursor-pointer text-right desktop-only"
               :class="{ 'no-pointer-events' : this.search }"
-              @click="changeOrder('timestamp', Number)"
+              @click="changeOrder('ModTime', Number)"
           >
-            <q-icon v-show="!this.search && sorting.field == 'timestamp'"
+            <q-icon v-show="!this.search && sorting.field == 'ModTime'"
                     :class="{'flip-vertical' : sorting.asc}"
                     name="mdi-filter-variant"
             />
-            Date
+            Modified
           </th>
         </tr>
         </thead>
@@ -73,14 +73,14 @@
               <q-icon class="" :name="item.icon" size="1.7rem"></q-icon>
             </div>
           </td>
-          <td class="text-left basename" :title="item.basename">
+          <td class="text-left Name" :title="item.Name">
                       <span class="baseline">
-                      <span v-show="item.filename" class="filename" v-text="item.filename"
+                      <span v-show="item.basename" class="filename" v-text="item.basename"
                       ></span><span class="extension" v-show="item.extension">.{{ item.extension }}</span>
                       </span>
           </td>
-          <td class="text-right">{{ item.size | humanSize }}</td>
-          <td class="text-right desktop-only">{{ item.timestamp | humanDate }}</td>
+          <td class="text-right">{{ item.Size | humanSize }}</td>
+          <td class="text-right desktop-only">{{ item.ModTime | humanDate }}</td>
         </tr>
         </tbody>
       </table>
@@ -193,8 +193,8 @@
     </q-page-sticky>
 
     <q-dialog v-model="editor.open" maximized persistent>
-        <q-layout v-if="editor.open">
-          <q-header class="bg-primary">
+      <q-layout v-if="editor.open">
+        <q-header class="bg-primary">
 
           <q-toolbar>
             <q-btn flat @click="editorClose">
@@ -224,34 +224,34 @@
               <q-icon v-else title="Saved!" name="mdi-check-all"/>
             </q-btn>
           </q-toolbar>
-          </q-header>
+        </q-header>
 
-          <q-footer>
-            <q-select dark
-                      style="margin-top: 0; margin-bottom: 0;"
-                      :options="editor.themeOptions"
-                      v-model="editor.theme"
-                      emit-value
-                      map-options
-            />
-          </q-footer>
+        <q-footer>
+          <q-select dark
+                    style="margin-top: 0; margin-bottom: 0;"
+                    :options="editor.themeOptions"
+                    v-model="editor.theme"
+                    emit-value
+                    map-options
+          />
+        </q-footer>
 
-          <q-page-container style="padding-bottom: 0">
-            <q-page>
-              <editor v-model="editor.code"
-                      :file="selectedPaths[0]"
-                      :mime="editor.mime"
-                      :theme="editor.theme"
-                      @blur="editorAutosave"
-              ></editor>
-            </q-page>
-          </q-page-container>
+        <q-page-container style="padding-bottom: 0">
+          <q-page>
+            <editor v-model="editor.code"
+                    :file="selectedPaths[0]"
+                    :mime="editor.mime"
+                    :theme="editor.theme"
+                    @blur="editorAutosave"
+            ></editor>
+          </q-page>
+        </q-page-container>
 
-        </q-layout>
+      </q-layout>
     </q-dialog>
     <q-dialog v-model="rename.dialog"
               persistent
-              @before-show="rename.oldName = selectedPaths[ 0 ].basename"
+              @before-show="rename.oldName = selectedPaths[ 0 ].Name"
               @show="rename.newName = rename.oldName"
     >
       <q-card style="min-width: 350px">
@@ -310,442 +310,423 @@
 </template>
 
 <script>
-  import md5              from "blueimp-md5"
-  import editor           from "src/components/ide/editor"
-  import { format, date } from "quasar"
-  import Vue              from "vue"
-  import VueFuse          from "vue-fuse"
+import md5              from "blueimp-md5"
+import { date, format } from "quasar"
+import editor           from "src/components/ide/editor"
+import Vue              from "vue"
+import VueFuse          from "vue-fuse"
 
-  Vue.use(VueFuse)
+Vue.use(VueFuse)
 
-  const {humanStorageSize} = format
-  export default {
-    components: {
-      editor,
+const {humanStorageSize} = format
+export default {
+  components: {
+    editor,
+  },
+  props:      {
+    table:             {
+      type:     Array,
+      required: true,
+      default:  () => this.$global.fm.manager.table,
     },
-    props:      {
-      table:             {
-        type:     Array,
-        required: true,
-        default:  () => this.$global.fm.manager.table,
-      },
-      baseId:            {
-        type:     String,
-        required: true,
-      },
-      paginationOptions: {
-        type:    Array,
-        default: () => [ 5, 10, 30, 100, 500, 1000 ],
-      },
-      itemsPerPage:      {
-        type:    Number,
-        default: 30,
-      },
+    baseId:            {
+      type:     String,
+      required: true,
     },
-    mounted() {
-      window.onbeforeunload = () => this.windowClose()
-      this.listStorages() // Just to update $global.fm.storages
-      this.$q.notify('Click selects, Double opens')
+    paginationOptions: {
+      type:    Array,
+      default: () => [ 5, 10, 30, 100, 500, 1000 ],
     },
-    data() {
-      return {
-        rename:               {
-          dialog:  false,
-          newName: '',
-          oldName: '',
-        },
-        newFile:              {
-          dialog:  false,
-          newName: '',
-        },
-        newFolder:            {
-          dialog:  false,
-          newName: '',
-        },
-        fabulous:             false,
-        internalItemsPerPage: this.itemsPerPage,
-        itemsSelecteds:       [],
-        selectedClass:        "bg-grey text-white non-selectable",
-        search:               "",
-        results:              [],
-        page:                 1,
-        searchOptions:        {
-          keys:       [ "basename" ],
-          defaultAll: true,
-        },
-        sorting:              {
-          field: "basename",
-          asc:   true,
-          type:  String,
-        },
-        editor:               {
-          open:         false,
-          path:         "",
-          code:         "",
-          saving:       false,
-          savedCode:    "",
-          mime:         "text/plain",
-          autosave:     false,
-          theme:        "monokai",
-          themeOptions: [
-            {label: "Dark: Material", value: "material"},
-            {label: "Dark: Monokai", value: "monokai"},
-            {label: "Light: Elegant", value: "elegant"},
-            {label: "Light: Neat", value: "neat"},
-          ],
-        },
+    itemsPerPage:      {
+      type:    Number,
+      default: 30,
+    },
+  },
+  mounted() {
+    window.onbeforeunload = () => this.windowClose()
+    this.listStorages() // Just to update $global.fm.storages
+    this.$q.notify('Click selects, Double opens')
+  },
+  data() {
+    return {
+      rename:               {
+        dialog:  false,
+        newName: '',
+        oldName: '',
+      },
+      newFile:              {
+        dialog:  false,
+        newName: '',
+      },
+      newFolder:            {
+        dialog:  false,
+        newName: '',
+      },
+      fabulous:             false,
+      internalItemsPerPage: this.itemsPerPage,
+      itemsSelecteds:       [],
+      selectedClass:        "bg-grey text-white non-selectable",
+      search:               "",
+      results:              [],
+      page:                 1,
+      searchOptions:        {
+        keys:       [ "Name" ],
+        defaultAll: true,
+      },
+      sorting:              {
+        field: "Name",
+        asc:   true,
+        type:  String,
+      },
+      editor:               {
+        open:         false,
+        path:         "",
+        code:         "",
+        saving:       false,
+        savedCode:    "",
+        mime:         "text/plain",
+        autosave:     false,
+        theme:        "monokai",
+        themeOptions: [
+          {label: "Dark: Material", value: "material"},
+          {label: "Dark: Monokai", value: "monokai"},
+          {label: "Light: Elegant", value: "elegant"},
+          {label: "Light: Neat", value: "neat"},
+        ],
+      },
+    }
+  },
+  computed: {
+    allSelected() {
+      return this.itemsSelecteds.length === this.list.length
+    },
+    selectedPaths() {
+      return this.itemsSelecteds.map(i => this.list[ i ])
+    },
+    onlyFilesSelected() {
+      return this.selectedPaths.every(i => !i.IsDir)
+    },
+    list() {
+      const itemsPerPage = parseInt(this.internalItemsPerPage)
+      const start        = (this.page - 1) * itemsPerPage
+      const end          = start + itemsPerPage
+
+      let partialList = this.currentList.slice(start, end)
+
+      return partialList.map(x => {
+        x.extension = String(x.IsDir ? '' : x.Name.split(".").pop())
+        x.basename  = String(x.IsDir ? x.Name : (x.Name.split('.').slice(0, -1)).join('.'))
+        x.icon      = this.icon(x)
+        return x
+      })
+    },
+    totalPages() {
+      return Math.ceil(this.currentList.length / this.internalItemsPerPage)
+    },
+    currentPath() {
+      return this.$route.params.path || ""
+    },
+    currentList() {
+      // Useful for totalPages
+      let final
+      if (this.search) {
+        final = this.results
+      }
+      else {
+        let r = this.table
+
+        r.sort(this.compare)
+        const folders = r.filter(item => item.IsDir)
+        const files   = r.filter(item => !item.IsDir)
+
+        r = folders.concat(files)
+
+        final = this.sorting.asc ? r : r.reverse()
+      }
+
+      return final
+    },
+    paginationOptionsSelect() {
+      let x = this.paginationOptions.map(x => ({
+        label: x.toString(),
+        value: x,
+      }))
+      x.unshift({label: "All", value: 100000})
+      return x
+    },
+    editorFileModified() {
+      return this.editor.code !== this.editor.savedCode
+    },
+  },
+  filters:  {
+    humanSize: v => humanStorageSize(parseInt(v)),
+    humanDate: v => !!v ? date.formatDate(parseInt(v) * 1000, "DD MMM YYYY HH:mm") : '--',
+  },
+  watch:    {
+    table() {
+      this.page           = 1
+      this.itemsSelecteds = []
+      this.search         = ""
+    },
+    search(new_search) {
+      this.page           = 1
+      this.itemsSelecteds = []
+
+      this.$search(new_search, this.table, this.searchOptions)
+          .then(results => this.results = results)
+    },
+    itemsSelecteds(n) {
+      if (n.length == 1) {
+        this.fabulous = true
+      }
+      else if (!n.length) {
+        this.fabulous = false
       }
     },
-    computed:   {
-      allSelected() {
-        return this.itemsSelecteds.length === this.list.length
-      },
-      selectedPaths() {
-        return this.itemsSelecteds.map(i => this.list[ i ])
-      },
-      onlyFilesSelected() {
-        return this.selectedPaths.every(i => i.type == "file")
-      },
-      list() {
-        const itemsPerPage = parseInt(this.internalItemsPerPage)
-        const start        = (this.page - 1) * itemsPerPage
-        const end          = start + itemsPerPage
+  },
+  methods:  {
+    newUploads() {
+      const path   = this.currentPath
+      const baseId = this.baseId
+      const uid    = md5(baseId + path)
 
-        let partialList = this.currentList.slice(start, end)
+      this.$global.fm.uploads.lastUid = uid
 
-        partialList.map(x => {
-          x.icon = this.icon(x)
-          return x
-        })
-        return partialList
-      },
-      totalPages() {
-        return Math.ceil(this.currentList.length / this.internalItemsPerPage)
-      },
-      currentPath() {
-        return "/" + (this.$route.params.path || "")
-      },
-      currentList() {
-        // Useful for totalPages
-        let final
-        if (this.search) {
-          final = this.results
-        }
-        else {
-          let r = this.table
+      const existsInUploads = this.$global.fm.uploads.groups.find(el => el.uid === uid)
 
-          r.sort(this.compare)
-          const folders = r.filter(item => item.type == "dir")
-          const files   = r.filter(item => item.type != "dir")
+      if (!existsInUploads) {
+        this.$global.fm.uploads.groups.unshift({uid, baseId, path})
+      }
 
-          r = folders.concat(files)
-
-          final = this.sorting.asc ? r : r.reverse()
-        }
-
-        return final
-      },
-      paginationOptionsSelect() {
-        let x = this.paginationOptions.map(x => ({
-          label: x.toString(),
-          value: x,
-        }))
-        x.unshift({label: "All", value: 100000})
-        return x
-      },
-      editorFileModified() {
-        return this.editor.code !== this.editor.savedCode
-      },
+      this.$global.globalRefs.modals.fileUploadModal = true
     },
-    filters:    {
-      humanSize: v => {
-        const n = Number.isInteger(parseInt(v))
-
-        return n ? humanStorageSize(parseInt(v)) : humanStorageSize(0)
-      },
-      humanDate: v => {
-        return !!v ? date.formatDate(v * 1000, "DD MMM YYYY HH:mm") : "-"
-      },
+    openCodeEditor(obj) {
+      this.editor.path      = obj.path
+      this.editor.code      = obj.read
+      this.editor.savedCode = obj.read
+      this.editor.mime      = obj.mime
+      this.editor.open      = true
     },
-    watch:      {
-      table(new_table) {
-        this.page           = 1
-        this.itemsSelecteds = []
-        this.search         = ""
-      },
-      search(new_search) {
-        this.page           = 1
-        this.itemsSelecteds = []
-
-        this.$search(this.search, this.table, this.searchOptions).then(
-          results => {
-            this.results = results
-          },
+    editAsCode() {
+      this.viewFile(this.baseId, this.selectedPaths[ 0 ], this.openCodeEditor)
+    },
+    saveEdits(done = () => {}) {
+      if (this.editorFileModified) {
+        this.saveFile(
+          this.baseId,
+          "/" + this.editor.path,
+          this.editor.code,
+          done,
         )
-      },
-      itemsSelecteds(n) {
-        if (n.length == 1) {
-          this.fabulous = true
-        }
-        else if (!n.length) {
-          this.fabulous = false
-        }
-      },
+      }
+      else {
+        done()
+      }
     },
-    methods:    {
-      newUploads() {
-        const path   = this.currentPath
-        const baseId = this.baseId
-        const uid    = md5(baseId + path)
-
-        this.$global.fm.uploads.lastUid = uid
-        const existsInUploads          = this.$global.fm.uploads.groups.find(
-          el => el.uid === uid,
-        )
-
-        if (!existsInUploads) {
-          this.$global.fm.uploads.groups.unshift({uid, baseId, path})
-        }
-
-        this.$global.globalRefs.modals.fileUploadModal = true
-      },
-      openCodeEditor(obj) {
-        this.editor.path      = obj.path
-        this.editor.code      = obj.read
-        this.editor.savedCode = obj.read
-        this.editor.mime      = obj.mime
-        this.editor.open      = true
-      },
-      editAsCode() {
-        this.viewFile(this.baseId, this.selectedPaths[ 0 ], this.openCodeEditor)
-      },
-      saveEdits(done = () => {}) {
-        if (this.editorFileModified) {
-          this.saveFile(
-            this.baseId,
-            "/" + this.editor.path,
-            this.editor.code,
-            done,
-          )
-        }
-        else {
-          done()
-        }
-      },
-      editorAutosave() {
-        if (this.editor.autosave) {
-          this.saveEdits()
-        }
-      },
-      editorClose() {
-        if (!this.editorFileModified) {
+    editorAutosave() {
+      if (this.editor.autosave) {
+        this.saveEdits()
+      }
+    },
+    editorClose() {
+      if (!this.editorFileModified) {
+        this.editor.open = false
+      }
+      else {
+        if (confirm("Leave without saving changes?")) {
           this.editor.open = false
         }
-        else {
-          if (confirm("Leave without saving changes?")) {
-            this.editor.open = false
-          }
-        }
-      },
-      windowClose() {
-        if (this.editorFileModified) {
-          return "Leave without saving changes?"
-        }
-      },
-      refresher(done = () => {}) {
-        done() // We already have a loader
-        this.$emit("refresh")
-      },
-      confirmDelete() {
-        let items = this.selectedPaths.length > 1 ? this.selectedPaths.length + ' items' : this.selectedPaths[ 0 ].filename
-        this.$q.notify({
-                         message: `Delete ${ items }?`,
-                         caption: "Can't be undone",
-                         icon:    "mdi-delete-forever",
-                         type:    'negative',
-                         timeout: 20000,
-                         actions: [ {
-                           label:   "Delete",
-                           color:   'white',
-                           handler: () => {
-                             this.deleteFiles(this.baseId, this.currentPath, this.selectedPaths)
-                           },
-                         } ],
-                       })
-      },
-      copySelecteds() {
-        this.toClipboard({originId: this.baseId, paths: this.selectedPaths})
-        this.$q.notify({
-                         message: "Now go to other folder/cloud!",
-                         type:    'info',
-                         icon:    'mdi-content-copy',
-                       })
-        this.changeSelectAll()
-      },
-      newFolderItem() {
-        this.newFolder.dialog = false
-        this.createDir(this.baseId, this.currentPath, this.newFolder.newName)
-      },
-      newFileItem() {
-        this.newFile.dialog = false
-        this.createFile(this.baseId, this.currentPath, this.newFile.newName)
-      },
-      renameItem() {
-        this.rename.dialog = false
-        this.renameDoc(this.baseId, this.selectedPaths[ 0 ], this.rename.newName)
-      },
-      changeSelectAll() {
-        const all = Object.keys(this.list).map(x => parseInt(x))
-
-        if (this.itemsSelecteds.length) {
-          this.itemsSelecteds = []
-        }
-        else {
-          this.itemsSelecteds = [ ...Array(this.list.length).keys() ]
-        }
-      },
-      itemClick(i) {
-        this.$refs.items[ i ].$el.click()
-      },
-      itemDblClick(i) {
-        const item = this.list[ i ]
-        if (item.type == "dir") {
-          this.$router.push({path: `/fm/${ this.baseId }/${ item.path }`})
-        }
-        else {
-          alert(`Oh, use the menu for now.  ${ item.basename } ${ item.type }`)
-          // this.$refs.items[ i ].$el.click()
-        }
-      },
-      changeOrder(field, type = String) {
-        if (!this.search) {
-          if (this.sorting.field == field) {
-            // Same field
-            this.sorting.asc = !this.sorting.asc
-          }
-          else {
-            // New field
-            this.sorting.field = field
-            this.sorting.asc   = true
-          }
-
-          this.sorting.type = type
-        }
-      },
-      compare(a, b) {
-        if (this.sorting.type === String) {
-          return this.compareString(a, b)
-        }
-        else {
-          // Number
-          return this.compareNumber(a, b)
-        }
-      },
-      compareNumber(a, b) {
-        return a[ this.sorting.field ] - b[ this.sorting.field ]
-      },
-      compareString(a, b) {
-        const nameA = a[ this.sorting.field ].toUpperCase() // ignore upper and lowercase
-        const nameB = b[ this.sorting.field ].toUpperCase() // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1
-        }
-        if (nameA > nameB) {
-          return 1
-        }
-
-        // names must be equal
-        return 0
-      },
-      icon(item) {
-        const ext = item.basename.split(".").pop() || ""
-
-        item.extension = item.extension || ""
-
-        const icon_file =
-                this.icons_table[ item.extension.toLowerCase() ] ||
-                this.icons_table[ ext.toLowerCase() ]
-
-        if (item.type == "dir") {
-          return "mdi-folder"
-        }
-        else if (icon_file) {
-          return icon_file
-        }
-        else if (item.basename.charAt(0) === ".") {
-          return "mdi-file-hidden"
-        }
-
-        return "mdi-file-outline"
-      },
+      }
     },
-  }
+    windowClose() {
+      if (this.editorFileModified) {
+        return "Leave without saving changes?"
+      }
+    },
+    refresher(done = () => {}) {
+      done() // We already have a loader
+      this.$emit("refresh")
+    },
+    confirmDelete() {
+      let items = this.selectedPaths.length > 1 ? this.selectedPaths.length + ' items' : this.selectedPaths[ 0 ].filename
+      this.$q.notify({
+                       message: `Delete ${ items }?`,
+                       caption: "Can't be undone",
+                       icon:    "mdi-delete-forever",
+                       type:    'negative',
+                       timeout: 20000,
+                       actions: [ {
+                         label:   "Delete",
+                         color:   'white',
+                         handler: () => {
+                           this.deleteFiles(this.baseId, {path: this.currentPath}, this.selectedPaths)
+                         },
+                       } ],
+                     })
+    },
+    copySelecteds() {
+      this.toClipboard({originId: this.baseId, paths: this.selectedPaths})
+      this.$q.notify({
+                       message: "Now go to other folder/cloud!",
+                       type:    'info',
+                       icon:    'mdi-content-copy',
+                     })
+      this.changeSelectAll()
+    },
+    newFolderItem() {
+      this.newFolder.dialog = false
+      this.createDir(this.baseId, this.currentPath, this.newFolder.newName)
+    },
+    newFileItem() {
+      this.newFile.dialog = false
+      this.createFile(this.baseId, this.currentPath, this.newFile.newName)
+    },
+    renameItem() {
+      this.rename.dialog = false
+      this.renameDoc(this.baseId, this.selectedPaths[ 0 ], this.rename.newName)
+    },
+    changeSelectAll() {
+      const all = Object.keys(this.list).map(x => parseInt(x))
+
+      if (this.itemsSelecteds.length) {
+        this.itemsSelecteds = []
+      }
+      else {
+        this.itemsSelecteds = [ ...Array(this.list.length).keys() ]
+      }
+    },
+    itemClick(i) {
+      this.$refs.items[ i ].$el.click()
+    },
+    itemDblClick(i) {
+
+      const item = this.list[ i ]
+      if (item.IsDir) {
+        const query = {}
+        if (!!item.ID) { // For Google Drive
+          query.gdrive = item.ID
+        }
+        this.$router.push({path: `/fm/${ this.baseId }/${ this.currentPath }/${ item.Path }`, query})
+      }
+      else {
+        alert(`Oh, use the menu for now. ${ item.Name }`)
+        // this.$refs.items[ i ].$el.click()
+      }
+    },
+    changeOrder(field, type = String) {
+      if (!this.search) {
+        if (this.sorting.field == field) {
+          // Same field
+          this.sorting.asc = !this.sorting.asc
+        }
+        else {
+          // New field
+          this.sorting.field = field
+          this.sorting.asc   = true
+        }
+
+        this.sorting.type = type
+      }
+    },
+    compare(a, b) {
+      if (this.sorting.type === String) {
+        return this.compareString(a, b)
+      }
+      else {
+        // Number
+        return this.compareNumber(a, b)
+      }
+    },
+    compareNumber(a, b) {
+      return a[ this.sorting.field ] - b[ this.sorting.field ]
+    },
+    compareString(a, b) {
+      const nameA = a[ this.sorting.field ].toUpperCase() // ignore upper and lowercase
+      const nameB = b[ this.sorting.field ].toUpperCase() // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+
+      // names must be equal
+      return 0
+    },
+    icon(item) {
+      const icon_file = this.icons_table[ String(item.extension).toLowerCase() ]
+
+      return item.IsDir ? "mdi-folder" : icon_file ? icon_file : item.Name.charAt(0) === "." ? "mdi-file-hidden" : "mdi-file-outline"
+
+    },
+  },
+}
 </script>
 
 <style lang="scss">
-  .q-table {
-    th {
-      // background-color $light
+.q-table {
+  th {
+    // background-color $light
+  }
+
+  tr {
+    &:nth-child(odd) {
     }
 
-    tr {
-      &:nth-child(odd) {
-      }
+    &:nth-child(even) {
+      background: $grey-3;
+    }
 
-      &:nth-child(even) {
-        background: $grey-3;
-      }
+    td, th {
+      font-size: 1rem;
+    }
 
-      td, th {
-        font-size: 1rem;
-      }
+    .baseline {
+      display: inline-flex;
+    }
 
-      .baseline {
-        display: inline-flex;
-      }
+    .filename {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 50vw;
+    }
 
-      .filename {
-        display: inline-block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 50vw;
-      }
+    .extension {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+    }
 
-      .extension {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-      }
+    .checkbox-select {
+      max-width: 45px;
+      min-width: 25px;
+      padding: 0;
+      text-align: center;
+    }
 
-      .checkbox-select {
-        max-width: 45px;
-        min-width: 25px;
-        padding: 0;
-        text-align: center;
-      }
+    .select {
+      display: none;
+    }
 
-      .select {
+    .Name {
+      padding-left: 0;
+      padding-right: 0
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .icons {
         display: none;
       }
 
-      .basename {
-        padding-left: 0;
-        padding-right: 0
-      }
-
-      &:hover {
-        cursor: pointer;
-
-        .icons {
-          display: none;
-        }
-
-        .select {
-          display: inline-flex;
-        }
+      .select {
+        display: inline-flex;
       }
     }
   }
+}
 </style>

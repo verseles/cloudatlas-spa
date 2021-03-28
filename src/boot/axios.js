@@ -1,12 +1,23 @@
 import axios      from 'axios'
 import { Notify } from "quasar"
 
-export default ({app, router, Vue}) => {
+export default ({app, router, Vue, urlPath}) => {
   Vue.prototype.$http    = axios
   axios.defaults.baseURL = process.env.API_BASE_URL + "/"
 
   axios.defaults.headers.common[ "Authorization" ] =
     "Bearer " + app.$storage.getItem("token")
+
+
+  axios.interceptors.request.use((config) => {
+    config.params = config.params || {}
+    const query   = new URLSearchParams(document.location.search.substring(1))
+
+    if (query.has('gdrive')) {
+      config.params[ 'gdrive' ] = query.get('gdrive')
+    }
+    return config
+  })
 
   axios.interceptors.response.use(
     r => {
