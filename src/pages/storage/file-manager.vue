@@ -15,8 +15,8 @@ export default {
   },
   mounted() {
     this.refresher()
-    if (this.$q.sessionStorage.has("clipboard")) {
-      const clipboard = this.$q.sessionStorage.get.item("clipboard")
+    if (this.$q.sessionStorage.has('clipboard')) {
+      const clipboard = this.$q.sessionStorage.getItem('clipboard')
       if (typeof clipboard == "object" && Object.keys(clipboard).length) {
         this.$global.fm.manager.clipboard = clipboard
       }

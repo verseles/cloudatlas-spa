@@ -154,7 +154,7 @@
         >
           <q-tooltip anchor="top left" self="bottom left" :offset="[20, 5]">Rename</q-tooltip>
         </q-fab-action>
-        <q-fab-action v-show="itemsSelecteds.length === 1 && ['mdi-file-document', 'mdi-file-xml', 'mdi-file-code', 'mdi-tune', 'mdi-file-hidden'].includes(selectedPaths[0].icon)"
+        <q-fab-action v-show="itemsSelecteds.length === 1 && isTextEditable(selectedPaths[0])"
                       color="accent"
                       text-color="white"
                       @click="editAsCode"
@@ -508,7 +508,7 @@ export default {
       this.editor.open      = true
     },
     editAsCode() {
-      this.viewFile(this.baseId, this.selectedPaths[ 0 ], this.openCodeEditor)
+      this.viewFile(this.baseId, {item: this.selectedPaths[ 0 ], path: this.currentPath}, this.openCodeEditor)
     },
     saveEdits(done = () => {}) {
       if (this.editorFileModified) {

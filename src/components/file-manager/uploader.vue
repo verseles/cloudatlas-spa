@@ -6,6 +6,7 @@
                  :thread="3"
                  :post-action="postAction"
                  :headers="{Authorization: 'Bearer ' + getToken()}"
+                 :data="{path: item.path}"
                  v-model="files"
                  :size="50000000"
                  @input="inputed"

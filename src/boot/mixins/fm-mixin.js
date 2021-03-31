@@ -50,7 +50,7 @@ const mixinFM = {
         [ 'mdi-file-pdf', 'pdf' ],
         [ 'mdi-animation', 'gif' ],
         [ 'mdi-file-document', 'txt,srt' ],
-        [ 'mdi-file-code', 'php,html,htm,js,vue,env,rst,md,ts' ],
+        [ 'mdi-file-code', 'yml,yaml,xml,php,html,htm,js,vue,env,rst,md,ts' ],
         [ 'mdi-tune', 'conf,cfg,ini' ],
       ]
       icons_by_ext.map(item => {
@@ -186,14 +186,13 @@ const mixinFM = {
                        })
       }
     },
-    viewFile(id, file, done) {
+    viewFile(id, {item, path}, done) {
       this.$q.loading.show()
 
       this.$http
-          .post(`fm/read/${ id }`, {file: file})
+          .post(`fm/read/${ id }`, {item, path})
           .then(r => {
             this.$q.loading.hide()
-            console.info(r.data)
             done(r.data)
           })
           .catch(() => {
@@ -215,6 +214,21 @@ const mixinFM = {
             done()
             this.failListing()
           })
+    },
+    isTextEditable(item) {
+      // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+      const [ mimeType, mimeSubtype, mimeHellSubtype ] = item.MimeType.split(/[/+]/, 3)
+      const validIcons                                 = [ 'mdi-file-document', 'mdi-file-xml', 'mdi-file-code',
+                                                           'mdi-tune',
+                                                           'mdi-file-hidden' ]
+      const validMimeTypes                             = [ 'text' ]
+      const validMimeSubTypes                          = [ 'svg', 'xml', 'json', 'javascript', 'ecmascript', 'x-httpd-php', 'x-csh', 'x-sh' ]
+      const validMimeHellSubTypes                      = [ 'xml', 'json' ]
+
+      return validIcons.includes(item.icon) ||
+        validMimeTypes.includes(mimeType) ||
+        validMimeSubTypes.includes(mimeSubtype) ||
+        validMimeHellSubTypes.includes(mimeHellSubtype)
     },
   },
 }
