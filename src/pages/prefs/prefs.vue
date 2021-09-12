@@ -31,7 +31,7 @@
           replace
           label="Billing"
           name="billing"
-          icon="mdi-square-inc-cash"
+          icon="mdi-bank"
           :ripple="false"
 
         />
